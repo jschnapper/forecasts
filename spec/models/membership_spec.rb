@@ -5,8 +5,8 @@
 #  id         :bigint           not null, primary key
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  member_id  :bigint
-#  team_id    :bigint
+#  member_id  :bigint           not null
+#  team_id    :bigint           not null
 #
 # Indexes
 #

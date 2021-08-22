@@ -1,0 +1,6 @@
+include:
+  - ./**/*.rb
+exclude:
+  - spec/**/*
+reporters:
+- rubocop

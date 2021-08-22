@@ -5,8 +5,8 @@
 #  id         :bigint           not null, primary key
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  field_id   :bigint
-#  team_id    :bigint
+#  field_id   :bigint           not null
+#  team_id    :bigint           not null
 #
 # Indexes
 #
@@ -19,4 +19,9 @@
 #  fk_rails_...  (team_id => teams.id)
 #
 class TeamField < ApplicationRecord
+  belongs_to :field
+  belongs_to :team
+
+  validates :field, presence: true
+  validates :team, presence: true
 end

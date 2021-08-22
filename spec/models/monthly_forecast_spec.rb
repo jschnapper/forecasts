@@ -3,7 +3,7 @@
 # Table name: monthly_forecasts
 #
 #  id            :bigint           not null, primary key
-#  date          :date
+#  date          :date             not null
 #  holiday_hours :integer
 #  work_hours    :integer
 #  created_at    :datetime         not null

@@ -1,9 +1,9 @@
 class CreateMemberForecasts < ActiveRecord::Migration[6.1]
   def change
     create_table :member_forecasts do |t|
-      t.references :member, foreign_key: true
-      t.references :team, foreign_key: true
-      t.references :monthly_forecast, foreign_key: true
+      t.references :member, foreign_key: true, null: false
+      t.references :team, foreign_key: true, null: false
+      t.references :monthly_forecast, foreign_key: true, null: false
       t.jsonb :hours
       t.timestamps
     end

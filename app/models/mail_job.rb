@@ -5,11 +5,11 @@
 #  id          :bigint           not null, primary key
 #  description :text
 #  email_body  :text
-#  name        :string
+#  name        :string           not null
 #  schedule    :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
-#  team_id     :bigint
+#  team_id     :bigint           not null
 #
 # Indexes
 #
@@ -21,4 +21,11 @@
 #  fk_rails_...  (team_id => teams.id)
 #
 class MailJob < ApplicationRecord
+  # associations
+  belongs_to :team
+  has_many :mail_histories, dependent: :destroy
+
+  # validations
+  validates :name, presence: true, uniqueness: { scope: :team, case_sensitive: false }
+  validates :team, presence: true
 end

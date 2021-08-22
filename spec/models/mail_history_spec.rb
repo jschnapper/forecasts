@@ -4,11 +4,11 @@
 #
 #  id          :bigint           not null, primary key
 #  identifier  :string           not null
+#  process     :integer          default("not_started"), not null
+#  type        :integer          default(0), not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
-#  mail_job_id :bigint
-#  process_id  :integer          default(0), not null
-#  type_id     :integer          default(0), not null
+#  mail_job_id :bigint           not null
 #
 # Indexes
 #

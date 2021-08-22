@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: member_roles
@@ -5,8 +7,8 @@
 #  id         :bigint           not null, primary key
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  member_id  :bigint
-#  role_id    :bigint
+#  member_id  :bigint           not null
+#  role_id    :bigint           not null
 #
 # Indexes
 #
@@ -19,4 +21,9 @@
 #  fk_rails_...  (role_id => roles.id)
 #
 class MemberRole < ApplicationRecord
+  belongs_to :member
+  belongs_to :role
+
+  validates :member, presence: true
+  validates :role, presence: true
 end

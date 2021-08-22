@@ -5,11 +5,11 @@
 #  id          :bigint           not null, primary key
 #  description :text
 #  email_body  :text
-#  name        :string
+#  name        :string           not null
 #  schedule    :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
-#  team_id     :bigint
+#  team_id     :bigint           not null
 #
 # Indexes
 #

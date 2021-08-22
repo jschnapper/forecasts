@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: memberships
@@ -5,8 +7,8 @@
 #  id         :bigint           not null, primary key
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  member_id  :bigint
-#  team_id    :bigint
+#  member_id  :bigint           not null
+#  team_id    :bigint           not null
 #
 # Indexes
 #
@@ -19,4 +21,10 @@
 #  fk_rails_...  (team_id => teams.id)
 #
 class Membership < ApplicationRecord
+  # association
+  belongs_to :member
+  belongs_to :team
+
+  validates :member, presence: true
+  validates :team, presence: true
 end

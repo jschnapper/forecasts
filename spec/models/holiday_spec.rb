@@ -3,7 +3,7 @@
 # Table name: holidays
 #
 #  id                  :bigint           not null, primary key
-#  date                :date
+#  date                :date             not null
 #  name                :string
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
@@ -11,6 +11,7 @@
 #
 # Indexes
 #
+#  index_holidays_on_date                 (date) UNIQUE
 #  index_holidays_on_monthly_forecast_id  (monthly_forecast_id)
 #
 # Foreign Keys

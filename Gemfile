@@ -42,7 +42,7 @@ group :development do
   gem 'brakeman', '~> 5.1.1'
   gem 'bullet', '~> 6.1.4'
   gem 'bundler-audit', '~> 0.8.0'
-  gem "letter_opener", '~> 1.7.0'
+  gem 'letter_opener', '~> 1.7.0'
   gem 'rubocop', '~> 1.19', require: false
   gem 'rubocop-performance', '~> 1.11.4', require: false
   gem 'rubocop-rails', '~> 2.11.3', require: false
