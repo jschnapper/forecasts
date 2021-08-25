@@ -102,8 +102,8 @@ ActiveRecord::Schema.define(version: 2021_08_17_003724) do
 
   create_table "monthly_forecasts", force: :cascade do |t|
     t.date "date", null: false
-    t.integer "work_hours"
-    t.integer "holiday_hours"
+    t.integer "work_hours", default: 0, null: false
+    t.integer "holiday_hours", default: 0, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["date"], name: "index_monthly_forecasts_on_date", unique: true
@@ -128,10 +128,12 @@ ActiveRecord::Schema.define(version: 2021_08_17_003724) do
 
   create_table "teams", force: :cascade do |t|
     t.string "name", null: false
+    t.string "slug", null: false
     t.text "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["name"], name: "index_teams_on_name", unique: true
+    t.index ["slug"], name: "index_teams_on_slug", unique: true
   end
 
   add_foreign_key "holidays", "monthly_forecasts"

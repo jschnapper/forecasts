@@ -11,3 +11,13 @@ import "channels"
 Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
+
+// Handler when the DOM is fully loaded
+document.addEventListener("DOMContentLoaded", () => {
+  // Handle changing form content based on selected team
+  let userDetailsForm = document.getElementById("forecast-user-details-form")
+  let teamSelect = document.querySelector("#forecast-user-details-form #team-name")
+  teamSelect.addEventListener('change', (e) => {
+    Rails.fire(userDetailsForm, 'submit')
+  })
+})

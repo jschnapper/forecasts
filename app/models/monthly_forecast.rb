@@ -6,8 +6,8 @@
 #
 #  id            :bigint           not null, primary key
 #  date          :date             not null
-#  holiday_hours :integer
-#  work_hours    :integer
+#  holiday_hours :integer          default(0), not null
+#  work_hours    :integer          default(0), not null
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #

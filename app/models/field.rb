@@ -26,7 +26,7 @@ class Field < ApplicationRecord
 
   # validations
   # name is not case sensitive but code is
-  validates :code, uniqueness: true
+  validates :code, uniqueness: true, allow_nil: true
   validates :name, presence: true, uniqueness: { case_sensitive: false }
 
   private

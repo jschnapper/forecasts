@@ -51,6 +51,3 @@ yarn-debug.log*
 
 # Ignore node_modules
 node_modules/
-
-# my todo list
-todo.md

@@ -1,0 +1,13 @@
+<% p "hello" %>
+<% p !!team %>
+<% if team %>
+  <%= form_with url: create_forecast_path, method: :post do |form| %>
+    <div>
+      <%= form.select :field, %i[a b c], prompt: "select field" %>
+      <%= form.number_field :hours, step: 1 %>
+    </div>
+    <%= button_tag do %>
+      Submit Forecast
+    <% end %>
+  <% end %>
+<% end %>

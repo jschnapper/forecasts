@@ -1,0 +1,2 @@
+module SubmitForecastsHelper
+end

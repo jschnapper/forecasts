@@ -52,7 +52,7 @@ class Member < ApplicationRecord
   def format_fields
     # downcase email, first name, middle name, and last name
     %i[email first_name middle_name last_name].each do |attribute|
-      send("#{attribute}=", attribute.strip.downcase) if attribute.present?
+      send("#{attribute}=", send(attribute).strip.downcase) if send(attribute).present?
     end
   end
 end

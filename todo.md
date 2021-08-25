@@ -1,0 +1,76 @@
+- [x] other gems
+  - [x] yard/rdoc
+  - [x] annotate
+  - [x] bullet
+  - [x] security gem
+  - [x] rubo cop
+  - [x] solargraph
+- [ ] models
+  - [x] teams
+    - [x] unique name (case insensitive)
+  - [x] members
+    - [x] unique email (case insensitive)
+  - [x] membership
+  - [x] roles
+    - [ ] admin, manager, representative
+  - [x] member roles
+  - [x] fields
+  - [x] team fields
+  - [x] holidays
+  - [x] monthly forecasts
+  - [x] member forecasts
+  - [x] mail jobs
+  - [x] mail history
+- [x] migrations
+- [x] design routing
+- [ ] functionality
+  - [ ] pages
+    - [ ] admin
+      - [ ] manage teams
+      - [ ] manage all users
+      - [ ] manage fields 
+      - [ ] manage holidays
+      - [ ] manage all jobs
+      - [ ] manage forecasts (create new forecast when needed)
+    - [ ] team
+      - [ ] manage members
+      - [ ] manage when emails send
+      - [ ] see forecasts
+    - [ ] forecasts form
+      - [ ] submit form
+  - [ ] jobs
+    - [ ] recurring job to create new forecast
+    - [ ] recurring job to send out emails
+- [ ] auth and cookies
+  - [ ] install devise
+  - [ ] allow users to "login" so their email is stored as a cookie (or local storage)
+    - [ ] need to add a hidden token to each submission (to ensure the user is who they say they are; probably store on the members table)
+  - [ ] allow users to change email
+  - [ ] place pages under auth
+- [ ] design
+  - [ ] install tailwindcss
+  - [ ] login, logout, change password
+  - [ ] flow for password-less login for users
+  - [ ] admin
+    - [ ] teams
+    - [ ] users
+    - [ ] holidays
+    - [ ] jobs
+    - [ ] forecasts
+  - [ ] team
+    - [ ] members
+    - [ ] when to send emails
+    - [ ] forecasts
+  - [ ] forecast form
+    - [ ] submit
+    - [ ] success
+- [ ] tests
+- [ ] security
+  - [ ] better implementation than using innerHTML
+- [ ] improvements
+  - [ ] ahoy gem
+  - [ ] install turbo gem
+  - [ ] turbo the app
+  - [ ] avoid eager loading
+- [ ] figure out prod deployment and how to share
+- [ ] host a demo app

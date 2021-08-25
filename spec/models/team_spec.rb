@@ -5,12 +5,14 @@
 #  id          :bigint           not null, primary key
 #  description :text
 #  name        :string           not null
+#  slug        :string           not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
 # Indexes
 #
 #  index_teams_on_name  (name) UNIQUE
+#  index_teams_on_slug  (slug) UNIQUE
 #
 require 'rails_helper'
 
