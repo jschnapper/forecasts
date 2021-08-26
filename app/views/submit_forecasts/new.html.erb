@@ -2,15 +2,14 @@
   <div>
     <div id="forecast-title"><span id="team-name"><%= @team&.name&.titleize || "Team"%></span> <%= "#{@monthly_forecast&.date&.strftime('%B %Y')} " %>Forecast</div>
     <div>
-      <span>First Name</span>
-      <span>Last Name</span>
+      <div id="member-email"></div>
       <%= form_with url: new_forecast_path, method: :get, id: "forecast-user-details-form", data: { remote: true } do |form| %>
         <%= form.select "team-name", options_for_select(@teams&.map { |team| [team.name.titleize, team.slug] }, @team&.slug), { prompt: "select team" }, { name: "team_name" } %>
-        <%= form.select "email", options_from_collection_for_select(@members, :id, :email), prompt: "select email" %>
+        <%= form.select nil, options_from_collection_for_select(@members || [], :id, :email), { prompt: "select email" }, { id: "member-emails" } %>
       <% end %>
     </div>
     <div id="forecast-form-container">
-      <%= render "form", team: @team %>
+      <%= render "form", team: @team, monthly_forecast: @monthly_forecast, member_forecast: @member_forecast %>
     </div>
   </div>
 </div>

@@ -1,12 +1,15 @@
-<% p "hello" %>
-<% p !!team %>
 <% if team %>
-  <%= form_with url: create_forecast_path, method: :post do |form| %>
-    <div>
-      <%= form.select :field, %i[a b c], prompt: "select field" %>
-      <%= form.number_field :hours, step: 1 %>
-    </div>
-    <%= button_tag do %>
+  <%= form_with model: member_forecast, url: create_forecast_path, method: :post, id: "forecast-form" do |form| %>
+    <% team.fields.each do |field| %>
+      <div>
+        <span><%= field.name %></span>
+        <%= form.number_field :hours, step: 1, name: "member_forecast[hours[#{field.name}]]"%>
+      </div>
+    <% end %> 
+    <%= hidden_field_tag :team_id, team.id, id: "team-id", name: "member_forecast[team_id]" %>
+    <%= hidden_field_tag :member_id, nil, id: "member-id", name: "member_forecast[member_id]" %>
+    <%= hidden_field_tag :monthly_forecast_id, monthly_forecast.id, id: "monthly-forecast-id", name: "member_forecast[monthly_forecast_id]" %>
+    <%= button_tag id: "forecast-submit", name: nil do %>
       Submit Forecast
     <% end %>
   <% end %>

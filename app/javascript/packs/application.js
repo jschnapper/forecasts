@@ -14,10 +14,34 @@ ActiveStorage.start()
 
 // Handler when the DOM is fully loaded
 document.addEventListener("DOMContentLoaded", () => {
+  /*****************************************
+   ********* submit_forecasts start ********
+   *****************************************/
   // Handle changing form content based on selected team
   let userDetailsForm = document.getElementById("forecast-user-details-form")
-  let teamSelect = document.querySelector("#forecast-user-details-form #team-name")
-  teamSelect.addEventListener('change', (e) => {
-    Rails.fire(userDetailsForm, 'submit')
-  })
+  document.querySelector("#forecast-user-details-form #team-name")
+    .addEventListener('change', (e) => {
+      Rails.fire(userDetailsForm, 'submit')
+    })
+
+  // Take email from details and add to the forecast form
+  document.querySelector("#forecast-user-details-form #member-emails")
+    .addEventListener('change', (e) => {
+      let formButton = document.querySelector("#forecast-form #forecast-submit")
+      // Disable until complete transition
+      if (formButton) {
+        formButton.disabled = true
+      }
+      let memberSelect = document.querySelector("#forecast-user-details-form #member-emails")
+      document.querySelector("#member-email").textContent = memberSelect.options[memberSelect.selectedIndex].textContent
+      document.querySelector("#forecast-form #member-id").value = memberSelect.value
+      // Re-enable button
+      if (formButton) {
+        formButton.disabled = false
+      }
+    })
+
+  /***************************************
+   ********* submit_forecasts end ********
+   ***************************************/
 })

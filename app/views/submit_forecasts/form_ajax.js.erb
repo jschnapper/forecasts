@@ -1,9 +1,11 @@
 <%# Change team name on form %>
 document.querySelector("#forecast-title #team-name").innerText = "<%= team&.name&.titleize || "Team" %>"
 <%# replace container with form relevant to team %>
-document.getElementById("forecast-form-container").innerHTML = "<%= j render "form", team: team  %>"
-
-console.log(window.location.pathname.split("/")[1] === "forecasts")
+document.getElementById("forecast-form-container").innerHTML = "<%= j render "form", team: team, monthly_forecast: monthly_forecast, member_forecast: member_forecast  %>"
+<%# Replace members %>
+document.querySelector("#forecast-user-details-form #member-emails").innerHTML = "<%= j select_tag nil, options_from_collection_for_select(@members, :id, :email), { prompt: "select email", id: "member-emails" } %>"
+<%# Clear email under header %>
+document.querySelector("#member-email").innerText = null
 
 history.pushState(
   { 'team': '<%= team&.slug %>' },

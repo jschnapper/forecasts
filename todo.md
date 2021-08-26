@@ -36,8 +36,14 @@
       - [ ] manage members
       - [ ] manage when emails send
       - [ ] see forecasts
-    - [ ] forecasts form
+    - [ ] forecasts form'
+      - [x] list all team fields at once
+      - [x] change members when team changes
       - [ ] submit form
+      - [ ] show expects hours and total hours
+      - [ ] validations
+      - [ ] show screen
+      - [ ] send email
   - [ ] jobs
     - [ ] recurring job to create new forecast
     - [ ] recurring job to send out emails
@@ -48,6 +54,7 @@
   - [ ] allow users to change email
   - [ ] place pages under auth
 - [ ] design
+  - [ ] search select
   - [ ] install tailwindcss
   - [ ] login, logout, change password
   - [ ] flow for password-less login for users
@@ -64,10 +71,15 @@
   - [ ] forecast form
     - [ ] submit
     - [ ] success
+  - [ ] forecast submission email
+  - [ ] reminder emails
 - [ ] tests
 - [ ] security
   - [ ] better implementation than using innerHTML
 - [ ] improvements
+  - [ ] list team fields one at a time as a select dropdown
+  - [ ] loading indicator
+  - [ ] change from email identifier to name, on forecast form
   - [ ] ahoy gem
   - [ ] install turbo gem
   - [ ] turbo the app

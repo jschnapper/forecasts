@@ -50,7 +50,7 @@ class MemberForecast < ApplicationRecord
   # and are whole numbers
   def format_hours
     hours.each do |field, amount|
-      hours[field] = amount.to_i
+      hours[field.downcase] = amount.to_i
     end
   end
 end
