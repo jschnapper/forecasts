@@ -1,0 +1,11 @@
+<%= link_to "Back", :back %>
+<%= link_to "All Members", member_index_path %>
+<h2><%= @member.full_name %></h2>
+<p><%= @member.email %></p>
+<% if @member.teams&.first&.present? %>
+  <p><%= link_to @member.teams.first.name.titleize, team_path(@member.teams.first.id) %></p>
+<% else %>
+  <p><%= @member.full_name %> does not belong to a team</p>
+<% end %>
+<%= link_to 'Edit', edit_member_path(@member.id)%>
+<%= link_to 'Delete', url_for(action: :destroy,id: @member.id), method: :delete, data: {confirm: "Are you sure you want to delete #{@member.full_name}"} %>

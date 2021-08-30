@@ -1,0 +1,30 @@
+<h2>Teams</h2>
+<%= link_to "Add Team", new_team_path%>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if @teams.size > 0 %>
+      <% @teams.each do |team| %>
+        <tr>
+          <td><%= team.name %></td>
+          <td><%= team.description %></td>
+          <td>       
+            <%= link_to 'Show', team_path(team.id)%>
+            <%= link_to 'Edit', edit_team_path(team.id)%>
+            <%= link_to 'Delete', url_for(action: :destroy,id: team.id), method: :delete, data: {confirm: "Are you sure you want to delete #{team.name}"} %>
+          </td>
+        </tr>
+      <% end %>
+    <% else %>
+      <tr>
+        <td colspan=3>No teams</td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

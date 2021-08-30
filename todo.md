@@ -26,7 +26,7 @@
 - [ ] functionality
   - [ ] pages
     - [ ] admin
-      - [ ] manage teams
+      - [x] manage teams
       - [ ] manage all users
       - [ ] manage fields 
       - [ ] manage holidays
@@ -36,14 +36,15 @@
       - [ ] manage members
       - [ ] manage when emails send
       - [ ] see forecasts
-    - [ ] forecasts form'
+    - [ ] forecasts form
       - [x] list all team fields at once
       - [x] change members when team changes
-      - [ ] submit form
-      - [ ] show expects hours and total hours
-      - [ ] validations
-      - [ ] show screen
-      - [ ] send email
+      - [x] submit form
+      - [x] show expects hours and total hours
+      - [ ] initial validations
+      - [x] show screen
+      - [x] send email
+      - [ ] toggle accepting responses
   - [ ] jobs
     - [ ] recurring job to create new forecast
     - [ ] recurring job to send out emails

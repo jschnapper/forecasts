@@ -1,13 +1,31 @@
-<% if team %>
-  <%= form_with model: member_forecast, url: create_forecast_path, method: :post, id: "forecast-form" do |form| %>
+<div id="member-email"><%= @member&.email%></div>
+<div>There are <span class="expected-hours"><%= @monthly_forecast&.total_hours %></span> hours this month.</div>
+<%= form_with model: member_forecast, url: create_forecast_path, method: :post, id: "forecast-form" do |form| %>
+  <% if team.present? %>
+    <span><%= team.name%></span>
+    <%= hidden_field_tag :team_id, team.id, id: "team-id", name: "member_forecast[team_id]", required: true %>
+  <% else %>
+    <%= form.select :team_id, options_for_select(@teams&.map { |tm| [tm.name.titleize, tm.id] }, team&.id), { prompt: "select team" }, { name: "member_forecast[team_id]", id: "team-id", required: true } %>
+  <% end %>
+  <%= form.select :member_id, options_from_collection_for_select(@members || [], :id, :email, @member&.id), { prompt: "select email" }, { id: "member-emails", required: true } %>
+  <% if team %>
     <% team.fields.each do |field| %>
+      <%# Only show holiday when there is a holiday %>
       <div>
-        <span><%= field.name %></span>
-        <%= form.number_field :hours, step: 1, name: "member_forecast[hours[#{field.name}]]"%>
+        <% if field.name.downcase == "holiday" && @monthly_forecast.holiday_hours == 0 %>
+          <% next %>
+        <% elsif field.name.downcase == "holiday" %>
+          <span><%= field.name %></span>
+          <%= form.number_field :hours, step: 1, min: 0, name: "member_forecast[hours[#{field.name}]]", class: "hour-input", value: @monthly_forecast.holiday_hours, readonly: true, required: true %>
+        <% else %>
+          <span><%= field.name %></span>
+          <%= form.number_field :hours, step: 1, min: 0, name: "member_forecast[hours[#{field.name}]]", class: "hour-input" %>
+        <% end %>
       </div>
     <% end %> 
-    <%= hidden_field_tag :team_id, team.id, id: "team-id", name: "member_forecast[team_id]" %>
-    <%= hidden_field_tag :member_id, nil, id: "member-id", name: "member_forecast[member_id]" %>
+    <%= form.text_area :notes, name: "member_forecast[notes]", id: "notes-input" %>
+    <div>Expected Hours <span id="expected-hours"><%= monthly_forecast.total_hours %></span></div>
+    <div>Your Hours <span id="member-hours"><%= member_forecast.total_hours %></span></div>
     <%= hidden_field_tag :monthly_forecast_id, monthly_forecast.id, id: "monthly-forecast-id", name: "member_forecast[monthly_forecast_id]" %>
     <%= button_tag id: "forecast-submit", name: nil do %>
       Submit Forecast

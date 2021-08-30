@@ -18,30 +18,74 @@ document.addEventListener("DOMContentLoaded", () => {
    ********* submit_forecasts start ********
    *****************************************/
   // Handle changing form content based on selected team
-  let userDetailsForm = document.getElementById("forecast-user-details-form")
-  document.querySelector("#forecast-user-details-form #team-name")
-    .addEventListener('change', (e) => {
+  const userDetailsForm = document.getElementById("forecast-user-details-form")
+  const userDetailsFormTeamField = document.querySelector("#forecast-user-details-form #user-details-team-id")
+  const teamSelector = document.querySelector("#forecast-form #team-id")
+  if (teamSelector && userDetailsFormTeamField && userDetailsForm) {
+    teamSelector.addEventListener('change', (e) => {
+      userDetailsFormTeamField.value = teamSelector.value 
       Rails.fire(userDetailsForm, 'submit')
     })
+  }
 
   // Take email from details and add to the forecast form
-  document.querySelector("#forecast-user-details-form #member-emails")
-    .addEventListener('change', (e) => {
+  const memberEmailSelector = document.querySelector("#forecast-form #member-emails")
+  if (memberEmailSelector) {
+    memberEmailSelector.addEventListener('change', (e) => {
       let formButton = document.querySelector("#forecast-form #forecast-submit")
       // Disable until complete transition
       if (formButton) {
         formButton.disabled = true
       }
-      let memberSelect = document.querySelector("#forecast-user-details-form #member-emails")
-      document.querySelector("#member-email").textContent = memberSelect.options[memberSelect.selectedIndex].textContent
-      document.querySelector("#forecast-form #member-id").value = memberSelect.value
+      let memberSelect = document.querySelector("#forecast-form #member-emails")
+      if (memberSelect.value) {
+        document.querySelector("#member-email").textContent = memberSelect.options[memberSelect.selectedIndex].textContent
+      } else {
+        document.querySelector("#member-email").textContent = ""
+      }
       // Re-enable button
       if (formButton) {
         formButton.disabled = false
       }
     })
-
+  }  
+  
+  on("#forecast-form-container", "input", ".hour-input", event => {
+    const expectedHours = parseInt(document.querySelectorAll(".expected-hours").innerText)
+    const currentHours = document.getElementById("member-hours")
+      const elements = document.querySelectorAll("#forecast-form-container .hour-input")
+      let total = 0
+      for (let element of elements) {
+        total += (parseInt(element.value) || 0)
+      }
+      currentHours.innerText = total
+  })
   /***************************************
    ********* submit_forecasts end ********
    ***************************************/
 })
+
+
+
+/****************************************
+ ******* General helper functions *******
+ ****************************************/
+
+/* js event handler for event delegation
+ * https://flaviocopes.com/javascript-event-delegation/
+ * 
+ * @param {STRING} selector - argument for querySelectorAll -- containing element
+ * @param {STRING} eventType - event type for listener
+ * @param {STRING} selector - selector of child elements under original selector
+ * @param {FUNCTION} eventHandler - the event handler callback
+*/
+const on = (selector, eventType, childSelector, eventHandler) => {
+  const elements = document.querySelectorAll(selector)
+  for (let element of elements) {
+    element.addEventListener(eventType, eventOnElement => {
+      if (eventOnElement.target.matches(childSelector)) {
+        eventHandler(eventOnElement)
+      }
+    })
+  }
+}

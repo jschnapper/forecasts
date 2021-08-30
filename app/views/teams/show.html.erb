@@ -1,0 +1,69 @@
+<%= link_to "Back", :back %>
+<%= link_to "All teams", teams_path %><h2><%= @team.name %></h2>
+<p><%= @team.description || "No description" %></p>
+<%= link_to 'Edit', edit_team_path(@team.id)%>
+<%= link_to 'Delete', url_for(action: :destroy,id: @team.id), method: :delete, data: {confirm: "Are you sure you want to delete #{@team.name}"} %>
+<h3>Members</h3>
+<%= link_to "Add Members", new_member_path %>
+<table>
+  <thead>
+    <tr>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Email</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+<tbody>
+  <% if @team.members.size > 0 %>
+    <% @team.members.each do |member| %>
+      <tr>
+        <td><%= member.first_name %></td>
+        <td><%= member.last_name %></td>
+        <td><%= member.email %></td>
+        <td>
+          <%= link_to 'Show', member_path(member.id)%>
+          <%= link_to 'Edit', edit_member_path(member.id)%>
+          <%= link_to 'Remove', edit_member_path(member.id)%>
+          <%= link_to 'Delete', url_for(action: :destroy,id: member.id), method: :delete, data: {confirm: "Are you sure you want to delete #{member.full_name}"} %>
+        </td>
+      </tr>
+    <% end %>
+  <% else %>
+    <tr>
+      <td colspan=4>No members</td>
+    </tr>
+  <% end %>
+</tbody>
+</table>
+<h3>Fields</h3>
+<%= link_to "Edit Fields", field_path %>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Code</th>
+      <th>Description</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+<tbody>
+  <% if @team.fields.size > 0 %>
+    <% @team.fields.each do |field| %>
+      <tr>
+        <td><%= field.name %></td>
+        <td><%= field.code || "No code" %></td>
+        <td><%= field.description || "No description" %></td>
+        <td>
+          <%= link_to 'Show', field_path(field.id)%>
+          <%= link_to 'Remove', field_path(field.id)%>
+        </td>
+      </tr>
+    <% end %>
+  <% else %>
+    <tr>
+      <td colspan=4>No Fields</td>
+    </tr>
+  <% end %>
+</tbody>
+</table>

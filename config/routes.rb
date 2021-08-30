@@ -58,7 +58,7 @@ Rails.application.routes.draw do
   # /admin/jobs
   scope 'admin' do
     resources :teams
-    resources :members
+    resources :members, as: :member
     resources :holidays
     resources :fields
     resources :jobs

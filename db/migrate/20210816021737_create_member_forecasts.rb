@@ -4,6 +4,7 @@ class CreateMemberForecasts < ActiveRecord::Migration[6.1]
       t.references :member, foreign_key: true, null: false
       t.references :team, foreign_key: true, null: false
       t.references :monthly_forecast, foreign_key: true, null: false
+      t.text :notes
       t.jsonb :hours
       t.timestamps
     end

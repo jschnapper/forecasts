@@ -10,15 +10,18 @@ namespace :development do
         fields = [
           { 
             name: 'pto', 
-            description: 'paid time off' 
+            description: 'paid time off',
+            default: true
           },
           { 
             name: 'holiday', 
-            description: 'Holiday' 
+            description: 'Holiday',
+            default: true
           },
           { 
             name: 'Other', 
-            description: 'Anything not covered by the other fields' 
+            description: 'Anything not covered by the other fields',
+            default: true
           },
           {
             name: 'project 1',

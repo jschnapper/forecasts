@@ -3,6 +3,7 @@
 # Table name: monthly_forecasts
 #
 #  id            :bigint           not null, primary key
+#  active        :boolean          default(TRUE), not null
 #  date          :date             not null
 #  holiday_hours :integer          default(0), not null
 #  work_hours    :integer          default(0), not null

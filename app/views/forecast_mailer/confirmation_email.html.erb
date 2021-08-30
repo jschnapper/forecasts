@@ -1,8 +1,7 @@
-<div id="forecast-title"><span id="team-name"><%= @team&.name&.titleize || "Team"%></span> <%= "#{@monthly_forecast&.date&.strftime('%B %Y')} " %>Forecast</div>
-<div>
-<div>Thank you for submitting, <%= @member.first_name.capitalize %>!</div>
+<p>Hi <%= @member.first_name %>,</p>
+<p>Thanks for submitting your <%= @team.name.titleize %> <%= @monthly_forecast.friendly_name %>
 <%# If holiday hours are not correct %>
-<% if @monthly_forecast.holiday_hours > 0 && @monthly_forecast.holiday_hours != @member_forecast.hours["holiday"] %>
+<% if @monthly_forecast.holiday_hours > 0 && @monthly_forecast.holiday_hours != @member_forecast.hours["holiday"]%>
   <p>
     <b>Action Required:</b> Please correct your forecasted holiday hours. Expected <%= @monthly_forecast.holiday_hours %> holiday hours. 
     You submitted <%= @member_forecast.hours["holiday"] || 0 %> holiday hours.
@@ -21,8 +20,7 @@
     this month. If this was an error, please resubmit.
   </p> 
 <% end %>
-<div>A confirmation email has been sent to <%= @member.email %></div>
-<div>Here is your submission</div>
+<p>Here is your submission</p>
 <table>
   <thead>
     <tr>
@@ -56,9 +54,11 @@
   <div>The following note was added</div>
   <div><%= @member_forecast.notes %></div>
 <% end %>
-<%= link_to "submit again", new_team_forecast_path(
+<p>
+  To make a change, please submit a new forecast <%= link_to "here", new_team_forecast_url(
   team_name: @team.slug,
   year: @monthly_forecast.date.strftime("%Y"),
   month: @monthly_forecast.date.strftime("%B"),
   member_id: @member.id
-  ), data: { turbolinks: "false" } %>
+  )%>. Only your most recent submssion will be used.
+</p>

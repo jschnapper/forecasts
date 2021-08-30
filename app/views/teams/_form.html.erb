@@ -1,0 +1,10 @@
+<%= link_to "Back", :back %>
+<%= link_to "All teams", teams_path %>
+<h2><%= team&.name&.titleize || "New Team" %></h2>
+<%= form_with model: team, url: path, method: action, id: "team-form" do |form| %>
+  <%= form.label :name, "Team name" %>
+  <%= form.text_field :name, required: true  %>
+  <%= form.label :description, "Team description" %>
+  <%= form.text_area :description %>
+  <%= form.submit %>
+<% end %>

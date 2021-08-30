@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 2021_08_17_003724) do
   create_table "fields", force: :cascade do |t|
     t.string "name", null: false
     t.string "code"
+    t.boolean "default", default: false, null: false
     t.text "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -62,6 +63,7 @@ ActiveRecord::Schema.define(version: 2021_08_17_003724) do
     t.bigint "member_id", null: false
     t.bigint "team_id", null: false
     t.bigint "monthly_forecast_id", null: false
+    t.text "notes"
     t.jsonb "hours"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -104,6 +106,7 @@ ActiveRecord::Schema.define(version: 2021_08_17_003724) do
     t.date "date", null: false
     t.integer "work_hours", default: 0, null: false
     t.integer "holiday_hours", default: 0, null: false
+    t.boolean "active", default: true, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["date"], name: "index_monthly_forecasts_on_date", unique: true

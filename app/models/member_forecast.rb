@@ -6,6 +6,7 @@
 #
 #  id                  :bigint           not null, primary key
 #  hours               :jsonb
+#  notes               :text
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #  member_id           :bigint           not null
@@ -41,7 +42,7 @@ class MemberForecast < ApplicationRecord
 
   # ------ Helper methods ------ #
   def total_hours
-    hours.values.reduce { |total, amount| total + amount.to_i }
+    hours&.values&.reduce { |total, amount| total + amount.to_i } || 0
   end
 
   private

@@ -5,6 +5,7 @@
 # Table name: monthly_forecasts
 #
 #  id            :bigint           not null, primary key
+#  active        :boolean          default(TRUE), not null
 #  date          :date             not null
 #  holiday_hours :integer          default(0), not null
 #  work_hours    :integer          default(0), not null
@@ -22,4 +23,13 @@ class MonthlyForecast < ApplicationRecord
 
   # validations
   validates :date, presence: true
+
+  # friendly name for monthly forecast
+  def friendly_name
+    "#{date&.strftime('%B %Y')} Forecast"
+  end
+
+  def total_hours
+    work_hours + holiday_hours
+  end
 end

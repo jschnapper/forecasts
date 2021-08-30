@@ -1,6 +1,10 @@
+# frozen_string_literak: true
+
 class SubmitForecastsController < ApplicationController
-  before_action :set_team_by_name, :set_monthly_forecast, only: :new
-  before_action :prepare_member_forecast, only: :create
+  before_action :set_team,
+                :set_monthly_forecast,
+                :set_member,
+                only: :new
 
   # root
   # /forecasts
@@ -13,42 +17,61 @@ class SubmitForecastsController < ApplicationController
     @members = @team&.members
     respond_to do |format|
       format.html { render :new }
-      format.js { render :form_ajax, locals: { team: @team, monthly_forecast: @monthly_forecast, member_forecast: @member_forecast } }
+      format.js {
+        render :form_ajax,
+          locals: {
+            team: @team,
+            monthly_forecast: @monthly_forecast,
+            member_forecast: @member_forecast,
+            member: @member
+          }
+        }
     end
   end
 
   def create
-    existing_submission = MemberForecast.find_by(
+    existing_submission = MemberForecast.includes(:member, :team).find_by(
       monthly_forecast_id: params[:member_forecast][:monthly_forecast_id],
       team_id: params[:member_forecast][:team_id],
       member_id: params[:member_forecast][:member_id]
     )
     if existing_submission
-      @member_forecast = existing_submission.update(hours: member_forecast_params[:hours])
+      existing_submission.update(hours: member_forecast_params[:hours], notes: member_forecast_params[:notes])
+      existing_submission.reload
+      @member_forecast = existing_submission
+      @monthly_forecast = existing_submission.monthly_forecast
+      @member = existing_submission.member
+      @team = existing_submission.team
     else
       @member_forecast = MemberForecast.create(member_forecast_params)
+      @monthly_forecast = MonthlyForecast.find_by(id: params.dig(:member_forecast, :monthly_forecast_id))
+      @member = Member.find_by(id: params.dig(:member_forecast, :member_id))
+      @team = Team.find_by(id: params.dig(:member_forecast, :team_id))
     end
+    ForecastMailer.confirmation_email(@member_forecast).deliver_now
     render :success
   end
 
   private
 
   def member_forecast_params
-    params.require(:member_forecast).permit(:member_id, :team_id, :monthly_forecast_id, hours: [team&.fields&.map { |field| field.name.downcase }])
+    params.require(:member_forecast).permit(:member_id, :team_id, :monthly_forecast_id, :notes, hours: [team&.fields&.map { |field| field.name.downcase }])
   end
 
   # memoized field fetch
   def team
-    @team ||= Team.includes(:fields).find_by(id: params.dig(:member_forecast, :team_id))
+    @team ||= Team.includes(:members, :fields).find_by(id: params.dig(:member_forecast, :team_id))
   end
 
-  # set using path params
+  # set using team_name path params or team_id query param
   # on NEW
-  def set_team_by_name
+  def set_team
     if params[:team_name].present?
       # in case of whitespace, add dash for saerching slug
       name = params[:team_name].strip.downcase.tr(' ', '-')
       @team = Team.includes(:members).find_by('lower(slug) = ?', name)
+    elsif params[:team_id].present?
+      @team = Team.includes(:members).find_by(id: params[:team_id])
     end
   end
 
@@ -69,9 +92,8 @@ class SubmitForecastsController < ApplicationController
     end
   end
 
-  # set from form submission
-  # on CREATE
-  def prepare_member_forecast
-    # 
+  # set using member_id param
+  def set_member
+    @member = team&.members&.find_by(id: params[:member_id])
   end
 end

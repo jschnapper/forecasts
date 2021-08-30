@@ -21,18 +21,19 @@ class Team < ApplicationRecord
   # format all fields before saving
   before_validation :format_fields
   before_validation :set_slug # slug used for friendly url searching
+  before_create :add_default_fields 
 
   # associations
-  has_many :team_fields, dependent: :destroy
+  has_many :team_fields, dependent: :destroy, autosave: true
   has_many :fields, through: :team_fields
-  has_many :memberships, dependent: :destroy
+  has_many :memberships, dependent: :destroy, autosave: true
   has_many :members, through: :memberships
   has_many :mail_jobs, dependent: :destroy
   has_many :member_forecasts, dependent: :destroy
 
   # validations
   validates :name, presence: true, uniqueness: { case_sensitive: false }
-  validates :name, presence: true, uniqueness: { case_sensitive: false }
+  validates :slug, presence: true, uniqueness: { case_sensitive: false }
 
   private
 
@@ -44,5 +45,14 @@ class Team < ApplicationRecord
   # use the name to set the slug
   def set_slug
     self.slug = name.strip.downcase.tr(' ', '-')
+  end
+
+  # Create the default fields that are required for each team
+  # - pto
+  # - holiday
+  # - other
+  def add_default_fields
+    default_fields = Field.where(default: true).pluck(:id).map { |field_id| {field_id: field_id} }
+    team_fields.build(default_fields)
   end
 end

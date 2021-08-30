@@ -6,6 +6,7 @@
 #
 #  id          :bigint           not null, primary key
 #  code        :string
+#  default     :boolean          default(FALSE), not null
 #  description :text
 #  name        :string           not null
 #  created_at  :datetime         not null
@@ -16,6 +17,7 @@
 #  index_fields_on_code  (code) UNIQUE
 #  index_fields_on_name  (name) UNIQUE
 #
+#  'default' is to indicate if a field should be added to all teams
 class Field < ApplicationRecord
   # callbacks
   before_validation :format_fields
