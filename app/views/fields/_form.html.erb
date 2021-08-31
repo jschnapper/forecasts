@@ -1,0 +1,14 @@
+<%= link_to "Back", :back %>
+<%= link_to "All fields", fields_path %>
+<h2><%= field&.name&.titleize || "New Field" %></h2>
+<%= form_with model: field, url: path, method: action, id: "field-form" do |form| %>
+  <%= form.label :name, "Name" %>
+  <%= form.text_field :name, required: true  %>
+  <%= form.label :code, "Code" %>
+  <%= form.text_field :code %>
+  <%= form.label :description, "Description" %>
+  <%= form.text_area :description %>
+  <%= form.label :default, "Is default field for all teams" %>
+  <%= form.check_box :default %>
+  <%= form.submit %>
+<% end %>

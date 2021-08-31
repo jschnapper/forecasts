@@ -27,11 +27,12 @@
   - [ ] pages
     - [ ] admin
       - [x] manage teams
-      - [ ] manage all users
+      - [x] manage all users
       - [ ] manage fields 
       - [ ] manage holidays
       - [ ] manage all jobs
       - [ ] manage forecasts (create new forecast when needed)
+        - [ ] disable, enable
     - [ ] team
       - [ ] manage members
       - [ ] manage when emails send
@@ -41,10 +42,10 @@
       - [x] change members when team changes
       - [x] submit form
       - [x] show expects hours and total hours
-      - [ ] initial validations
+      - [x] initial validations
       - [x] show screen
       - [x] send email
-      - [ ] toggle accepting responses
+      - [ ] store email and team in local storage in local storage
   - [ ] jobs
     - [ ] recurring job to create new forecast
     - [ ] recurring job to send out emails

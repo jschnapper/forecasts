@@ -1,5 +1,5 @@
 <%= link_to "Back", :back %>
-<%= link_to "All Members", member_index_path %>
+<%= link_to "All Members", members_path %>
 <h2><%= member&.full_name || "New Member" %></h2>
 <%= form_with model: member, url: path, method: action, id: "member-form" do |form| %>
   <%= form.label :first_name, "First Name" %>

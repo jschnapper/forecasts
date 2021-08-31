@@ -31,12 +31,7 @@ Rails.application.routes.draw do
       put '/', to: 'teams#update'
 
       # manage individual team members
-      get '/members/new', to: 'members#new'
-      post '/members', to: 'members#create'
-      get '/members/:id', to: 'members#show'
-      get '/members/edit', to: 'members#edit'
-      put '/members/:id', to: 'members#update'
-      delete '/members/:id', to: 'members#destroy'
+      resources :members, as: :team_members
 
       # manage forecasts
       get '/forecasts', to: 'forecasts#show'
@@ -46,7 +41,7 @@ Rails.application.routes.draw do
       resource :notifications
 
       # manage fields
-      resource :fields
+      resource :fields, as: :team_fields
     end
   end
 
@@ -58,9 +53,12 @@ Rails.application.routes.draw do
   # /admin/jobs
   scope 'admin' do
     resources :teams
-    resources :members, as: :member
+    resources :members, as: :members
     resources :holidays
-    resources :fields
+    resources :fields, as: :fields
+    get '/team_fields/:team_id', to: 'team_fields#new', as: :new_fields_for_team
+    post '/team_fields', to: 'team_fields#create', as: :fields_for_teams
+    delete '/team_fields/:id', to: 'team_fields#destroy', as: :delete_field_for_team
     resources :jobs
   end
 end

@@ -19,7 +19,7 @@ class TeamsController < ApplicationController
   end
 
   def show
-    @team = Team.includes(:members, :fields).find_by(id: params[:id])
+    @team = Team.includes(:members).find_by(id: params[:id])
     if @team.nil?
       redirect_to action: :index
     end

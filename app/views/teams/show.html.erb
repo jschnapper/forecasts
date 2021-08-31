@@ -37,7 +37,7 @@
 </tbody>
 </table>
 <h3>Fields</h3>
-<%= link_to "Edit Fields", field_path %>
+<%= link_to "Add fields to team", new_fields_for_team_path(@team.id) %>
 <table>
   <thead>
     <tr>
@@ -48,15 +48,17 @@
     </tr>
   </thead>
 <tbody>
-  <% if @team.fields.size > 0 %>
-    <% @team.fields.each do |field| %>
+  <% if @team.team_fields.size > 0 %>
+    <% @team.team_fields.each do |team_field| %>
       <tr>
-        <td><%= field.name %></td>
-        <td><%= field.code || "No code" %></td>
-        <td><%= field.description || "No description" %></td>
+        <td><%= team_field.field.name %></td>
+        <td><%= team_field.field.code || "No code" %></td>
+        <td><%= team_field.field.description || "No description" %></td>
         <td>
-          <%= link_to 'Show', field_path(field.id)%>
-          <%= link_to 'Remove', field_path(field.id)%>
+          <%= link_to 'Show', field_path(team_field.field.id)%>
+          <% if team_field.field.name.downcase != "holiday" %>
+            <%= link_to 'Remove from team', url_for(controller: :team_fields, action: :destroy, id: team_field.id), method: :delete, data: {confirm: "Are you sure you want to remove #{team_field.field.name} from #{@team.name.titleize}"} %>
+          <% end %>
         </td>
       </tr>
     <% end %>

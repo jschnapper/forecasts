@@ -1,0 +1,34 @@
+<%= link_to "Back", :back %>
+<%= link_to "All fields", fields_path %><h2><%= @field.name %></h2>
+<p><%= @field.code || "No code" %></p>
+<p>Is default for teams: <%= @field.default ? "yes" : "no" %></p>
+<p><%= @field.description || "No description" %></p>
+<%= link_to 'Edit', edit_field_path(@field.id)%>
+<%= link_to 'Delete', url_for(action: :destroy,id: @field.id), method: :delete, data: {confirm: "Are you sure you want to delete #{@field.name}"} %>
+<h2>Teams</h2>
+<%= link_to "Add to team" %>
+<table>
+  <thead>
+    <th>Name</th>
+    <th>Actions</th>
+  </thead>
+  <tbody>
+    <% if @field.teams.size > 0 %>
+      <% @field.teams.each do |team| %>
+        <tr>
+          <td><%= team.name %></td>
+          <td>
+            <%= link_to 'Show', team_path(team.id)%>
+            <% if @field.name.downcase != "holiday" %>
+              <%= link_to 'Remove from team', edit_team_path(team.id)%>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    <% else %>
+      <tr>
+        <td colspan=4>No teams use this field</td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
