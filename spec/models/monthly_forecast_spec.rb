@@ -6,7 +6,7 @@
 #  active        :boolean          default(TRUE), not null
 #  date          :date             not null
 #  holiday_hours :integer          default(0), not null
-#  work_hours    :integer          default(0), not null
+#  total_hours   :integer          default(0), not null
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #

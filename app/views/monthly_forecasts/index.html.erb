@@ -1,0 +1,39 @@
+<h2>Forecasts</h2>
+<%= link_to "Add Forecast", new_monthly_forecast_path %>
+<table>
+  <thead>
+    <tr>
+      <th>Forecast</th>
+      <th>Total Hours</th>
+      <th>Holiday Hours</th>
+      <th>Active</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if @monthly_forecasts.size > 0 %>
+      <% @monthly_forecasts.each do |monthly_forecast| %>
+        <tr>
+          <td><%= monthly_forecast.friendly_date %></td>
+          <td><%= monthly_forecast.total_hours %></td>
+          <td><%= monthly_forecast.holiday_hours %></td>
+          <td><%= monthly_forecast.active ? "yes" : "no" %></td>
+          <td>       
+            <% if monthly_forecast.active %>
+              <%= link_to "Deactivate", monthly_forecast_path(id: monthly_forecast.id, monthly_forecast: { active: 0 }), method: :put %>
+            <% else %>
+              <%= link_to "Activate", monthly_forecast_path(id: monthly_forecast.id, monthly_forecast: { active: 1 }), method: :put %>
+            <% end %>
+            <%= link_to 'Show', monthly_forecast_path(monthly_forecast.id)%>
+            <%= link_to 'Edit', edit_monthly_forecast_path(monthly_forecast.id)%>
+            <%= link_to 'Delete', url_for(action: :destroy,id: monthly_forecast.id), method: :delete, data: {confirm: "Are you sure you want to delete the #{monthly_forecast.friendly_name}"} %>
+          </td>
+        </tr>
+      <% end %>
+    <% else %>
+      <tr>
+        <td colspan=5>No monthly_forecasts</td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

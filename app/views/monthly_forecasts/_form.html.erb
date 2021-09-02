@@ -1,0 +1,14 @@
+<%= link_to "Back", :back %>
+<%= link_to "All Forecasts", monthly_forecasts_path %>
+<h2><%= monthly_forecast&.friendly_name|| "New Forecast" %></h2>
+<%= form_with model: monthly_forecast, url: path, method: action, id: "monthly-forecast-form" do |form| %>
+  <%= form.label :date, "Date" %>
+  <%= form.date_select :name, discard_day: true %>
+  <%= form.label :active, "Activate forecast for submissions" %>
+  <%= form.check_box :date, checked: @monthly_forecast.persisted? ? @monthly_forecast.active : true %>
+  <% if @monthly_forecast.persisted? %>
+    <%= form.label :total_hours, "Total Hours" %>
+    <%= form.number_field :total_hours, step: 1, min: 0 %>
+  <% end %>
+  <%= form.submit %>
+<% end %>

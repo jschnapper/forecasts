@@ -8,7 +8,7 @@
 #  active        :boolean          default(TRUE), not null
 #  date          :date             not null
 #  holiday_hours :integer          default(0), not null
-#  work_hours    :integer          default(0), not null
+#  total_hours   :integer          default(0), not null
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #
@@ -17,6 +17,10 @@
 #  index_monthly_forecasts_on_date  (date) UNIQUE
 #
 class MonthlyForecast < ApplicationRecord
+  # callback
+  before_create :calculate_hours
+
+
   # associations
   has_many :holidays, dependent: :destroy
   has_many :member_forecast, dependent: :destroy
@@ -26,10 +30,26 @@ class MonthlyForecast < ApplicationRecord
 
   # friendly name for monthly forecast
   def friendly_name
-    "#{date&.strftime('%B %Y')} Forecast"
+    "#{friendly_date} Forecast"
   end
 
-  def total_hours
-    work_hours + holiday_hours
+  # friendly date for monthly forecast
+  def friendly_date
+    "#{date&.strftime('%B %Y')}"
+  end
+
+  private
+
+  def calculate_hours
+    start_date = date.beginning_of_month
+    end_date = date.end_of_month
+    self.total_hours = 0
+    [*start_date..end_date].each do |day|
+      if [*1..5].include?(day.wday)
+        self.total_hours += 8
+      end
+    end
+
+    self.holiday_hours = Holiday.where(date: start_date..end_date).count * 8
   end
 end

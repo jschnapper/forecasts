@@ -28,38 +28,63 @@ document.addEventListener("DOMContentLoaded", () => {
     })
   }
 
-  // Take email from details and add to the forecast form
-  const memberEmailSelector = document.querySelector("#forecast-form #member-emails")
-  if (memberEmailSelector) {
-    memberEmailSelector.addEventListener('change', (e) => {
-      let formButton = document.querySelector("#forecast-form #forecast-submit")
-      // Disable until complete transition
-      if (formButton) {
-        formButton.disabled = true
-      }
-      let memberSelect = document.querySelector("#forecast-form #member-emails")
-      if (memberSelect.value) {
-        document.querySelector("#member-email").textContent = memberSelect.options[memberSelect.selectedIndex].textContent
-      } else {
-        document.querySelector("#member-email").textContent = ""
-      }
-      // Re-enable button
-      if (formButton) {
-        formButton.disabled = false
-      }
+  // rebind event listener on member change
+  if (userDetailsForm) {
+    userDetailsForm.addEventListener("ajax:success", () => {
+      bindMemberChangeHandler()
+      countHours()
+
     })
-  }  
+    userDetailsForm.addEventListener("ajax:error", () => {
+      location.reload()
+    })
+  }
+
+  const bindMemberChangeHandler = () => {
+    const memberEmailSelector = document.querySelector("#forecast-form #member-emails")
+    if (memberEmailSelector) {
+      memberEmailSelector.addEventListener('change', (e) => {
+        let formButton = document.querySelector("#forecast-form #forecast-submit")
+        // Disable until complete transition
+        if (formButton) {
+          formButton.disabled = true
+        }
+        let memberSelect = document.querySelector("#forecast-form #member-emails")
+        if (memberSelect.value) {
+          document.querySelector("#member-email").textContent = memberSelect.options[memberSelect.selectedIndex].textContent
+        } else {
+          document.querySelector("#member-email").textContent = ""
+        }
+        // Re-enable button
+        if (formButton) {
+          formButton.disabled = false
+        }
+      })
+    }  
+  }
   
+  bindMemberChangeHandler()
+
+  // Calculate hours
   on("#forecast-form-container", "input", ".hour-input", event => {
+    countHours()
+  })
+
+  
+  const countHours = () => {
     const expectedHours = parseInt(document.querySelectorAll(".expected-hours").innerText)
     const currentHours = document.getElementById("member-hours")
-      const elements = document.querySelectorAll("#forecast-form-container .hour-input")
-      let total = 0
-      for (let element of elements) {
-        total += (parseInt(element.value) || 0)
-      }
+    const elements = document.querySelectorAll("#forecast-form-container .hour-input")
+    let total = 0
+    for (let element of elements) {
+      total += (parseInt(element.value) || 0)
+    }
+    if (currentHours) {
       currentHours.innerText = total
-  })
+    }
+  }
+
+  countHours()
   /***************************************
    ********* submit_forecasts end ********
    ***************************************/

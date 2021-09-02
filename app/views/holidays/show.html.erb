@@ -1,0 +1,6 @@
+<%= link_to "Back", :back %>
+<%= link_to "All holidays", holidays_path %>
+<h2><%= @holiday.name || "Holiday" %></h2>
+<p><%= @holiday.date %></p>
+<%= link_to 'Edit', edit_holiday_path(@holiday.id)%>
+<%= link_to 'Delete', url_for(action: :destroy,id: @holiday.id), method: :delete, data: {confirm: "Are you sure you want to delete #{@holiday.name}"} %>

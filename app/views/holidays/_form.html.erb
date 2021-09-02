@@ -1,0 +1,10 @@
+<%= link_to "Back", :back %>
+<%= link_to "All holidays", holidays_path %>
+<h2><%= holiday&.name&.titleize || "New Holiday" %></h2>
+<%= form_with model: holiday, url: path, method: action, id: "holiday-form" do |form| %>
+  <%= form.label :name, "Name" %>
+  <%= form.text_field :name %>
+  <%= form.label :date, "Date" %>
+  <%= form.date_field :date, required: true %>
+  <%= form.submit %>
+<% end %>

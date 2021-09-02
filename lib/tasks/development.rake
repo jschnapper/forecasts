@@ -195,12 +195,12 @@ namespace :development do
         monthly_forecasts = [
           {
             date: '2021-07-01',
-            work_hours: 180,
+            total_hours: 180,
             holiday_hours: 8
           },
           {
             date: '2021-08-01',
-            work_hours: 188
+            total_hours: 188
           }
         ]
         existing_forecasts = MonthlyForecast.all.pluck(:date).map { |date| date.strftime('%Y-%m-%d') }

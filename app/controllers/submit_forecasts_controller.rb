@@ -30,12 +30,12 @@ class SubmitForecastsController < ApplicationController
   end
 
   def create
-    existing_submission = MemberForecast.includes(:member, :team).find_by(
+    existing_submission = MemberForecast.includes(:member, :team, :monthly_forecast).find_by(
       monthly_forecast_id: params[:member_forecast][:monthly_forecast_id],
       team_id: params[:member_forecast][:team_id],
       member_id: params[:member_forecast][:member_id]
     )
-    if existing_submission
+    if existing_submission && existing_submission.monthly_forecast.active
       existing_submission.update(hours: member_forecast_params[:hours], notes: member_forecast_params[:notes])
       existing_submission.reload
       @member_forecast = existing_submission
@@ -44,7 +44,7 @@ class SubmitForecastsController < ApplicationController
       @team = existing_submission.team
     else
       @member_forecast = MemberForecast.create(member_forecast_params)
-      @monthly_forecast = MonthlyForecast.find_by(id: params.dig(:member_forecast, :monthly_forecast_id))
+      @monthly_forecast = MonthlyForecast.find_by(id: params.dig(:member_forecast, :monthly_forecast_id), active: true)
       @member = Member.find_by(id: params.dig(:member_forecast, :member_id))
       @team = Team.find_by(id: params.dig(:member_forecast, :team_id))
     end

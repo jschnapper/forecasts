@@ -28,11 +28,13 @@
     - [ ] admin
       - [x] manage teams
       - [x] manage all users
-      - [ ] manage fields 
-      - [ ] manage holidays
+      - [x] manage fields 
+      - [x] manage holidays
+        - [ ] when holiday added, update monthly forecast if applicable
       - [ ] manage all jobs
       - [ ] manage forecasts (create new forecast when needed)
         - [ ] disable, enable
+        - [ ] take into account holidays
     - [ ] team
       - [ ] manage members
       - [ ] manage when emails send
@@ -45,6 +47,7 @@
       - [x] initial validations
       - [x] show screen
       - [x] send email
+      - [ ] prefill holiday, cant change
       - [ ] store email and team in local storage in local storage
   - [ ] jobs
     - [ ] recurring job to create new forecast
@@ -80,6 +83,10 @@
   - [ ] better implementation than using innerHTML
 - [ ] improvements
   - [ ] list team fields one at a time as a select dropdown
+  - [ ] show errors on forms
+  - [ ] fix event listeners on back and forward
+  - [ ] fix monthly forecast generator
+  - [ ] handle if holiday date change (remove hours from old month)
   - [ ] loading indicator
   - [ ] change from email identifier to name, on forecast form
   - [ ] ahoy gem

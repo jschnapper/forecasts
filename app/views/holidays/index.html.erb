@@ -1,0 +1,30 @@
+<h2>Holidays</h2>
+<%= link_to "Add Holiday", new_holiday_path %>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Date</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if @holidays.size > 0 %>
+      <% @holidays.each do |holiday| %>
+        <tr>
+          <td><%= holiday.name || "Holiday" %></td>
+          <td><%= holiday.date %></td>
+          <td>       
+            <%= link_to 'Show', holiday_path(holiday.id)%>
+            <%= link_to 'Edit', edit_holiday_path(holiday.id)%>
+            <%= link_to 'Delete', url_for(action: :destroy,id: holiday.id), method: :delete, data: {confirm: "Are you sure you want to delete #{holiday.name}"} %>
+          </td>
+        </tr>
+      <% end %>
+    <% else %>
+      <tr>
+        <td colspan=3>No holidays</td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

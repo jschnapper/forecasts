@@ -104,7 +104,7 @@ ActiveRecord::Schema.define(version: 2021_08_17_003724) do
 
   create_table "monthly_forecasts", force: :cascade do |t|
     t.date "date", null: false
-    t.integer "work_hours", default: 0, null: false
+    t.integer "total_hours", default: 0, null: false
     t.integer "holiday_hours", default: 0, null: false
     t.boolean "active", default: true, null: false
     t.datetime "created_at", precision: 6, null: false

@@ -1,5 +1,5 @@
 <div id="member-email"><%= @member&.email%></div>
-<div>There are <span class="expected-hours"><%= @monthly_forecast&.total_hours %></span> hours this month.</div>
+<div>There are <span class="expected-hours"><b><%= @monthly_forecast&.total_hours %></b></span> hours this month.</div>
 <%= form_with model: member_forecast, url: create_forecast_path, method: :post, id: "forecast-form" do |form| %>
   <% if team.present? %>
     <span><%= team.name%></span>
@@ -27,8 +27,10 @@
     <div>Expected Hours <span id="expected-hours"><%= monthly_forecast.total_hours %></span></div>
     <div>Your Hours <span id="member-hours"><%= member_forecast.total_hours %></span></div>
     <%= hidden_field_tag :monthly_forecast_id, monthly_forecast.id, id: "monthly-forecast-id", name: "member_forecast[monthly_forecast_id]" %>
-    <%= button_tag id: "forecast-submit", name: nil do %>
-      Submit Forecast
+    <% if monthly_forecast.active %>
+      <%= button_tag id: "forecast-submit", name: nil do %>
+        Submit Forecast
+      <% end %>
     <% end %>
   <% end %>
 <% end %>

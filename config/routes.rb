@@ -50,11 +50,14 @@ Rails.application.routes.draw do
   # /admin/members
   # /admin/holidays
   # /admin/fields
+  # /admin/monthly_forecasts
   # /admin/jobs
   scope 'admin' do
+    get '/', to: 'admins#index', as: :admin_home
     resources :teams
     resources :members, as: :members
     resources :holidays
+    resources :monthly_forecasts
     resources :fields, as: :fields
     get '/team_fields/:team_id', to: 'team_fields#new', as: :new_fields_for_team
     post '/team_fields', to: 'team_fields#create', as: :fields_for_teams
