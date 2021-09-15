@@ -29,7 +29,7 @@
       - [x] manage teams
       - [x] manage all users
       - [x] manage fields 
-      - [ ] manage team fields
+      - [x] manage team fields
       - [x] manage holidays
         - [x] when holiday added, update monthly forecast if applicable
       - [ ] manage all jobs

@@ -1,6 +1,8 @@
 class MembersController < ApplicationController
+  before_action :set_teams, only: [:new, :edit]
+
   def index
-    @members = Member.all
+    @members = Member.includes(:teams).all
   end
 
   def new
@@ -9,7 +11,8 @@ class MembersController < ApplicationController
 
   def create
     @member = Member.new(member_params)
-    if Member.create(member_params)
+    @member.memberships.new(team_id: params[:team_id])
+    if @member.save
       redirect_to @member
     else
       render :new
@@ -34,7 +37,16 @@ class MembersController < ApplicationController
 
   def update
     @member = Member.find_by(id: params[:id])
-    if @member&.update(member_params)
+    update = true
+    if @member.teams.first.id != params[:team_id] 
+      membership = Membership.new(member_id: @member.id, team_id: params[:team_id])
+      if membership
+        @member.memberships.replace([membership])
+      else
+        update = false
+      end
+    end
+    if update && @member&.update(member_params)
       redirect_to(@member)
     else
       render :edit
@@ -54,5 +66,9 @@ class MembersController < ApplicationController
 
   def member_params
     params.require(:member).permit(:first_name, :middle_name, :last_name, :email)
+  end
+
+  def set_teams
+    @teams = Team.all
   end
 end

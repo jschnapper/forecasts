@@ -10,5 +10,7 @@
   <%= form.text_field :last_name, required: true  %>
   <%= form.label :email, "Email" %>
   <%= form.text_field :email, required: true  %>
+  <%= form.label :team_id, "Team" %>
+  <%= select_tag :team_id, options_for_select(@teams&.map { |tm| [tm.name.titleize, tm.id] }, member.teams.first&.id), prompt: "select team", name: "team_id", id: "team-id" %>
   <%= form.submit %>
 <% end %>
