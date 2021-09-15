@@ -38,6 +38,16 @@ class MonthlyForecast < ApplicationRecord
     "#{date&.strftime('%B %Y')}"
   end
 
+  # month name
+  def month_name
+    date.strftime('%B')
+  end
+
+  # has holiday check
+  def has_holidays?
+    holiday_hours > 0
+  end
+
   private
 
   def calculate_hours

@@ -30,7 +30,7 @@
   </thead>
   <tbody>
     <% @member_forecast.hours.each do |field, hours| %>
-      <% if hours.present? && hours > 0 %>
+      <% if hours.present? && hours.to_i > 0 %>
         <tr>
           <td><%= field %></td>
           <td><%= hours %></td>

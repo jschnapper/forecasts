@@ -29,16 +29,18 @@
       - [x] manage teams
       - [x] manage all users
       - [x] manage fields 
+      - [ ] manage team fields
       - [x] manage holidays
-        - [ ] when holiday added, update monthly forecast if applicable
+        - [x] when holiday added, update monthly forecast if applicable
       - [ ] manage all jobs
-      - [ ] manage forecasts (create new forecast when needed)
-        - [ ] disable, enable
-        - [ ] take into account holidays
+      - [x] manage forecasts (create new forecast when needed)
+        - [x] disable, enable
+        - [x] take into account holidays
     - [ ] team
       - [ ] manage members
+      - [ ] manage fields
       - [ ] manage when emails send
-      - [ ] see forecasts
+      - [x] see forecasts
     - [ ] forecasts form
       - [x] list all team fields at once
       - [x] change members when team changes
@@ -47,7 +49,7 @@
       - [x] initial validations
       - [x] show screen
       - [x] send email
-      - [ ] prefill holiday, cant change
+      - [x] prefill holiday, cant change
       - [ ] store email and team in local storage in local storage
   - [ ] jobs
     - [ ] recurring job to create new forecast
@@ -59,9 +61,9 @@
   - [ ] allow users to change email
   - [ ] place pages under auth
 - [ ] design
-  - [ ] search select
   - [ ] install tailwindcss
   - [ ] login, logout, change password
+  - [ ] search select
   - [ ] flow for password-less login for users
   - [ ] admin
     - [ ] teams

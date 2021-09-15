@@ -1,0 +1,18 @@
+<h2><%= @team.name.titleize %> Forecasts</h2>
+<% if @monthly_forecasts.size > 0 %>
+<ul>
+  <% @monthly_forecasts.each do |forecast| %>
+    <li>
+      <%= 
+        link_to forecast.friendly_name, forecast_path( 
+          team_name: @team.slug, 
+          year: forecast.date.year,
+          month: forecast.month_name
+        )
+      %>
+    </li>
+  <% end %>
+</ul>
+<% else %>
+  <p>No forecasts</p>
+<% end %>

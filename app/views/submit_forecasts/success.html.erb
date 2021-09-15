@@ -18,7 +18,8 @@
 <% if @member_forecast.total_hours < @monthly_forecast.total_hours %>
   <p>
     <b>Action may be required:</b> your submitted hours is less than what is expected
-    this month. If this was an error, please resubmit.
+    this month. You submitted <%= @member_forecast.total_hours %> hours and 
+    <%= @monthly_forecast.total_hours %> hours were expected. If this was an error, please resubmit.
   </p> 
 <% end %>
 <div>A confirmation email has been sent to <%= @member.email %></div>
@@ -32,7 +33,7 @@
   </thead>
   <tbody>
     <% @member_forecast.hours.each do |field, hours| %>
-      <% if hours.present? && hours > 0 %>
+      <% if hours.present? && hours.to_i > 0 %>
         <tr>
           <td><%= field %></td>
           <td><%= hours %></td>

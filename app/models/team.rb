@@ -21,7 +21,7 @@ class Team < ApplicationRecord
   # format all fields before saving
   before_validation :format_fields
   before_validation :set_slug # slug used for friendly url searching
-  before_create :add_default_fields 
+  before_create :add_default_fields
 
   # associations
   has_many :team_fields, dependent: :destroy, autosave: true
@@ -34,6 +34,12 @@ class Team < ApplicationRecord
   # validations
   validates :name, presence: true, uniqueness: { case_sensitive: false }
   validates :slug, presence: true, uniqueness: { case_sensitive: false }
+
+
+  # -------- helpers -------- #
+  def ordered_fields
+    fields.order(:name) 
+  end
 
   private
 

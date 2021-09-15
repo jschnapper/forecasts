@@ -41,7 +41,6 @@ class MonthlyForecastsController < ApplicationController
     if @monthly_forecast&.update(monthly_forecast_params)
       redirect_to(@monthly_forecast)
     else
-      p @monthly_forecast.errors
       render :edit
     end
   end

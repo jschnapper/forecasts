@@ -1,7 +1,7 @@
 <div>
   <div>
     <div id="forecast-title"><span id="team-name"><%= @team&.name&.titleize || "Team"%></span> <%= "#{@monthly_forecast&.date&.strftime('%B %Y')} " %>Forecast</div>
-    <% if !monthly_forecast.active %>
+    <% if !@monthly_forecast.active %>
       <p>This form is no longer accepting submissions</p>
     <% end %>
     <div id="forecast-form-container">

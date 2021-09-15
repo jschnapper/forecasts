@@ -1,0 +1,45 @@
+<%= link_to "Back", :back %>
+<%= link_to "All forecasts", forecasts_path(team_name: @team.slug) %><h2><%= @team.name %></h2>
+<h2><%= @team.name.titleize %> <%= @monthly_forecast.friendly_name%></h2>
+<table>
+<thead>
+  <tr>
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>Email</th>
+    <th>Total</th>
+    <% if @monthly_forecast.has_holidays? %>
+      <th>Holiday</th>
+    <% end %>
+    <% @team.ordered_fields.each do |field| %>
+      <% if field.name.downcase != "holiday" %>
+        <th><%= field.name %></th> 
+      <% end %>
+    <% end %>
+  </tr>
+</thead>
+<tbody>
+  <% @member_forecasts.each do |member_forecast| %>
+    <tr>
+      <td><%= member_forecast.first_name %></td>
+      <td><%= member_forecast.last_name %></td>
+      <td><%= member_forecast.email %></td>
+      <td><%= member_forecast.total_hours %></td>
+      <% if @monthly_forecast.has_holidays? %>
+        <td><%= member_forecast.hours&.fetch(:holiday, 0) %></td>
+      <% end %>
+      <% @team.ordered_fields.each do |field| %>
+        <% if field.name != "holiday" %>
+          <td>
+            <% if member_forecast.hours&.fetch(field.name).present? %>
+              <%= member_forecast.hours.fetch(field.name) %>
+            <% else %>
+            0
+            <% end %>
+          </td>
+        <% end %>
+      <% end %>
+    </tr>
+  <% end %>
+</tbody>
+</table>

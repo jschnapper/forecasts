@@ -34,8 +34,9 @@ Rails.application.routes.draw do
       resources :members, as: :team_members
 
       # manage forecasts
-      get '/forecasts', to: 'forecasts#show'
-      get '/forecasts/:year/:month', to: 'forecasts#show'
+      get '/forecasts', to: 'forecasts#index'
+      get '/forecasts/current', to: 'forecasts#show'
+      get '/forecasts/:year/:month', to: 'forecasts#show', as: :forecast
 
       # manage emails/notifications
       resource :notifications

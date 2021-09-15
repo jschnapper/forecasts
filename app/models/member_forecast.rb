@@ -40,9 +40,13 @@ class MemberForecast < ApplicationRecord
   validates :monthly_forecast, presence: true
   validates :team, presence: true
 
+  def hours
+    self[:hours]&.with_indifferent_access
+  end
+
   # ------ Helper methods ------ #
   def total_hours
-    hours&.values&.reduce { |total, amount| total + amount.to_i } || 0
+    hours&.values&.reduce { |total, amount| total.to_i + amount.to_i } || 0
   end
 
   private
