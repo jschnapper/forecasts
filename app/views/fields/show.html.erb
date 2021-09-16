@@ -18,9 +18,9 @@
         <tr>
           <td><%= team.name %></td>
           <td>
-            <%= link_to 'Show', team_path(team.id)%>
+            <%= link_to 'Show', team_path(team.slug)%>
             <% if @field.name.downcase != "holiday" %>
-              <%= link_to 'Remove from team', edit_team_path(team.id)%>
+              <%= link_to 'Remove from team', edit_team_path(team.slug)%>
             <% end %>
           </td>
         </tr>

@@ -15,9 +15,9 @@
           <td><%= team.name %></td>
           <td><%= team.description %></td>
           <td>       
-            <%= link_to 'Show', team_path(team.id)%>
-            <%= link_to 'Edit', edit_team_path(team.id)%>
-            <%= link_to 'Delete', url_for(action: :destroy,id: team.id), method: :delete, data: {confirm: "Are you sure you want to delete #{team.name}"} %>
+            <%= link_to 'Show', team_path(team.slug)%>
+            <%= link_to 'Edit', edit_team_path(team.slug)%>
+            <%= link_to 'Delete', url_for(action: :destroy,team_name: team.slug), method: :delete, data: {confirm: "Are you sure you want to delete #{team.name}"} %>
           </td>
         </tr>
       <% end %>

@@ -1,3 +1,7 @@
+<!-- PRIORITY -->
+- [ ] rework routes for admin and manage
+- [ ] how will managing fields work and manage fields on a team work?
+
 - [x] other gems
   - [x] yard/rdoc
   - [x] annotate

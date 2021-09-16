@@ -32,7 +32,7 @@ class TeamFieldsController < ApplicationController
   end
 
   def team
-    @team ||= Team.includes(:fields).find_by(id: params[:team_id])
+    @team ||= Team.includes(:fields).find_by(slug: params[:team_name])
   end
 
   def set_fields
@@ -43,5 +43,4 @@ class TeamFieldsController < ApplicationController
   def team_field_params
     params.require(:team_field).permit(:team_id, :field_id)
   end
-
 end

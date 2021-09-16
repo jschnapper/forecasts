@@ -19,7 +19,7 @@
           <td><%= field.description || "no description" %></td>
           <td><%= field.default ? "yes" : "no" %></td>
           <td>       
-            <%= link_to 'Show', field_path(field.id)%>
+            <%= link_to 'Show', fields_path(field.id)%>
             <%= link_to 'Edit', edit_field_path(field.id)%>
             <%= link_to 'Delete', url_for(action: :destroy,id: field.id), method: :delete, data: {confirm: "Are you sure you want to delete #{field.name}"} %>
           </td>

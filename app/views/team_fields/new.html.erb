@@ -1,7 +1,7 @@
-<%= link_to "Back", team_path(@team.id) %>
+<%= link_to "Back", team_path(@team.slug) %>
 <h2>New field for <%= @team.name.titleize %></h2>
 <% if @fields.size > 0 %>
-  <%= form_with model: @team_field, url: fields_for_teams_path, method: :post, id: "team-field-form" do |form| %>
+  <%= form_with model: @team_field, url: team_fields_path, method: :post, id: "team-field-form" do |form| %>
     <%= form.hidden_field :team_id, value: @team.id %>
     <%= form.label "Field" %>
     <%= form.select :field_id, options_from_collection_for_select(@fields || [], :id, :name), { prompt: "select field" }, { required: true } %>

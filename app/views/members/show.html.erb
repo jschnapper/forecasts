@@ -3,7 +3,7 @@
 <h2><%= @member.full_name %></h2>
 <p><%= @member.email %></p>
 <% if @member.teams&.first&.present? %>
-  <p><%= link_to @member.teams.first.name.titleize, team_path(@member.teams.first.id) %></p>
+  <p><%= link_to @member.teams.first.name.titleize, team_path(@member.teams.first.slug) %></p>
 <% else %>
   <p><%= @member.full_name %> does not belong to a team</p>
 <% end %>
