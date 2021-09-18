@@ -1,4 +1,4 @@
-class HolidaysController < ApplicationController
+class HolidaysController < ManagementController
   
   def index
     # Get the most recent 20 holidays

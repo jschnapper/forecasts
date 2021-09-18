@@ -19,5 +19,14 @@
     <%= form.label :team_id, "Team" %>
     <%= select_tag :team_id, options_for_select(@teams&.map { |tm| [tm.name.titleize, tm.id] }, member.teams.first&.id), prompt: "select team", name: "team_id", id: "team-id" %>
   <% end %>
+  <p>Optionally provide a role for a user. Only users with roles can login</p>
+  <p>Role Descriptions</p>
+  <ul>
+    <li>Admin: manage entire application. Can manage and view forecasts for all teams.</li>
+    <li>Manager: Can only manage and view forecasts for the team that the member belongs to.</li>
+    <li>Representative: Can only manage the team that the member belongs to. Cannot see any forecasts.</li>
+  </ul>
+  <%= form.label :role_id, "Role" %>
+  <%= select_tag :role_id, options_for_select(@roles&.map { |role| [role.name.downcase, role.id] } + [["no role", -1]], member.roles&.first&.id), prompt: "select role", name: "role_id", id: "role-id" %>
   <%= form.submit %>
 <% end %>

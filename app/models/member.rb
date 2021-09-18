@@ -29,9 +29,9 @@
 #
 class Member < ApplicationRecord
   # Include default devise modules. Others available are:
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable,
-         :timeoutable, :confirmable
+  # devise :database_authenticatable, :registerable,
+  #        :recoverable, :rememberable, :validatable,
+  #        :timeoutable, :confirmable
 
   # callbacks
   # format all fields before saving
@@ -69,5 +69,24 @@ class Member < ApplicationRecord
     %i[email first_name middle_name last_name].each do |attribute|
       send("#{attribute}=", send(attribute).strip.downcase) if send(attribute).present?
     end
+  end
+
+  # member roles
+  # role hierarchy: admin > manager > representative
+  def is_admin?
+    roles&.detect { |role| role.name.downcase == "admin" }
+  end
+
+  def is_manager?
+    roles&.detect { |role| role.name.downcase == "manager" }
+  end
+
+  def is_representative?
+    roles&.detect { |role| role.name.downcase == "representative" }
+  end
+
+  # returns list of member role names
+  def role_names
+    roles&.map { |role| role.name.downcase } || []
   end
 end

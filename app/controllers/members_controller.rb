@@ -1,5 +1,5 @@
-class MembersController < ApplicationController
-  before_action :set_teams, only: [:new, :edit]
+class MembersController < ManagementController
+  before_action :set_teams, :set_roles, except: [:index]
 
   def index
     @members = Member.includes(:teams).all
@@ -12,6 +12,7 @@ class MembersController < ApplicationController
   def create
     @member = Member.new(member_params)
     @member.memberships.new(team_id: params[:team_id])
+    @member.member_roles.new(role_id: params[:role_id])
     if @member.save
       redirect_to @member
     else
@@ -46,10 +47,21 @@ class MembersController < ApplicationController
         update = false
       end
     end
+    if params[:role_id].present? && params[:role_id].to_i != -1 && @member.roles&.first&.id != params[:role_id] 
+      role = MemberRole.new(member_id: @member.id, role_id: params[:role_id])
+      if role
+        @member.member_roles.replace([role])
+      else
+        update = false
+      end
+    end
     if update && @member&.update(member_params)
+      if params[:role_id].to_i == -1
+        @member.member_roles.map(&:destroy)
+      end
       redirect_to(@member)
     else
-      render :edit
+      redirect_to action: :edit
     end
   end
 
@@ -74,5 +86,9 @@ class MembersController < ApplicationController
       id = params[:team_id].to_i 
       @team = @teams.detect { |team| team.id == id }
     end
+  end
+
+  def set_roles
+    @roles = Role.all
   end
 end

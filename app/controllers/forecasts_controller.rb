@@ -1,4 +1,5 @@
-class ForecastsController < ApplicationController
+class ForecastsController < ManagementController
+  before_action -> { permit_roles :admin, :manager }
   before_action :set_team,
                 :set_monthly_forecast
 

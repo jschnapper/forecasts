@@ -1,4 +1,4 @@
-class MonthlyForecastsController < ApplicationController
+class MonthlyForecastsController < ManagementController
   before_action :set_date, only: [:create, :update]
 
   def index

@@ -5,3 +5,21 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+# Create base roles
+Role.create(
+  [
+    {
+      name: 'admin',
+      description: 'Administrator for entire application and all teams'
+    },
+    {
+      name: 'manager',
+      description: 'Team manager. Can only manage own team and see team related forecasts'
+    },
+    {
+      name: 'representative',
+      description: 'Can manage members and fields for own team, but cannot see forecasts'
+    }
+  ]
+)

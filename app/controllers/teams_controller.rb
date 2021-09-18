@@ -1,5 +1,7 @@
 # frozen_string_literal: true
-class TeamsController < ApplicationController
+class TeamsController < ManagementController
+  # before_action -> { permit_roles :admin, :management }, except: [:index, :destroy]
+  # before_action -> { permit_roles :admin }, only: [:index, :destroy]
 
   def index
     @teams = Team.all
