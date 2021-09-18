@@ -9,7 +9,10 @@ class FieldsController < ApplicationController
 
   def create
     @field = Field.new(field_params)
-    if Field.create(field_params)
+    if params[:team_id].present?
+      @field.team_fields.new(team_id: params[:team_id])
+    end
+    if @field.save
       redirect_to @field
     else
       render :new

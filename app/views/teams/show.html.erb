@@ -3,8 +3,10 @@
 <p><%= @team.description || "No description" %></p>
 <%= link_to 'Edit', edit_team_path(@team.slug)%>
 <%= link_to 'Delete', url_for(action: :destroy,team_name: @team.slug), method: :delete, data: {confirm: "Are you sure you want to delete #{@team.name}"} %>
+<h3>Team Forecasts</h3>
+<%= link_to "See #{@team.name} forecasts", forecasts_path(@team.slug)%>
 <h3>Members</h3>
-<%= link_to "Add Members", new_member_path %>
+<%= link_to "Add Members", new_member_path(team_id: @team.id) %>
 <table>
   <thead>
     <tr>

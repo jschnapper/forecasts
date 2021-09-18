@@ -1,5 +1,7 @@
-<%= link_to "Back", :back %>
-<%= link_to "All fields", fields_path %>
+<% if (!defined? form_only)|| (defined? form_only && !form_only) %>
+  <%= link_to "Back", :back %>
+  <%= link_to "All fields", fields_path %>
+<% end %>
 <h2><%= field&.name&.titleize || "New Field" %></h2>
 <%= form_with model: field, url: path, method: action, id: "field-form" do |form| %>
   <%= form.label :name, "Name" %>
@@ -8,7 +10,11 @@
   <%= form.text_field :code %>
   <%= form.label :description, "Description" %>
   <%= form.text_area :description %>
+  <%# only show default if admin %>
   <%= form.label :default, "Is default field for all teams" %>
   <%= form.check_box :default %>
+  <% if (defined? team) && team.present? %>
+    <%= hidden_field_tag :team_id, team.id, id: "team-id", name: "team_id" %>  
+  <% end %>
   <%= form.submit %>
 <% end %>

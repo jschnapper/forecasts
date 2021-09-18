@@ -19,9 +19,9 @@ Rails.application.routes.draw do
   scope :manage do
     resources :teams, param: :team_name
     resources :members, :fields, :holidays, :monthly_forecasts
-    scope ':team_name' do
+    scope '/teams/:team_name' do
       get '/forecasts', to: 'forecasts#index'
-      get '/forecast/(:year)/(:month)', to: 'forecasts#show'
+      get '/forecast/(:year)/(:month)', to: 'forecasts#show', as: :forecast
       get '/members', to: 'members#team_members', as: :team_members
       resource :fields, controller: :team_fields, as: :team_fields, except: :index
     end

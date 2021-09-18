@@ -10,3 +10,5 @@
 <% else %>
   <o>No fields left to add</p>
 <% end %>
+
+<%= render "fields/form", field: Field.new, action: :post, path: fields_path, form_only: true, team: @team %>

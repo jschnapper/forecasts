@@ -1,6 +1,9 @@
 <%= link_to "Back", :back %>
 <%= link_to "All Members", members_path %>
-<h2><%= member&.full_name || "New Member" %></h2>
+<h2><%= member&.new_record? ? "New Member" : member.full_name %></h2>
+<% if (defined? team) && team.present? %>
+  <p>Add member to <%= team.name %> team</p>
+<% end %>
 <%= form_with model: member, url: path, method: action, id: "member-form" do |form| %>
   <%= form.label :first_name, "First Name" %>
   <%= form.text_field :first_name, required: true  %>
@@ -10,7 +13,11 @@
   <%= form.text_field :last_name, required: true  %>
   <%= form.label :email, "Email" %>
   <%= form.text_field :email, required: true  %>
-  <%= form.label :team_id, "Team" %>
-  <%= select_tag :team_id, options_for_select(@teams&.map { |tm| [tm.name.titleize, tm.id] }, member.teams.first&.id), prompt: "select team", name: "team_id", id: "team-id" %>
+  <% if (defined? team) && team.present? %>
+    <%= hidden_field_tag :team_id, team&.id %>
+  <% else %>
+    <%= form.label :team_id, "Team" %>
+    <%= select_tag :team_id, options_for_select(@teams&.map { |tm| [tm.name.titleize, tm.id] }, member.teams.first&.id), prompt: "select team", name: "team_id", id: "team-id" %>
+  <% end %>
   <%= form.submit %>
 <% end %>

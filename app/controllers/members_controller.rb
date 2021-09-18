@@ -70,5 +70,9 @@ class MembersController < ApplicationController
 
   def set_teams
     @teams = Team.all
+    if params[:team_id].present?
+      id = params[:team_id].to_i 
+      @team = @teams.detect { |team| team.id == id }
+    end
   end
 end
