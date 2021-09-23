@@ -1,4 +1,6 @@
 class FieldsController < ManagementController
+  before_action -> { requires_role :representative }
+
   def index
     @fields = Field.all
   end

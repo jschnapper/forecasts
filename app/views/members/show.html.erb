@@ -2,8 +2,8 @@
 <%= link_to "All Members", members_path %>
 <h2><%= @member.full_name %></h2>
 <p><%= @member.email %></p>
-<% if @member.roles.present? %>
-  <p>Role: <%= @member.roles.first.name %>
+<% if @member.role %>
+  <p>Role: <%= @member.role.name %>
 <% end %>
 <% if @member.teams&.first&.present? %>
   <p><%= link_to @member.teams.first.name.titleize, team_path(@member.teams.first.slug) %></p>

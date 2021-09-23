@@ -13,6 +13,7 @@
       <th>First Name</th>
       <th>Last Name</th>
       <th>Email</th>
+      <th>Role</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -23,6 +24,7 @@
         <td><%= member.first_name %></td>
         <td><%= member.last_name %></td>
         <td><%= member.email %></td>
+        <td><%= member.role&.name %></td>
         <td>
           <%= link_to 'Show', member_path(member.id)%>
           <%= link_to 'Edit', edit_member_path(member.id)%>

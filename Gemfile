@@ -31,6 +31,7 @@ gem 'bootsnap', '>= 1.4.4', require: false
 gem 'paper_trail', '~> 12.0.0'
 
 gem 'devise', '~> 4.8.0'
+gem 'devise-security', '~> 0.16.0'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

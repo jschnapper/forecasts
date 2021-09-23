@@ -20,10 +20,12 @@ class MonthlyForecast < ApplicationRecord
   # callback
   before_create :calculate_hours
 
-
   # associations
   has_many :holidays, dependent: :destroy
   has_many :member_forecast, dependent: :destroy
+
+  scope :active, -> { where(active: true) }
+
 
   # validations
   validates :date, presence: true

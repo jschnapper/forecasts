@@ -83,6 +83,11 @@ namespace :development do
         # create members
         members = [
           {
+            first_name: 'admin',
+            last_name: 'admin',
+            email: 'admin@example.com'
+          },
+          {
             first_name: 'alice',
             last_name: 'alice',
             email: 'alice.alice@example.com'
@@ -130,6 +135,17 @@ namespace :development do
             Member.create!(member)
           end
         end
+
+        # add roles
+        admin = Member.includes(:role).find_by(first_name: "admin")
+        admin_role_id = Role.find_by(name: "admin").id
+        if admin.role.nil?
+          MemberRole.create(member_id: admin.id, role_id: admin_role_id)
+        end
+
+        # set admin password to something easy
+        admin.password = "password"
+        admin.save(validate: false)
   
         sql = <<-SQL.squish
           select memberships.*,
@@ -145,6 +161,10 @@ namespace :development do
         existing_members = Member.all
         existing_memberships = Membership.find_by_sql(sql)
         memberships = [
+          {
+            team_name: 'development',
+            member_email: 'admin@example.com'
+          },
           {
             team_name: 'development',
             member_email: 'alice.alice@example.com'

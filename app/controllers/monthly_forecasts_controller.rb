@@ -1,4 +1,5 @@
 class MonthlyForecastsController < ManagementController
+  before_action -> { requires_role :admin }
   before_action :set_date, only: [:create, :update]
 
   def index

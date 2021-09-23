@@ -98,6 +98,8 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
+    devise-security (0.16.0)
+      devise (>= 4.3.0, < 5.0)
     diff-lcs (1.4.4)
     dotenv (2.7.6)
     dotenv-rails (2.7.6)
@@ -318,6 +320,7 @@ DEPENDENCIES
   byebug
   capybara (>= 3.26)
   devise (~> 4.8.0)
+  devise-security (~> 0.16.0)
   dotenv-rails (~> 2.7.6)
   jbuilder (~> 2.7)
   letter_opener (~> 1.7.0)

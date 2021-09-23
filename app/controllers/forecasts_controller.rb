@@ -1,5 +1,5 @@
 class ForecastsController < ManagementController
-  before_action -> { permit_roles :admin, :manager }
+  before_action -> { requires_role :manager }
   before_action :set_team,
                 :set_monthly_forecast
 
@@ -29,7 +29,7 @@ class ForecastsController < ManagementController
 
   # set team
   def set_team
-    @team = Team.find_by(slug: params[:team_name])
+    @team = Team.find_by(slug: params[:team_name]) if @team.nil?
   end
 
   def set_monthly_forecast
@@ -38,6 +38,9 @@ class ForecastsController < ManagementController
       if @monthly_forecast.nil?
         redirect_to new_team_forecast_path
       end
+    elsif params[:year].nil? && params[:month].nil?
+      date = Date.today
+      @monthly_forecast = MonthlyForecast.find_by(date: Date.parse("#{date.year}/#{date.strftime('%B')}")) || MonthlyForecast.active.last
     elsif params[:year] || params[:month]
       # if only one param provided, redirect to forecasts
       redirect_to action: :index, team_name: @team&.name

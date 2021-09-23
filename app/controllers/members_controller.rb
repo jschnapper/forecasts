@@ -1,8 +1,10 @@
 class MembersController < ManagementController
+  before_action -> { requires_role :representative, team_name_slug: params[:team_name] }, except: [:index]
+  before_action -> { requires_role :admin }, only: [:index]
   before_action :set_teams, :set_roles, except: [:index]
 
   def index
-    @members = Member.includes(:teams).all
+    @members = Member.includes(:teams, :role).all
   end
 
   def new
@@ -12,7 +14,7 @@ class MembersController < ManagementController
   def create
     @member = Member.new(member_params)
     @member.memberships.new(team_id: params[:team_id])
-    @member.member_roles.new(role_id: params[:role_id])
+    @member.build_member_role.new(role_id: params[:role_id])
     if @member.save
       redirect_to @member
     else
@@ -47,17 +49,17 @@ class MembersController < ManagementController
         update = false
       end
     end
-    if params[:role_id].present? && params[:role_id].to_i != -1 && @member.roles&.first&.id != params[:role_id] 
+    if params[:role_id].present? && params[:role_id].to_i != -1 && @member.role&.id != params[:role_id] 
       role = MemberRole.new(member_id: @member.id, role_id: params[:role_id])
       if role
-        @member.member_roles.replace([role])
+        @member.build_member_role(role_id: params[:role_id])
       else
         update = false
       end
     end
     if update && @member&.update(member_params)
       if params[:role_id].to_i == -1
-        @member.member_roles.map(&:destroy)
+        @member.member_role.destroy
       end
       redirect_to(@member)
     else

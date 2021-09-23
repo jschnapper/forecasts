@@ -4,7 +4,7 @@
 #
 
 Rails.application.routes.draw do
-  devise_for :members, path: 'manage/auth'
+  devise_for :members, path: 'manage/auth', controllers: { sessions: "sessions" }
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 
   # Root is the forecast submissions form for the month

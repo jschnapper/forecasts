@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 class TeamsController < ManagementController
-  # before_action -> { permit_roles :admin, :management }, except: [:index, :destroy]
-  # before_action -> { permit_roles :admin }, only: [:index, :destroy]
+  before_action -> { requires_role :representative, team_name_slug: params[:team_name] }, except: [:index, :create, :destroy]
+  before_action -> { requires_role :admin }, only: [:index, :create, :destroy]
 
   def index
     @teams = Team.all
@@ -28,7 +28,7 @@ class TeamsController < ManagementController
   end
 
   def edit
-    @team = Team.find_by(slug: params[:team_name])
+    @team = Team.find_by(slug: params[:team_name]) if @team.nil?
     if @team
       render :edit
     else
@@ -37,7 +37,7 @@ class TeamsController < ManagementController
   end
 
   def update
-    @team = Team.find_by(slug: params[:team_name])
+    @team = Team.find_by(slug: params[:team_name]) if @team.nil?
     if @team&.update(team_params)
       redirect_to team_path(@team.slug)
     else
@@ -46,7 +46,7 @@ class TeamsController < ManagementController
   end
 
   def destroy
-    @team = Team.find_by(slug: params[:team_name])
+    @team = Team.find_by(slug: params[:team_name]) if @team.nil?
     if @team&.destroy
       redirect_to action: :index
     else

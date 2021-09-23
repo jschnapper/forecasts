@@ -27,6 +27,6 @@
     <li>Representative: Can only manage the team that the member belongs to. Cannot see any forecasts.</li>
   </ul>
   <%= form.label :role_id, "Role" %>
-  <%= select_tag :role_id, options_for_select(@roles&.map { |role| [role.name.downcase, role.id] } + [["no role", -1]], member.roles&.first&.id), prompt: "select role", name: "role_id", id: "role-id" %>
+  <%= select_tag :role_id, options_for_select(@roles&.map { |role| [role.name.downcase, role.id] } + [["no role", -1]], member.role&.id), prompt: "select role", name: "role_id", id: "role-id" %>
   <%= form.submit %>
 <% end %>

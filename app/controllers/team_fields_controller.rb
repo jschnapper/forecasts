@@ -3,6 +3,7 @@
 # Add and remove field from a team
 # only has create and destroy methods
 class TeamFieldsController < ManagementController
+  before_action -> { requires_role :representative }
   before_action :set_team, :set_fields, only: :new
 
   def new

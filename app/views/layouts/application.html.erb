@@ -16,6 +16,11 @@
       <%= link_to "home", admin_home_path %>
       <p class="notice"><%= notice %></p>
       <p class="alert"><%= alert %></p>
+      <% if member_signed_in? %>
+        <%= link_to "logout", destroy_member_session_path, method: :delete %>
+      <% else %>
+        <%= link_to "login", new_member_session_path %>
+      <% end %>
     </div>
     <%= yield %>
   </body>
