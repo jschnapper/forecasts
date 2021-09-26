@@ -13,14 +13,14 @@
     <th>Actions</th>
   </thead>
   <tbody>
-    <% if @field.teams.size > 0 %>
-      <% @field.teams.each do |team| %>
+    <% if @field.team_fields.size > 0 %>
+      <% @field.team_fields.each do |team_field| %>
         <tr>
-          <td><%= team.name %></td>
+          <td><%= team_field.team.name %></td>
           <td>
-            <%= link_to 'Show', team_path(team.slug)%>
+            <%= link_to 'Show', team_path(team_field.team.slug)%>
             <% if @field.name.downcase != "holiday" %>
-              <%= link_to 'Remove from team', edit_team_path(team.slug)%>
+              <%= link_to 'Remove from team', url_for(controller: :team_fields, action: :destroy, team_name: team_field.team.slug, id: team_field.id), method: :delete, data: {confirm: "Are you sure you want to remove #{team_field.field.name} from #{team_field.team.name.titleize}"} %>
             <% end %>
           </td>
         </tr>

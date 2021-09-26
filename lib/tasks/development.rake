@@ -11,12 +11,14 @@ namespace :development do
           { 
             name: 'pto', 
             description: 'paid time off',
-            default: true
+            default: true,
+            only_admins_can_delete: true
           },
           { 
             name: 'holiday', 
             description: 'Holiday',
-            default: true
+            default: true,
+            only_admins_can_delete: true
           },
           { 
             name: 'Other', 

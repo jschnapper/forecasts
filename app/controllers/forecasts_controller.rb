@@ -1,5 +1,5 @@
 class ForecastsController < ManagementController
-  before_action -> { requires_role :manager }
+  before_action -> { requires_at_least_role :manager }
   before_action :set_team,
                 :set_monthly_forecast
 

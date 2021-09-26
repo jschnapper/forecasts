@@ -1,6 +1,6 @@
 class MembersController < ManagementController
-  before_action -> { requires_role :representative, team_name_slug: params[:team_name] }, except: [:index]
-  before_action -> { requires_role :admin }, only: [:index]
+  before_action -> { requires_at_least_role :representative, team_name_slug: params[:team_name] }, except: [:index]
+  before_action -> { requires_at_least_role :admin }, only: [:index]
   before_action :set_teams, :set_roles, except: [:index]
 
   def index

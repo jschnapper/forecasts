@@ -11,8 +11,12 @@
   <%= form.label :description, "Description" %>
   <%= form.text_area :description %>
   <%# only show default if admin %>
-  <%= form.label :default, "Is default field for all teams" %>
-  <%= form.check_box :default %>
+  <% if current_member.is_admin? %>
+    <%= form.label :default, "Is default field for all teams" %>
+    <%= form.check_box :default %>
+    <%= form.label :only_admins_can_delete, "Requires admin role to delete" %>
+    <%= form.check_box :only_admins_can_delete %>
+  <% end %>
   <% if (defined? team) && team.present? %>
     <%= hidden_field_tag :team_id, team.id, id: "team-id", name: "team_id" %>  
   <% end %>

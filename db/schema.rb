@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 2021_09_18_033522) do
     t.string "name", null: false
     t.string "code"
     t.boolean "default", default: false, null: false
+    t.boolean "only_admins_can_delete", default: false, null: false
     t.text "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

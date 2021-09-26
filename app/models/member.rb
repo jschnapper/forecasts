@@ -64,9 +64,7 @@ class Member < ApplicationRecord
   # role hierarchy: admin > manager > representative
   def at_least_a_manager?
     case role&.name&.downcase
-    when 'admin'
-      true
-    when 'manager'
+    when 'admin', 'manager'
       true
     else
       false
@@ -75,11 +73,7 @@ class Member < ApplicationRecord
 
   def at_least_a_representative?
     case role&.name&.downcase
-    when 'admin'
-      true
-    when 'manager'
-      true
-    when 'representative'
+    when 'admin', 'manager', 'representative'
       true
     else
       false
@@ -100,15 +94,15 @@ class Member < ApplicationRecord
   end
 
   def is_admin?
-    role&.name&.downcase == "admin"
+    role&.name&.downcase == 'admin'
   end
 
   def is_manager?
-    role&.name&.downcase == "manager"
+    role&.name&.downcase == 'manager'
   end
 
   def is_representative?
-    role&.name&.downcase == "representative"
+    role&.name&.downcase == 'representative'
   end
 
   private

@@ -4,6 +4,7 @@ class CreateFields < ActiveRecord::Migration[6.1]
       t.string :name, index: { unique: true }, null: false
       t.string :code, index: { unique: true }, null: true
       t.boolean :default, default: false, null: false
+      t.boolean :only_admins_can_delete, default: false, null: false
       t.text :description
       t.timestamps
     end

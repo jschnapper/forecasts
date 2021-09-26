@@ -24,6 +24,8 @@ Rails.application.routes.draw do
       get '/forecasts', to: 'forecasts#index'
       get '/forecast/(:year)/(:month)', to: 'forecasts#show', as: :forecast
       get '/members', to: 'members#team_members', as: :team_members
+      get '/send_reminder', to: 'reminders#new'
+      post '/send_reminder', to: 'reminders#create'
       resource :fields, controller: :team_fields, as: :team_fields, except: :index
     end
   end

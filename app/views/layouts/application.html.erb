@@ -13,10 +13,10 @@
   <body>
     <div style="padding: 10px 0">
       <h2>Forecasts</h2>
-      <%= link_to "home", admin_home_path %>
       <p class="notice"><%= notice %></p>
       <p class="alert"><%= alert %></p>
       <% if member_signed_in? %>
+        <%= link_to "home", home_path %>
         <%= link_to "logout", destroy_member_session_path, method: :delete %>
       <% else %>
         <%= link_to "login", new_member_session_path %>

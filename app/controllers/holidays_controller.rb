@@ -1,5 +1,5 @@
 class HolidaysController < ManagementController
-  before_action -> { requires_role :admin }
+  before_action -> { requires_at_least_role :admin }
   def index
     # Get the most recent 20 holidays
     @holidays = Holiday.order(date: :desc).first(20)

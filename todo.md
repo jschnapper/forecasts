@@ -16,7 +16,7 @@
     - [x] unique email (case insensitive)
   - [x] membership
   - [x] roles
-    - [ ] admin, manager, representative
+    - [x] admin, manager, representative
   - [x] member roles
   - [x] fields
   - [x] team fields
@@ -41,8 +41,8 @@
         - [x] disable, enable
         - [x] take into account holidays
     - [ ] team
-      - [ ] manage members
-      - [ ] manage fields
+      - [x] manage members
+      - [x] manage fields
       - [ ] manage when emails send
       - [x] see forecasts
     - [ ] forecasts form
@@ -59,7 +59,7 @@
     - [ ] recurring job to create new forecast
     - [ ] recurring job to send out emails
 - [ ] auth and cookies
-  - [ ] install devise
+  - [x] install devise
   - [ ] allow users to "login" so their email is stored as a cookie (or local storage)
     - [ ] need to add a hidden token to each submission (to ensure the user is who they say they are; probably store on the members table)
   - [ ] allow users to change email

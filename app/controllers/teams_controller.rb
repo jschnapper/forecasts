@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 class TeamsController < ManagementController
-  before_action -> { requires_role :representative, team_name_slug: params[:team_name] }, except: [:index, :create, :destroy]
-  before_action -> { requires_role :admin }, only: [:index, :create, :destroy]
+  before_action -> { requires_at_least_role :representative, team_name_slug: params[:team_name] }, except: [:index, :create, :destroy]
+  before_action -> { requires_at_least_role :admin }, only: [:index, :create, :destroy]
 
   def index
     @teams = Team.all
@@ -21,7 +21,7 @@ class TeamsController < ManagementController
   end
 
   def show
-    @team = Team.includes(:members).find_by(slug: params[:team_name])
+    @team = Team.includes(members: :role, team_fields: :field).find_by(slug: params[:team_name])
     if @team.nil?
       redirect_to teams_path
     end
