@@ -88,9 +88,25 @@ document.addEventListener("DOMContentLoaded", () => {
   /***************************************
    ********* submit_forecasts end ********
    ***************************************/
+
+
+  /***********************************
+   ************** MODAL **************
+   ***********************************/
+  const modal = document.getElementById('modal')
+  const modalOverlay = document.getElementById('modal-overlay')
+  const closeModal = document.getElementById('close-modal')
+  // The modal will close when clicked outside
+  window.onclick = (event) => {
+    if (event.target == modalOverlay) {
+        modal.classList.add("hidden");
+    }
+  }
+  // Close modal if close button is clicked
+  closeModal.onclick = () => {
+    modal.classList.add("hidden")
+  }
 })
-
-
 
 /****************************************
  ******* General helper functions *******

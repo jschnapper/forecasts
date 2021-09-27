@@ -1,0 +1,4 @@
+<h1>Send Reminder</h1>
+<%= form_with id: 'reminder-form', method: :post, local: true do |form| %>
+  <%= form.text_area :message, size: "70x5" %>
+<% end %>
