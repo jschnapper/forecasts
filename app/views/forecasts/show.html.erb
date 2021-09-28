@@ -1,7 +1,7 @@
 <%= link_to "Back", :back %>
 <%= link_to "All forecasts", forecasts_path(team_name: @team.slug) %><h2><%= @team.name %></h2>
 <h2><%= @team.name.titleize %> <%= @monthly_forecast.friendly_name%></h2>
-  <%= button_to "Send reminder", send_reminder_path %>
+  <%= button_to "Send reminder", send_reminder_path, remote: true, method: :get %>
 <table>
 <thead>
   <tr>

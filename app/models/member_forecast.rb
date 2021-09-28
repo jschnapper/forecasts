@@ -40,6 +40,8 @@ class MemberForecast < ApplicationRecord
   validates :monthly_forecast, presence: true
   validates :team, presence: true
 
+  scope :get_member_forecasts, ->(teams, monthly_forecast) { find_by_sql(get_member_forecasts_sql(teams, monthly_forecast)) }
+
   def hours
     self[:hours]&.with_indifferent_access
   end
@@ -57,5 +59,19 @@ class MemberForecast < ApplicationRecord
     hours.each do |field, amount|
       hours[field.downcase] = amount.to_i
     end
+  end
+
+  def self.get_member_forecasts_sql(teams, monthly_forecast)
+    <<-SQL.squish
+      select members.*, member_forecasts.hours
+      from members
+      inner join memberships
+      on memberships.member_id = members.id
+      and memberships.team_id in (#{[teams].flatten.map(&:id).join(",")})
+      left join member_forecasts
+      on member_forecasts.member_id = members.id
+      and member_forecasts.monthly_forecast_id = #{monthly_forecast.id}
+      order by members.first_name
+    SQL
   end
 end

@@ -55,6 +55,9 @@
       - [x] send email
       - [x] prefill holiday, cant change
       - [ ] store email and team in local storage in local storage
+  - [ ] reviewing forecasts
+    - [ ] send email
+    - [ ] download as excel
   - [ ] jobs
     - [ ] recurring job to create new forecast
     - [ ] recurring job to send out emails

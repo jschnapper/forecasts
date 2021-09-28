@@ -1,0 +1,12 @@
+document.getElementById('modal').classList.remove('hidden');
+document.getElementById('modal-content').innerHTML = "<%= j render 'form' %>"
+
+if (typeof closeModalButton === 'undefined') {
+  const closeModalButton = document.getElementById('close-modal')
+  if (closeModalButton) {
+    closeModalButton.onclick = () => {
+      document.getElementById('modal').classList.add("hidden");
+    }
+  }
+}
+
