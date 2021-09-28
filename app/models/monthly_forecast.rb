@@ -45,6 +45,10 @@ class MonthlyForecast < ApplicationRecord
     date.strftime('%B')
   end
 
+  def year
+    date.year
+  end
+
   # has holiday check
   def has_holidays?
     holiday_hours > 0

@@ -1,15 +1,12 @@
 document.getElementById('modal').classList.remove('hidden');
 document.getElementById('modal-content').innerHTML = "<%= j render 'form' %>"
-<% if defined?(submit) % %>
-  document.getElementById('modal-submit').innerText = "<%= submit %>"
-<% end %>
-<% if defined?(form_name) %>
-  if (typeof form === 'undefined') {
-    let form = document.getElementById('<%= form_name %>')
-    if (form) {
-      document.getElementById('modal-submit').onclick = () => {
-        form.submit();
-      };
+
+if (typeof closeModalButton === 'undefined') {
+  const closeModalButton = document.getElementById('close-modal')
+  if (closeModalButton) {
+    closeModalButton.onclick = () => {
+      document.getElementById('modal').classList.add("hidden");
     }
   }
-<% end %>
+}
+
