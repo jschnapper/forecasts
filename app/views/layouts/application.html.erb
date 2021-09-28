@@ -12,19 +12,27 @@
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <body>
-    <div style="padding: 10px 0">
-      <h2>Forecasts</h2>
+  <body class="bg-gray-50">
+    <nav class="flex bg-white py-2 sm:py-4 px-2 sm:px-6 lg:px-8 w-full shadow-sm">
+      <div class="flex-1">
+        <h2 class="font-bold text-xl">Forecasts</h2>
+      </div>
+      <div class="flex-1 flex justify-end">
+        <% if member_signed_in? %>
+          <%= link_to "Home", home_path %>
+          <%= link_to "Logout", destroy_member_session_path, method: :delete %>
+        <% else %>
+          <%= link_to "Login", new_member_session_path %>
+        <% end %>
+      </div>
+    </nav>
+    <div>
       <p class="notice"><%= notice %></p>
       <p class="alert"><%= alert %></p>
-      <% if member_signed_in? %>
-        <%= link_to "home", home_path %>
-        <%= link_to "logout", destroy_member_session_path, method: :delete %>
-      <% else %>
-        <%= link_to "login", new_member_session_path %>
-      <% end %>
     </div>
-    <%= yield %>
+    <div class="px-2 sm:px-6 lg:px-8">
+      <%= yield %>
+    </div>
     <%= render "shared/modal" %>
   </body>
 </html>
