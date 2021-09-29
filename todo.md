@@ -58,6 +58,7 @@
   - [ ] reviewing forecasts
     - [ ] send email
     - [ ] download as excel
+  - [ ] format emails
   - [ ] jobs
     - [ ] recurring job to create new forecast
     - [ ] recurring job to send out emails
