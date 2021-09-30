@@ -1,13 +1,14 @@
 <div class="mt-8 mb-4 px-4 sm:px-0">
   <div class="mb-4">
-  <%= link_to "#{@team.name.titleize} team page", team_path(team_name: @team.slug), class: "cursor-pointer no-underline hover:underline mr-4" %>
-  <%= link_to "All forecasts", forecasts_path(team_name: @team.slug), class: "cursor-pointer no-underline hover:underline mr-4" %>
+  <%= link_to "#{@team.name.titleize} team page", team_path(team_name: @team.slug), class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4" %>
+  <%= link_to "All forecasts", forecasts_path(team_name: @team.slug), class: "cursor-pointer no-underline hover:underline mr-4 text-indigo-500" %>
   </div>
   <% status_color = @monthly_forecast.active ? "green" : "red" %>
   <h2 class="text-lg"><span class="font-bold"><%= @team.name.titleize %></span> <span class="text-gray-500"><%= @monthly_forecast.friendly_name%></span>
   <span class="font-bold leading-none text-xs ml-2 align-middle py-1 px-2 text-<%= status_color %>-50 bg-<%= status_color %>-500 rounded"><%= @monthly_forecast.active ? "Open" : "Closed" %></span>
   </h2>
-  <div class="text-gray-700">There are <span class="expected-hours"><b><%= @monthly_forecast&.total_hours %></b></span> hours this month.</div>
+  <div class="text-gray-700">Expected total hours: <span class="expected-hours"><b><%= @monthly_forecast&.total_hours %></b></span></div>
+  <div class="text-gray-700">Expected holiday hours: <span class="expected-hours"><b><%= @monthly_forecast&.holiday_hours %></b></span></div>
 </div>
 <div class="bg-white mx-0 pt-8 mt-8 mb-16 shadow-sm rounded overflow-x-auto">
 <div class="flex justify-between mt-0 m-4">
@@ -15,7 +16,7 @@
     <%= button_to "Send Reminder", send_reminder_path, remote: true, method: :get, class: "ml-4 cursor-pointer bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-indigo-200" %>
   </div>
   <div>
-    <%= button_to "Export to Spreadshet", send_reminder_path, remote: true, method: :get, class: "ml-4 cursor-pointer bg-transparent hover:bg-gray-500 text-gray-700 hover:text-white py-2 px-4 border border-gray-500 hover:border-transparent rounded" %>
+    <%= link_to "Export to Spreadshet", export_forecast_path(monthly_forecast_id: @monthly_forecast.id), target: '_self', method: :post, class: "ml-4 cursor-pointer bg-transparent hover:bg-gray-500 text-gray-700 hover:text-white py-2 px-4 border border-gray-500 hover:border-transparent rounded" %>
   </div>
 </div>
 <table class="relative w-full table-auto">
@@ -33,6 +34,7 @@
         <th class="px-4 py-4"><%= field.name %></th> 
       <% end %>
     <% end %>
+    <th class="px-4 py-4">Notes</th>
   </tr>
 </thead>
 <tbody>
@@ -57,6 +59,7 @@
           </td>
         <% end %>
       <% end %>
+      <td class="px-4 py-2 sm:py-4"><%= member_forecast.notes %></td>
     </tr>
   <% end %>
 </tbody>

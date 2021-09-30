@@ -3,7 +3,7 @@
   <% if @monthly_forecasts.size > 0 %>
   <ul>
     <% @monthly_forecasts.each do |forecast| %>
-      <li class="no-underline hover:underline">
+      <li class="no-underline hover:underline text-indigo-500">
         <%= 
           link_to forecast.friendly_name, forecast_path( 
             team_name: @team.slug, 

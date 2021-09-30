@@ -46,15 +46,15 @@ class AddDeviseToMembers < ActiveRecord::Migration[6.1]
   def self.down
     # By default, we don't want to make any assumption about how to roll back a migration when your
     # model already existed. Please edit below which fields you would like to remove in this migration.
-    remove_index :members, :reset_password_token
-    remove_index :members, :confirmation_token
-    remove_column :members, :encrypted_password
-    remove_column :members, :reset_password_token
-    remove_column :members, :reset_password_token_at
-    remove_column :members, :remember_created_at
-    remove_column :members, :confirmation_token
-    remove_column :members, :confirmed_at
-    remove_column :members, :confirmation_sent_at
-    remove_column :members, :unconfirmed_email
+    remove_index :members, :reset_password_token if index_exists?(:members, :reset_password_token)
+    remove_index :members, :confirmation_token if index_exists?(:members, :confirmation_token)
+    remove_column :members, :encrypted_password if index_exists?(:members, :encrypted_password)
+    remove_column :members, :reset_password_token if column_exists?(:members, :reset_password_token)
+    remove_column :members, :reset_password_token_at if column_exists?(:members, :reset_password_token_at)
+    remove_column :members, :remember_created_at if column_exists?(:members, :remember_created_at)
+    remove_column :members, :confirmation_token if column_exists?(:members, :confirmation_token)
+    remove_column :members, :confirmed_at if column_exists?(:members, :confirmed_at)
+    remove_column :members, :confirmation_sent_at if column_exists?(:members, :confirmation_sent_at)
+    remove_column :members, :unconfirmed_email if column_exists?(:members, :unconfirmed_email)
   end
 end

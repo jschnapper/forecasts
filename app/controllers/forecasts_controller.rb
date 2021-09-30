@@ -10,19 +10,7 @@ class ForecastsController < ManagementController
 
   # /manage/:team_name/:year/:month
   def show
-    sql = <<-SQL
-      select members.*, member_forecasts.hours
-      from members
-      inner join memberships
-      on memberships.member_id = members.id
-      and memberships.team_id = #{@team.id}
-      left join member_forecasts
-      on member_forecasts.member_id = members.id
-      and member_forecasts.monthly_forecast_id = #{@monthly_forecast.id}
-      order by members.first_name
-    SQL
-
-    @member_forecasts = MemberForecast.find_by_sql(sql)
+    @member_forecasts = MemberForecast.get_member_forecasts(@team, @monthly_forecast)
   end
 
   private
