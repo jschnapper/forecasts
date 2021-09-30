@@ -17,27 +17,41 @@
           </tr>
         </thead>
         <tbody>
-        <% team.fields.each do |field| %>
+        <% team.fields.order(:name).each do |field| %>
           <%# Only show holiday when there is a holiday %>
           <% if field.name.downcase == "holiday" && @monthly_forecast.holiday_hours == 0 %>
             <% next %>
           <% elsif field.name.downcase == "holiday" %>
-            <tr class="h-16">
-              <td class="text-right pr-4 align-middle">
-                <%= form.label field.name, class: "text-gray-700" %>
+            <tr>
+              <td class="text-right pr-4 align-middle py-4">
+                <%= form.label field.name, class: "text-gray-700 whitespace-nowrap" %>
               </td>
-              <td>
+              <td class="align-middle">
                 <%= form.number_field :hours, step: 1, min: 0, name: "member_forecast[hours[#{field.name}]]", class: "hour-input block w-full rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50", value: @monthly_forecast.holiday_hours, readonly: true, required: true %>
               </td>
             </tr>
+            <tr>
+              <td></td>
+              <td class="text-gray-500 text-sm pb-4"><%= field.description %></td>
+            </tr>
           <% else %>
-            <tr class="h-16">
+            <tr>
               <td class="text-right pr-4 align-middle">
-                <%= form.label field.name, class: "text-gray-700" %>
+                <%= form.label field.name, class: "text-gray-700 whitespace-nowrap" %>
+                <% if field.code.present? %>
+                  <p class="text-gray-500 text-sm"><%= field.code %></p>
+                <% end %>
               </td>
-              <td>
+              <td class="align-middle">
                 <%= form.number_field :hours, step: 1, min: 0, name: "member_forecast[hours[#{field.name}]]", class: "hour-input block w-full rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
+                <% if field.description.present? %>
+                  <span class=></span>
+                <% end %>
               </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td class="text-gray-500 text-sm pb-4"><%= field.description %></td>
             </tr>
           <% end %>
         <% end %> 

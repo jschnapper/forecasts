@@ -22,21 +22,21 @@
       <div class="flex-1 flex justify-end">
         <% if member_signed_in? %>
           <div class="flex space-x-4">
-          <%= link_to "Home", home_path %>
-          <%= link_to "Logout", destroy_member_session_path, method: :delete %>
+          <%= link_to "Home", home_path, class: "hover:text-gray-500" %>
+          <%= link_to "Logout", destroy_member_session_path, method: :delete, class: "hover:text-gray-500" %>
           </div>
         <% else %>
-          <%= link_to "Login", new_member_session_path %>
+          <%= link_to "Login", new_member_session_path, class: "hover:text-gray-500" %>
         <% end %>
       </div>
     </nav>
     <% if !devise_controller? %>
       <div>
         <% if notice.present? %>
-          <p class="notice"><%= notice %></p>
+          <div class="notice"><%= notice %></div>
         <% end %>
         <% if alert.present? %>
-          <p class="alert bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"><%= alert %></p>
+          <div class="alert m-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"><%= alert %></div>
         <% end %>
       </div>
     <% end %>
