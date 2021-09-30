@@ -138,11 +138,17 @@ namespace :development do
           end
         end
 
-        # add roles
+        # add some test roles
         admin = Member.includes(:role).find_by(first_name: "admin")
         admin_role_id = Role.find_by(name: "admin").id
         if admin.role.nil?
           MemberRole.create(member_id: admin.id, role_id: admin_role_id)
+        end
+
+        alice = Member.includes(:role).find_by(first_name: "alice")
+        manager_role_id = Role.find_by(name: "manager").id
+        if alice.role.nil?
+          MemberRole.create(member_id: alice.id, role_id: manager_role_id)
         end
 
         # set admin password to something easy

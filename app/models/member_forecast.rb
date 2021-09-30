@@ -48,6 +48,9 @@ class MemberForecast < ApplicationRecord
 
   # ------ Helper methods ------ #
   def total_hours
+    # grab fields since fields could be different from what was submitted
+    # TODO: why is rails complaining about team_id?
+    # hours&.slice(*team&.fields&.map(&:name))&.values&.reduce { |total, amount| total.to_i + amount.to_i } || 0
     hours&.values&.reduce { |total, amount| total.to_i + amount.to_i } || 0
   end
 
@@ -63,7 +66,7 @@ class MemberForecast < ApplicationRecord
 
   def self.get_member_forecasts_sql(teams, monthly_forecast)
     <<-SQL.squish
-      select members.*, member_forecasts.hours
+      select members.*, member_forecasts.hours, member_forecasts.notes
       from members
       inner join memberships
       on memberships.member_id = members.id
