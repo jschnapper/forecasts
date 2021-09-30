@@ -1,36 +1,82 @@
-<div id="member-email"><%= @member&.email%></div>
+<div id="member-email" class="text-gray-500 mb-2"><%= @member&.email%></div>
 <div>There are <span class="expected-hours"><b><%= @monthly_forecast&.total_hours %></b></span> hours this month.</div>
 <%= form_with model: member_forecast, url: create_forecast_path, method: :post, id: "forecast-form" do |form| %>
   <% if team.present? %>
-    <span><%= team.name%></span>
     <%= hidden_field_tag :team_id, team.id, id: "team-id", name: "member_forecast[team_id]", required: true %>
   <% else %>
-    <%= form.select :team_id, options_for_select(@teams&.map { |tm| [tm.name.titleize, tm.id] }, team&.id), { prompt: "select team" }, { name: "member_forecast[team_id]", id: "team-id", required: true } %>
+    <%= form.select :team_id, options_for_select(@teams&.map { |tm| [tm.name.titleize, tm.id] }, team&.id), { prompt: "select team" }, { name: "member_forecast[team_id]", id: "team-id", required: true , class: "block w-full mt-4 rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" } %>
   <% end %>
-  <%= form.select :member_id, options_from_collection_for_select(@members || [], :id, :email, @member&.id), { prompt: "select email" }, { id: "member-emails", required: true } %>
+  <%= form.select :member_id, options_from_collection_for_select(@members || [], :id, :email, @member&.id), { prompt: "select email" }, { id: "member-emails", required: true, class: "block w-full mt-4 rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" } %>
   <% if team %>
-    <% team.fields.each do |field| %>
-      <%# Only show holiday when there is a holiday %>
-      <div>
-        <% if field.name.downcase == "holiday" && @monthly_forecast.holiday_hours == 0 %>
-          <% next %>
-        <% elsif field.name.downcase == "holiday" %>
-          <span><%= field.name %></span>
-          <%= form.number_field :hours, step: 1, min: 0, name: "member_forecast[hours[#{field.name}]]", class: "hour-input", value: @monthly_forecast.holiday_hours, readonly: true, required: true %>
-        <% else %>
-          <span><%= field.name %></span>
-          <%= form.number_field :hours, step: 1, min: 0, name: "member_forecast[hours[#{field.name}]]", class: "hour-input" %>
+    <div class="mt-8">
+      <table class="table-auto">
+        <thead>
+          <tr>  
+            <th class="text-right pr-4">Fields</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+        <% team.fields.order(:name).each do |field| %>
+          <%# Only show holiday when there is a holiday %>
+          <% if field.name.downcase == "holiday" && @monthly_forecast.holiday_hours == 0 %>
+            <% next %>
+          <% elsif field.name.downcase == "holiday" %>
+            <tr>
+              <td class="text-right pr-4 align-middle py-4">
+                <%= form.label field.name, class: "text-gray-700 whitespace-nowrap" %>
+              </td>
+              <td class="align-middle">
+                <%= form.number_field :hours, step: 1, min: 0, name: "member_forecast[hours[#{field.name}]]", class: "hour-input block w-full rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50", value: @monthly_forecast.holiday_hours, readonly: true, required: true %>
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td class="text-gray-500 text-sm pb-4"><%= field.description %></td>
+            </tr>
+          <% else %>
+            <tr>
+              <td class="text-right pr-4 align-middle">
+                <%= form.label field.name, class: "text-gray-700 whitespace-nowrap" %>
+                <% if field.code.present? %>
+                  <p class="text-gray-500 text-sm"><%= field.code %></p>
+                <% end %>
+              </td>
+              <td class="align-middle">
+                <%= form.number_field :hours, step: 1, min: 0, name: "member_forecast[hours[#{field.name}]]", class: "hour-input block w-full rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
+                <% if field.description.present? %>
+                  <span class=></span>
+                <% end %>
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td class="text-gray-500 text-sm pb-4"><%= field.description %></td>
+            </tr>
+          <% end %>
+        <% end %> 
+        </tbody>
+      </table>
+      <%= form.label "notes", class: "text-gray-700 mt-4" %>
+      <%= form.text_area :notes, name: "member_forecast[notes]", id: "notes-input", class: "block w-full mt-1 rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
+      <table class="table-auto my-8">
+        <tbody>
+          <tr class="text-gray-500">
+            <td class="pr-4">Expected Hours</td>
+            <td id="expected-hours"><%= monthly_forecast.total_hours %></td>
+          </tr>
+          <tr>
+            <td class="pr-4">You Hours</td>
+            <td id="member-hours"><%= member_forecast.total_hours %></td>
+          </tr>
+        </tbody>
+      </table>
+      <%= hidden_field_tag :monthly_forecast_id, monthly_forecast.id, id: "monthly-forecast-id", name: "member_forecast[monthly_forecast_id]" %>
+      <% if monthly_forecast.active %>
+        <%= button_tag id: "forecast-submit", name: nil, class: "w-full cursor-pointer bg-green-600 text-white text-base py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-green-200" do %>
+          Submit Forecast
         <% end %>
-      </div>
-    <% end %> 
-    <%= form.text_area :notes, name: "member_forecast[notes]", id: "notes-input" %>
-    <div>Expected Hours <span id="expected-hours"><%= monthly_forecast.total_hours %></span></div>
-    <div>Your Hours <span id="member-hours"><%= member_forecast.total_hours %></span></div>
-    <%= hidden_field_tag :monthly_forecast_id, monthly_forecast.id, id: "monthly-forecast-id", name: "member_forecast[monthly_forecast_id]" %>
-    <% if monthly_forecast.active %>
-      <%= button_tag id: "forecast-submit", name: nil do %>
-        Submit Forecast
       <% end %>
-    <% end %>
+    </div>
   <% end %>
 <% end %>

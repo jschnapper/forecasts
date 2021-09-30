@@ -12,19 +12,37 @@
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <body>
-    <div style="padding: 10px 0">
-      <h2>Forecasts</h2>
-      <p class="notice"><%= notice %></p>
-      <p class="alert"><%= alert %></p>
-      <% if member_signed_in? %>
-        <%= link_to "home", home_path %>
-        <%= link_to "logout", destroy_member_session_path, method: :delete %>
-      <% else %>
-        <%= link_to "login", new_member_session_path %>
-      <% end %>
+  <body class="bg-gray-50">
+    <nav class="flex bg-white py-2 sm:py-4 px-2 sm:px-6 lg:px-8 w-full shadow-sm">
+      <div class="flex-1">
+        <h2 class="font-bold text-xl">
+          <%= link_to "Forecasts", root_path %>
+        </h2>
+      </div>
+      <div class="flex-1 flex justify-end">
+        <% if member_signed_in? %>
+          <div class="flex space-x-4">
+          <%= link_to "Home", home_path, class: "hover:text-gray-500" %>
+          <%= link_to "Logout", destroy_member_session_path, method: :delete, class: "hover:text-gray-500" %>
+          </div>
+        <% else %>
+          <%= link_to "Login", new_member_session_path, class: "hover:text-gray-500" %>
+        <% end %>
+      </div>
+    </nav>
+    <% if !devise_controller? %>
+      <div>
+        <% if notice.present? %>
+          <div class="notice"><%= notice %></div>
+        <% end %>
+        <% if alert.present? %>
+          <div class="alert m-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"><%= alert %></div>
+        <% end %>
+      </div>
+    <% end %>
+    <div class="px-0 sm:px-4 md:px-6 lg:px-8">
+      <%= yield %>
     </div>
-    <%= yield %>
     <%= render "shared/modal" %>
   </body>
 </html>

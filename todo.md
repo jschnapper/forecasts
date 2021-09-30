@@ -58,6 +58,7 @@
   - [ ] reviewing forecasts
     - [ ] send email
     - [ ] download as excel
+  - [ ] format emails
   - [ ] jobs
     - [ ] recurring job to create new forecast
     - [ ] recurring job to send out emails
@@ -92,6 +93,9 @@
   - [ ] better implementation than using innerHTML
 - [ ] improvements
   - [ ] list team fields one at a time as a select dropdown
+  - [ ] keep one form active at a time
+  - [ ] ensure only people with roles can login
+  - [ ] password resets
   - [ ] show errors on forms
   - [ ] fix event listeners on back and forward
   - [ ] fix monthly forecast generator

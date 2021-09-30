@@ -72,7 +72,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   
   const countHours = () => {
-    const expectedHours = parseInt(document.querySelectorAll(".expected-hours").innerText)
+    const expectedHoursElement = document.querySelectorAll(".expected-hours")[0]
+    let expectedHours = 0
+    if (expectedHoursElement) {
+      expectedHours = parseInt(expectedHoursElement.innerText)
+    }
+
     const currentHours = document.getElementById("member-hours")
     const elements = document.querySelectorAll("#forecast-form-container .hour-input")
     let total = 0
@@ -81,6 +86,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     if (currentHours) {
       currentHours.innerText = total
+    }
+
+    if (currentHours && total >= expectedHours) {
+      currentHours.classList.add("text-green-600", "font-bold")
+    } else if (currentHours) {
+      currentHours.classList.remove("text-green-600", "font-bold")
     }
   }
 

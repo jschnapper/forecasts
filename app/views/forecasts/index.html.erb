@@ -1,18 +1,20 @@
-<h2><%= @team.name.titleize %> Forecasts</h2>
-<% if @monthly_forecasts.size > 0 %>
-<ul>
-  <% @monthly_forecasts.each do |forecast| %>
-    <li>
-      <%= 
-        link_to forecast.friendly_name, forecast_path( 
-          team_name: @team.slug, 
-          year: forecast.date.year,
-          month: forecast.month_name
-        )
-      %>
-    </li>
+<div class="mt-8 mb-4 px-4 sm:px-0">
+  <h2 class="font-bold mb-2"><%= @team.name.titleize %> Forecasts</h2>
+  <% if @monthly_forecasts.size > 0 %>
+  <ul>
+    <% @monthly_forecasts.each do |forecast| %>
+      <li class="no-underline hover:underline">
+        <%= 
+          link_to forecast.friendly_name, forecast_path( 
+            team_name: @team.slug, 
+            year: forecast.date.year,
+            month: forecast.month_name
+          )
+        %>
+      </li>
+    <% end %>
+  </ul>
+  <% else %>
+    <p>No forecasts</p>
   <% end %>
-</ul>
-<% else %>
-  <p>No forecasts</p>
-<% end %>
+</div>
