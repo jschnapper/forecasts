@@ -29,14 +29,18 @@
 #
 class Member < ApplicationRecord
   # Include default devise modules. Others available are:
-  devise :database_authenticatable, :registerable,
+  devise :database_authenticatable, 
          :recoverable, :rememberable, :validatable,
          :timeoutable
          # :confirmable
+         # :registerable
 
   # callbacks
   # format all fields before saving
   before_validation :format_fields
+
+  # send set password email if new user has a role or changed from nothing to something
+  after_create :send_reset_password_instructions, if: proc { member_role.present? }
 
   # associations
   has_one :member_role, dependent: :destroy
@@ -52,7 +56,7 @@ class Member < ApplicationRecord
   validates :first_name, uniqueness: {
     scope: %i[middle_name last_name],
     case_sensitive: false
-  }
+  }, allow_blank: true
 
   # display full name
   def full_name
@@ -106,6 +110,10 @@ class Member < ApplicationRecord
   end
 
   private
+
+  def check
+    p changes
+  end
 
   # password isnt required for new records
   def password_required?

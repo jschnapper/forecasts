@@ -53,6 +53,10 @@ Rails.application.configure do
     port: 3000 
   }
 
+  config.action_mailer.default_options = {
+    from: ENV["NO_REPLY_EMAIL"] || 'no-reply@example.com'
+  }
+
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 

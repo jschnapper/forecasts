@@ -69,8 +69,8 @@
   - [ ] allow users to change email
   - [ ] place pages under auth
 - [ ] design
-  - [ ] install tailwindcss
-  - [ ] login, logout, change password
+  - [x] install tailwindcss
+  - [x] login, logout, change password
   - [ ] search select
   - [ ] flow for password-less login for users
   - [ ] admin
@@ -94,8 +94,10 @@
 - [ ] improvements
   - [ ] list team fields one at a time as a select dropdown
   - [ ] keep one form active at a time
-  - [ ] ensure only people with roles can login
-  - [ ] password resets
+  - [x] ensure only people with roles can login
+  - [x] password resets
+  - [ ] support excel
+  - [ ] send email when adding new role
   - [ ] show errors on forms
   - [ ] fix event listeners on back and forward
   - [ ] fix monthly forecast generator

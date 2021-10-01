@@ -1,4 +1,4 @@
-class SessionsController < Devise::SessionsController
+class Members::SessionsController < Devise::SessionsController
   before_action :find_user, only: :create
   # user cannot sign in if they dont have a role
 

@@ -1,5 +1,6 @@
-<p>Hi <%= @member.first_name %>,</p>
-<p>Thanks for submitting your <%= @team.name.titleize %> <%= @monthly_forecast.friendly_name %>
+<p>Hi <%= @member.first_name.capitalize %>,</p>
+<p>Thanks for submitting your <%= @team.name.titleize %> <%= @monthly_forecast.friendly_name %></p>
+<p>There are <%= @monthly_forecast.total_hours %> hours this month.</p>
 <%# If holiday hours are not correct %>
 <% if @monthly_forecast.holiday_hours > 0 && @monthly_forecast.holiday_hours != @member_forecast.hours["holiday"]%>
   <p>
