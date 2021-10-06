@@ -48,6 +48,7 @@ yarn-debug.log*
 
 # .env
 .env
+.env.production
 
 # Ignore node_modules
 node_modules/

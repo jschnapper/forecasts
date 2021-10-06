@@ -1,75 +1,99 @@
-<%= link_to "Back", :back %>
-<%= link_to "All teams", teams_path %><h2><%= @team.name %></h2>
-<p><%= @team.description || "No description" %></p>
-<%= link_to 'Edit', edit_team_path(@team.slug)%>
-<%= link_to 'Delete', url_for(action: :destroy,team_name: @team.slug), method: :delete, data: {confirm: "Are you sure you want to delete #{@team.name}"} %>
-<h3>Team Forecasts</h3>
-<%= link_to "See #{@team.name} forecasts", forecasts_path(@team.slug)%>
-<h3>Members</h3>
-<%= link_to "Add Members", new_member_path(team_id: @team.id) %>
-<table>
-  <thead>
-    <tr>
-      <th>First Name</th>
-      <th>Last Name</th>
-      <th>Email</th>
-      <th>Role</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-<tbody>
-  <% if @team.members.size > 0 %>
-    <% @team.members.each do |member| %>
-      <tr>
-        <td><%= member.first_name %></td>
-        <td><%= member.last_name %></td>
-        <td><%= member.email %></td>
-        <td><%= member.role&.name %></td>
-        <td>
-          <%= link_to 'Show', member_path(member.id)%>
-          <%= link_to 'Edit', edit_member_path(member.id)%>
-          <%= link_to 'Remove', edit_member_path(member.id)%>
-          <%= link_to 'Delete', url_for(action: :destroy,id: member.id), method: :delete, data: {confirm: "Are you sure you want to delete #{member.full_name}"} %>
-        </td>
-      </tr>
-    <% end %>
-  <% else %>
-    <tr>
-      <td colspan=4>No members</td>
-    </tr>
+<div class="mt-8 mb-4 px-4 sm:px-0">
+  <% if current_member.is_admin? %>
+    <div class="mb-4">
+      <%= link_to "Back", :back, class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4"%>
+      <%= link_to "All teams", teams_path, class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4" %>
+    </div>
   <% end %>
-</tbody>
-</table>
-<h3>Fields</h3>
-<%= link_to "Add fields to team", new_team_fields_path(@team.slug) %>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Code</th>
-      <th>Description</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-<tbody>
-  <% if @team.team_fields.size > 0 %>
-    <% @team.team_fields.each do |team_field| %>
-      <tr>
-        <td><%= team_field.field.name %></td>
-        <td><%= team_field.field.code || "No code" %></td>
-        <td><%= team_field.field.description || "No description" %></td>
-        <td>
-          <%= link_to 'Show', field_path(team_field.field.id)%>
-          <% if team_field.field.name.downcase != "holiday" %>
-            <%= link_to 'Remove from team', url_for(controller: :team_fields, action: :destroy, id: team_field.id), method: :delete, data: {confirm: "Are you sure you want to remove #{team_field.field.name} from #{@team.name.titleize}"} %>
-          <% end %>
-        </td>
-      </tr>
-    <% end %>
-  <% else %>
-    <tr>
-      <td colspan=4>No Fields</td>
-    </tr>
-  <% end %>
-</tbody>
-</table>
+  <div class="mb-4">
+    <h2 class="text-xl font-bold"><%= @team.name&.titleize %></h2>
+    <p class="text-gray-700"><%= @team.description || "No description" %></p>
+  </div>
+  <div class="mb-4">
+    <%= link_to "See team forecasts", forecasts_path(@team.slug), class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4"%>
+    <%= link_to 'Edit team', edit_team_path(@team.slug), class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4"%>
+    <%= link_to 'Delete team', url_for(action: :destroy,team_name: @team.slug), method: :delete, data: {confirm: "Are you sure you want to delete #{@team.name}"}, class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4" %>
+  </div>
+  <div class="bg-white mx-0 pt-4 my-8 shadow-md rounded overflow-x-auto">
+    <div class="mt-0 mb-8 m-4">
+      <h3 class="text-lg font-bold mb-4">Members</h3>
+      <div>
+        <%= link_to "Add Members", new_member_path(team_id: @team.id), class: "cursor-pointer bg-transparent hover:bg-gray-500 text-gray-700 hover:text-white py-2 px-4 border border-gray-500 hover:border-transparent rounded"%>
+      </div>
+    </div>
+    <table class="relative w-full table-auto text-sm">
+      <thead>
+        <tr class="text-left uppercase bg-gray-300 text-gray-600">
+          <th class="px-4 py-4">First Name</th>
+          <th class="px-4 py-4">Last Name</th>
+          <th class="px-4 py-4">Email</th>
+          <th class="px-4 py-4">Role</th>
+          <th class="px-4 py-4">Actions</th>
+        </tr>
+      </thead>
+    <tbody>
+      <% if @team.members.size > 0 %>
+        <% @team.members.each_with_index do |member, index| %>
+          <% odd_even_style = index % 2 == 0 ? "" : " bg-gray-100" %>
+          <tr class="text-left hover:bg-gray-200<%= odd_even_style %>">
+            <td class="px-4 py-2 sm:py-4"><%= member.first_name %></td>
+            <td class="px-4 py-2 sm:py-4"><%= member.last_name %></td>
+            <td class="px-4 py-2 sm:py-4"><%= member.email %></td>
+            <td class="px-4 py-2 sm:py-4"><%= member.role&.name %></td>
+            <td class="px-4 py-2 sm:py-4">
+              <%= link_to 'Show', member_path(member.id), class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4"%>
+              <%= link_to 'Edit', edit_member_path(member.id), class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4"%>
+              <%= link_to 'Remove from team', edit_member_path(member.id), class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4"%>
+              <%= link_to 'Delete', url_for(action: :destroy,id: member.id), method: :delete, data: {confirm: "Are you sure you want to delete #{member.full_name}"}, class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4" %>
+            </td>
+          </tr>
+        <% end %>
+      <% else %>
+        <tr>
+          <td class="px-4 py-2 sm:py-4" colspan=4>No members</td>
+        </tr>
+      <% end %>
+    </tbody>
+    </table>
+  </div>
+  <div class="bg-white mx-0 pt-4 my-8 shadow-md rounded overflow-x-auto">
+    <div class="mt-0 mb-8 m-4">
+      <h3 class="text-lg font-bold mb-4">Fields</h3>
+      <div>
+        <%= link_to "Add fields to team", new_team_fields_path(@team.slug), class: "cursor-pointer bg-transparent hover:bg-gray-500 text-gray-700 hover:text-white py-2 px-4 border border-gray-500 hover:border-transparent rounded" %>
+      </div>
+    </div>
+    <table class="relative w-full table-auto text-sm">
+      <thead>
+        <tr class="text-left uppercase bg-gray-300 text-gray-600">
+          <th class="px-4 py-4">Name</th>
+          <th class="px-4 py-4">Code</th>
+          <th class="px-4 py-4">Description</th>
+          <th class="px-4 py-4">Actions</th>
+        </tr>
+      </thead>
+    <tbody>
+      <% if @team.team_fields.size > 0 %>
+        <% @team.team_fields.each_with_index do |team_field, index| %>
+          <% odd_even_style = index % 2 == 0 ? "" : " bg-gray-100" %>
+          <tr class="text-left hover:bg-gray-200<%= odd_even_style %>">
+            <td class="px-4 py-2 sm:py-4"><%= team_field.field.name %></td>
+            <td class="px-4 py-2 sm:py-4"><%= team_field.field.code || "No code" %></td>
+            <td class="px-4 py-2 sm:py-4"><%= team_field.field.description || "No description" %></td>
+            <td class="px-4 py-2 sm:py-4">
+              <%= link_to 'Show', field_path(team_field.field.id), class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4" %>
+              <% if team_field.field.name.downcase != "holiday" %>
+                <%= link_to 'Remove from team', url_for(controller: :team_fields, action: :destroy, id: team_field.id), method: :delete, data: {confirm: "Are you sure you want to remove #{team_field.field.name} from #{@team.name.titleize}"}, class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4"%>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      <% else %>
+        <tr>
+          <td class="px-4 py-2 sm:py-4" colspan=4>No Fields</td>
+        </tr>
+      <% end %>
+    </tbody>
+    </table>
+  </div>
+</div>

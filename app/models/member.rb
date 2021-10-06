@@ -111,10 +111,6 @@ class Member < ApplicationRecord
 
   private
 
-  def check
-    p changes
-  end
-
   # password isnt required for new records
   def password_required?
     return false if new_record?

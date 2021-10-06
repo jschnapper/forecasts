@@ -19,9 +19,9 @@
     <%= link_to "Export to Spreadshet", export_forecast_path(monthly_forecast_id: @monthly_forecast.id), target: '_self', method: :post, class: "ml-4 cursor-pointer bg-transparent hover:bg-gray-500 text-gray-700 hover:text-white py-2 px-4 border border-gray-500 hover:border-transparent rounded" %>
   </div>
 </div>
-<table class="relative w-full table-auto">
+<table class="relative w-full table-auto text-sm">
 <thead>
-  <tr class="text-left uppercase bg-gray-200 text-gray-600 text-sm">
+  <tr class="text-left uppercase bg-gray-300 text-gray-600">
     <th class="px-4 py-4">First Name</th>
     <th class="px-4 py-4">Last Name</th>
     <th class="px-4 py-4">Email</th>
@@ -40,7 +40,7 @@
 <tbody>
   <% @member_forecasts.each_with_index do |member_forecast, index| %>
     <% odd_even_style = index % 2 == 0 ? "" : " bg-gray-100" %>
-    <tr class="text-left<%= odd_even_style %>">
+    <tr class="text-left hover:bg-gray-200<%= odd_even_style %>">
       <td class="px-4 py-2 sm:py-4"><%= member_forecast.first_name %></td>
       <td class="px-4 py-2 sm:py-4"><%= member_forecast.last_name %></td>
       <td class="px-4 py-2 sm:py-4"><%= member_forecast.email %></td>
