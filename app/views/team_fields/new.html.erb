@@ -1,14 +1,22 @@
-<%= link_to "Back", team_path(@team.slug) %>
-<h2>New field for <%= @team.name.titleize %></h2>
-<% if @fields.size > 0 %>
-  <%= form_with model: @team_field, url: team_fields_path, method: :post, id: "team-field-form" do |form| %>
-    <%= form.hidden_field :team_id, value: @team.id %>
-    <%= form.label "Field" %>
-    <%= form.select :field_id, options_from_collection_for_select(@fields || [], :id, :name), { prompt: "select field" }, { required: true } %>
-    <%= form.submit %>
-  <% end %>
-<% else %>
-  <o>No fields left to add</p>
-<% end %>
-
+<div class="flex justify-center">
+  <div class="min-w-64 w-full sm:w-7/12 md:w-1/2 lg:w-4/12 bg-white px-4 sm:px-8 py-8 mt-16 mb-8 shadow-sm rounded">
+    <%= link_to "Back", team_path(@team.slug), class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4" %>
+    <h2 class="text-lg font-bold mb-4">New field for <%= @team.name.titleize %></h2>
+    <% if @fields.size > 0 %>
+      <%= form_with model: @team_field, url: team_fields_path, method: :post, id: "team-field-form" do |form| %>
+        <%= form.hidden_field :team_id, value: @team.id %>
+        <div class="mb-4">
+          <%= form.label "Field", class: "text-gray-700"%>
+          <%= form.select :field_id, options_from_collection_for_select(@fields || [], :id, :name), { prompt: "select field" }, { required: true, class: "block w-full mt-4 rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" } %>
+        </div>
+        <div class="flex justify-end">
+          <%= form.submit "Add", class: "ml-4 cursor-pointer bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-indigo-200" %>
+        </div>
+      <% end %>
+    <% else %>
+      <p class="text-gray-700">No existing fields left to add. Add new fields below</p>
+    <% end %>
+  </div>
+</div>
 <%= render "fields/form", field: Field.new, action: :post, path: fields_path, form_only: true, team: @team %>
+

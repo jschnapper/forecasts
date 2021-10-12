@@ -1,24 +1,40 @@
-<% if (!defined? form_only)|| (defined? form_only && !form_only) %>
-  <%= link_to "Back", :back %>
-  <%= link_to "All fields", fields_path %>
-<% end %>
-<h2><%= field&.name&.titleize || "New Field" %></h2>
-<%= form_with model: field, url: path, method: action, id: "field-form" do |form| %>
-  <%= form.label :name, "Name" %>
-  <%= form.text_field :name, required: true  %>
-  <%= form.label :code, "Code" %>
-  <%= form.text_field :code %>
-  <%= form.label :description, "Description" %>
-  <%= form.text_area :description %>
-  <%# only show default if admin %>
-  <% if current_member.is_admin? %>
-    <%= form.label :default, "Is default field for all teams" %>
-    <%= form.check_box :default %>
-    <%= form.label :only_admins_can_delete, "Requires admin role to delete" %>
-    <%= form.check_box :only_admins_can_delete %>
-  <% end %>
-  <% if (defined? team) && team.present? %>
-    <%= hidden_field_tag :team_id, team.id, id: "team-id", name: "team_id" %>  
-  <% end %>
-  <%= form.submit %>
-<% end %>
+<div class="flex justify-center">
+  <div class="min-w-64 w-full sm:w-7/12 md:w-1/2 lg:w-4/12 bg-white px-4 sm:px-8 py-8 mt-8 mb-16 shadow-sm rounded">
+    <% if (!defined? form_only)|| (defined? form_only && !form_only) %>
+      <%= link_to "Back", :back, class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4" %>
+      <%= link_to "All fields", fields_path, class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4" %>
+    <% end %>
+    <h2 class="text-lg font-bold mb-4"><%= field&.name&.titleize || "New Field" %></h2>
+    <%= form_with model: field, url: path, method: action, id: "field-form" do |form| %>
+      <div class="mb-2">
+        <%= form.label :name, "Name", class: "text-gray-700" %>
+        <%= form.text_field :name, required: true, class: "mt-1 block w-full rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
+      </div>
+      <div class="mb-2">
+        <%= form.label :code, "Code", class: "text-gray-700" %>
+        <%= form.text_field :code, class: "mt-1 block w-full rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
+      </div>
+      <div class="mb-2">
+        <%= form.label :description, "Description", class: "text-gray-700" %>
+        <%= form.text_area :description , class: "mt-1 block w-full rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
+      </div>
+      <%# only show default if admin %>
+      <% if current_member.is_admin? %>
+        <div class="mb-2">
+          <%= form.label :default, "Is default field for all teams", class: "text-gray-700" %>
+          <%= form.check_box :default, class: "rounded border-gray-300 text-indigo-600 focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50" %>
+        </div>
+        <div class="mb-2">
+          <%= form.label :only_admins_can_delete, "Requires admin role to delete", class: "text-gray-700" %>
+          <%= form.check_box :only_admins_can_delete, class: "rounded border-gray-300 text-indigo-600 focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50" %>
+        </div>
+      <% end %>
+      <% if (defined? team) && team.present? %>
+        <%= hidden_field_tag :team_id, team.id, id: "team-id", name: "team_id" %>  
+      <% end %>
+      <div class="flex justify-end">
+        <%= form.submit "Create", class: "ml-4 cursor-pointer bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-indigo-200" %>
+      </div>
+    <% end %>
+  </div>
+</div>
