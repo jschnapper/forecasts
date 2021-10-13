@@ -4,7 +4,7 @@
 # only has create and destroy methods
 class TeamFieldsController < ManagementController
   before_action -> { requires_at_least_role :representative }
-  before_action :set_team, :set_fields, only: :new
+  before_action :set_team, :set_fields, only: [:new, :create]
 
   def new
     @team_field = TeamField.new

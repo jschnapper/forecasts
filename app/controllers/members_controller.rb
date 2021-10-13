@@ -14,7 +14,7 @@ class MembersController < ManagementController
   def create
     @member = Member.new(member_params)
     @member.memberships.new(team_id: params[:team_id])
-    @member.build_member_role.new(role_id: params[:role_id]) if params[:role_id]
+    @member.build_member_role(role_id: params[:role_id]) if params[:role_id].present?
     if @member.save
       redirect_to @member
     else

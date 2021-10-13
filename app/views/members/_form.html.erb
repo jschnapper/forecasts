@@ -1,32 +1,56 @@
-<%= link_to "Back", :back %>
-<%= link_to "All Members", members_path %>
-<h2><%= member&.new_record? ? "New Member" : member.full_name %></h2>
-<% if (defined? team) && team.present? %>
-  <p>Add member to <%= team.name %> team</p>
-<% end %>
-<%= form_with model: member, url: path, method: action, id: "member-form" do |form| %>
-  <%= form.label :first_name, "First Name" %>
-  <%= form.text_field :first_name, required: true  %>
-  <%= form.label :middle_name, "Middle Name" %>
-  <%= form.text_field :middle_name  %>
-  <%= form.label :last_name, "Last Name" %>
-  <%= form.text_field :last_name, required: true  %>
-  <%= form.label :email, "Email" %>
-  <%= form.text_field :email, required: true  %>
-  <% if (defined? team) && team.present? %>
-    <%= hidden_field_tag :team_id, team&.id %>
-  <% else %>
-    <%= form.label :team_id, "Team" %>
-    <%= select_tag :team_id, options_for_select(@teams&.map { |tm| [tm.name.titleize, tm.id] }, member.teams.first&.id), prompt: "select team", name: "team_id", id: "team-id" %>
-  <% end %>
-  <p>Optionally provide a role for a user. Only users with roles can login</p>
-  <p>Role Descriptions</p>
-  <ul>
-    <li>Admin: manage entire application. Can manage and view forecasts for all teams.</li>
-    <li>Manager: Can only manage and view forecasts for the team that the member belongs to.</li>
-    <li>Representative: Can only manage the team that the member belongs to. Cannot see any forecasts.</li>
-  </ul>
-  <%= form.label :role_id, "Role" %>
-  <%= select_tag :role_id, options_for_select(@roles&.map { |role| [role.name.downcase, role.id] } + [["no role", -1]], member.role&.id), prompt: "select role", name: "role_id", id: "role-id" %>
-  <%= form.submit %>
-<% end %>
+<div class="flex justify-center">
+  <div class="min-w-64 w-full sm:w-7/12 md:w-1/2 lg:w-4/12 bg-white px-4 sm:px-8 py-8 mt-8 mb-16 shadow-sm rounded">
+    <div class="mb-4">
+    <%= link_to "Back", :back, class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4" %>
+    <% if current_member.is_admin? %>
+      <%= link_to "All Members", members_path, class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4" %>
+    <% end %>
+    </div>
+    <h2 class="text-lg font-bold"><%= member&.new_record? ? "New Member" : member.full_name %></h2>
+    <% if (defined? team) && team.present? %>
+      <p class="text-gray-700 mb-4">Add member to <%= team.name %> team</p>
+    <% end %>
+    <%= form_with model: member, url: path, method: action, id: "member-form" do |form| %>
+      <div class="mb-4">
+        <%= form.label :first_name, "First Name", class: "text-gray-700" %>
+        <%= form.text_field :first_name, required: true, class: "mt-1 block w-full rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
+      </div>
+      <div class="mb-4">
+        <%= form.label :middle_name, "Middle Name", class: "text-gray-700"  %>
+        <%= form.text_field :middle_name, class: "mt-1 block w-full rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
+      </div>
+      <div class="mb-4">
+        <%= form.label :last_name, "Last Name", class: "text-gray-700"  %>
+        <%= form.text_field :last_name, required: true, class: "mt-1 block w-full rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
+      </div>
+      <div class="mb-4">
+        <%= form.label :email, "Email", class: "text-gray-700"  %>
+        <%= form.text_field :email, required: true, class: "mt-1 block w-full rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
+      </div>
+      <% if (defined? team) && team.present? %>
+        <%= hidden_field_tag :team_id, team&.id %>
+      <% else %>
+        <div class="mb-4">
+          <%= form.label :team_id, "Team", class: "text-gray-700"  %>
+          <%= select_tag :team_id, options_for_select(@teams&.map { |tm| [tm.name.titleize, tm.id] }, member.teams.first&.id), prompt: "select team", name: "team_id", id: "team-id", class: "block w-full mt-4 rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
+        </div>
+      <% end %>
+      <div class="mb-4">
+        <p class="text-sm text-gray-700 mb-4">Optionally provide a role for a user. Only users with roles can login</p>
+        <p class="text-sm text-gray-700mb-4">Role Descriptions</p>
+        <ul class="text-sm text-gray-700 pb-4">
+          <li class="mb-2"><span class="font-bold">Admin:</span> manage entire application. Can manage and view forecasts for all teams.</li>
+          <li class="mb-2"><span class="font-bold">Manager:</span> Can only manage and view forecasts for the team that the member belongs to.</li>
+          <li class="mb-2"><span class="font-bold">Representative:</span> Can only manage the team that the member belongs to. Cannot see any forecasts.</li>
+        </ul>
+        <div>
+          <%= form.label :role_id, "Role", class: "text-gray-700"  %>
+          <%= select_tag :role_id, options_for_select(@roles&.map { |role| [role.name.downcase, role.id] } + [["no role", -1]], member.role&.id), prompt: "select role", name: "role_id", id: "role-id", class: "block w-full rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
+        </div>
+      </div>
+      <div class="flex justify-end">
+        <%= form.submit member.persisted? ? "Save" : "Create", class: "cursor-pointer bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-indigo-200" %>
+      </div>    
+    <% end %>
+  </div>
+</div>
