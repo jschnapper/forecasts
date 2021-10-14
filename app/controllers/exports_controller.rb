@@ -4,10 +4,9 @@ class ExportsController < ManagementController
 
   # export and download
   def create
-    csv_file = CreateCsv.call(@team, @monthly_forecast)
-    send_file csv_file.path, filename: "#{@team.name.parameterize.underscore}_#{@monthly_forecast.date.strftime("%m_%Y")}_forecast_#{Time.now.strftime('%Y%m%dT%H%M%S')}.csv"
+    render xlsx: "#{@team.name.parameterize.underscore}_#{@monthly_forecast.date.strftime("%Y_%m")}_forecast_#{Time.now.strftime('%Y%m%dT%H%M%S')}", template: 'exports/forecast.xlsx.axlsx'
   end
-
+  
   private
 
   def set_params

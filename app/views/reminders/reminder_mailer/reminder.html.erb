@@ -1,12 +1,15 @@
 <p>Dear <%= @member.first_name.capitalize %>,</p>
 <p>Please submit your forecast for <%= @monthly_forecast.friendly_name %></p>
 <p>There are <%= @monthly_forecast.total_hours %> hours this month</p>
-<p><%= @message%> </p>
+<% if @message.present? %>
+<p><%= @message%></p>
+<% end %>
 <p>You can submit your forecast <%= 
   link_to "here", new_team_forecast_url(
     team_name: @team.slug,
     year: @monthly_forecast.year,
-    month: @monthly_forecast.month_name
+    month: @monthly_forecast.month_name,
+    member_id: @member.id
   )
   %>
 </p>

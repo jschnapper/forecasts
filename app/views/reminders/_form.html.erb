@@ -1,6 +1,9 @@
 <h2 class="font-bold mb-1">Send Reminder</h2>
 <p class="text-gray-700 text-sm mb-4">Send reminder to team members who haven't submitted a forecast</p>
 <%= form_with id: 'reminder-form', method: :post, local: false do |form| %>
+  <% if @team.present? %>
+    <%= hidden_field_tag :team_name, @team.slug %>
+  <% end %>
   <%= form.label :message, "(Optional) Add Message", class: "text-gray-700 text-sm" %>
   <%= form.text_area :message, class:"block w-full mt-1 rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
   <div class="bg-gray-50 py-3 sm:flex sm:flex-row-reverse">

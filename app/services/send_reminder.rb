@@ -1,6 +1,6 @@
 class SendReminder < ApplicationService
   
-  def initialize(teams, monthly_forecast, message: nil, members: nil)
+  def initialize(teams, monthly_forecast, message=nil, members: nil)
     @teams = teams
     @monthly_forecast = monthly_forecast
     @message = message

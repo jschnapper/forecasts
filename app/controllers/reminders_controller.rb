@@ -6,12 +6,13 @@ class RemindersController < ManagementController
 
   def new
     respond_to do |format|
+      @team = Team.find_by(slug: params[:team_name]) if params[:team_name].present?
       format.js { render 'shared/modal', locals: { submit: 'Send', form_name: 'reminder-form' } }
     end
   end
 
   def create
-    SendReminder.call(@teams, monthly_forecast)
+    SendReminder.call(@teams, monthly_forecast, params[:message])
     respond_to do |format|
       format.js { render inline: "location.reload()"}
     end

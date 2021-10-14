@@ -22,19 +22,19 @@
   </p> 
 <% end %>
 <p>Here is your submission</p>
-<table>
+<table style="border-collapse: collapse; border: 1px solid black;">
   <thead>
     <tr>
-      <th>Field</th>
-      <th>Hours</th>
+      <th style="border: 1px solid black; padding: 0 8px;">Field</th>
+      <th style="border: 1px solid black; padding: 0 8px;">Hours</th>
     </tr>
   </thead>
   <tbody>
     <% @member_forecast.hours.each do |field, hours| %>
       <% if hours.present? && hours.to_i > 0 %>
         <tr>
-          <td><%= field %></td>
-          <td><%= hours %></td>
+          <td style="border: 1px solid black; text-align: right; padding: 0 8px"><%= field %></td>
+          <td style="border: 1px solid black; padding: 0 8px;"><%= hours %></td>
         </tr>
       <% end %>
     <% end %>
@@ -42,17 +42,17 @@
       <!-- separator -->
     </tr>
     <tr>
-      <td>Expected Total</td>
-      <td><%= @monthly_forecast.total_hours%></td>
+      <td style="border: 1px solid black; text-align: right; padding: 0 8px; font-weight: bold">Expected Total</td>
+      <td style="border: 1px solid black; padding: 0 8px;"><%= @monthly_forecast.total_hours%></td>
     </tr>
     <tr>
-      <td>Your Total</td>
-      <td><%= @member_forecast.total_hours %></td>
+      <td style="border: 1px solid black; text-align: right; padding: 0 8px; font-weight: bold">Your Total</td>
+      <td style="border: 1px solid black; padding: 0 8px;"><%= @member_forecast.total_hours %></td>
     </tr>
   </tbody>
 </table>
 <% if @member_forecast.notes.present? %>
-  <div>The following note was added</div>
+  <div>The following note was added:</div>
   <div><%= @member_forecast.notes %></div>
 <% end %>
 <p>
