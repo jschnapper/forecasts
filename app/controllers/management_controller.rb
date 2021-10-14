@@ -25,10 +25,8 @@ class ManagementController < ApplicationController
   # @param team_name_slug [String] team name as slug to identify team
   #   if non-admin, then the member must be part of the requested team
   def requires_at_least_role(role_name, team_name_slug: nil)
-    p "test"
     role_name = role_name.to_s.downcase
     if member_signed_in? && current_member&.role&.name && current_member.at_least_a?(role_name)
-      p "at least"
       # if team slug provided and user is not an admin
       # verify they belong to team
       if team_name_slug && !current_member.is_admin?

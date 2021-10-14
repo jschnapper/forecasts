@@ -3,7 +3,7 @@
 # Add and remove field from a team
 # only has create and destroy methods
 class TeamFieldsController < ManagementController
-  before_action -> { requires_at_least_role :representative }
+  before_action -> { requires_at_least_role :representative, team_name_slug: params[:team_name] }
   before_action :set_team, :set_fields, only: [:new, :create]
 
   def new
@@ -14,7 +14,7 @@ class TeamFieldsController < ManagementController
   def create
     @team_field = TeamField.new(team_field_params)
     if @team_field.save
-      redirect_to @team_field.team
+      redirect_to team_path(team_name: @team_field.team.slug)
     else
       render :new
     end

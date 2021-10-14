@@ -3,9 +3,9 @@
     <div class="mb-4">
       <%= link_to "Back", team_path(@team.slug), class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4" %>
     </div>
-    <h2 class="text-lg font-bold mb-4">New field for <%= @team.name.titleize %></h2>
+    <h2 class="text-lg font-bold mb-4">Add field to <%= @team.name.titleize %></h2>
     <% if @fields.size > 0 %>
-      <%= form_with model: @team_field, url: team_fields_path, method: :post, id: "team-field-form" do |form| %>
+      <%= form_with model: @team_field, url: team_fields_path(team_name: @team.slug), method: :post, id: "team-field-form" do |form| %>
         <%= form.hidden_field :team_id, value: @team.id %>
         <div class="mb-4">
           <%= form.label "Field", class: "text-gray-700"%>

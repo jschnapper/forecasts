@@ -1,12 +1,20 @@
-<%= link_to "Back", :back %>
-<%= link_to "All fields", fields_path %><h2><%= @field.name %></h2>
-<p><%= @field.code || "No code" %></p>
+<div class="mt-8 mb-4 px-4 sm:px-0">
+<div class="mb-4">
+<%= link_to "Back", :back, class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4"  %>
+<% if current_member.is_admin? %>
+<%= link_to "All fields", fields_path, class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4"  %>
+<% end %>
+</div>
+<h2 class="font-bold"><%= @field.name %></h2>
+<p class="text-gray-700"><%= @field.code || "No code" %></p>
 <p>Is default for teams: <%= @field.default ? "yes" : "no" %></p>
 <p><%= @field.description || "No description" %></p>
-<%= link_to 'Edit', edit_field_path(@field.id)%>
-<%= link_to 'Delete', url_for(action: :destroy,id: @field.id), method: :delete, data: {confirm: "Are you sure you want to delete #{@field.name}"} %>
+<%= link_to 'Edit', edit_field_path(@field.id), class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4" %>
+<%= link_to 'Delete', url_for(action: :destroy,id: @field.id), method: :delete, data: {confirm: "Are you sure you want to delete #{@field.name}"}, class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4"  %>
+<% if current_member.is_admin? %>
+
 <h2>Teams</h2>
-<%= link_to "Add to team" %>
+<%= link_to "Add to team", class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4"  %>
 <table>
   <thead>
     <th>Name</th>
@@ -32,3 +40,4 @@
     <% end %>
   </tbody>
 </table>
+<% end %>
