@@ -4,12 +4,13 @@
 #
 # Table name: teams
 #
-#  id          :bigint           not null, primary key
-#  description :text
-#  name        :string           not null
-#  slug        :string           not null
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
+#  id                  :bigint           not null, primary key
+#  allow_custom_fields :boolean          default(FALSE), not null
+#  description         :text
+#  name                :string           not null
+#  slug                :string           not null
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
 #
 # Indexes
 #
@@ -26,8 +27,7 @@ class Team < ApplicationRecord
   # associations
   has_many :team_fields, dependent: :destroy, autosave: true
   has_many :fields, through: :team_fields
-  has_many :memberships, dependent: :destroy, autosave: true
-  has_many :members, through: :memberships
+  has_many :members, dependent: :destroy
   has_many :mail_jobs, dependent: :destroy
   has_many :member_forecasts, dependent: :destroy
 

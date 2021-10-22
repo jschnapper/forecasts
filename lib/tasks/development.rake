@@ -11,14 +11,12 @@ namespace :development do
           { 
             name: 'pto', 
             description: 'paid time off',
-            default: true,
-            only_admins_can_delete: true
+            default: true
           },
           { 
             name: 'holiday', 
             description: 'Holiday',
-            default: true,
-            only_admins_can_delete: true
+            default: true
           },
           { 
             name: 'Other', 
@@ -87,47 +85,58 @@ namespace :development do
           {
             first_name: 'admin',
             last_name: 'admin',
-            email: 'admin@example.com'
+            email: 'admin@example.com',
+            team_id: Team.find_by(name: 'development').id,
+            role_id: Role.find_by(name: 'admin').id
           },
           {
             first_name: 'alice',
             last_name: 'alice',
-            email: 'alice.alice@example.com'
+            email: 'alice.alice@example.com',
+            team_id: Team.find_by(name: 'development').id,
+            role_id: Role.find_by(name: 'manager').id
           },
           {
             first_name: 'bob',
             last_name: 'bob',
-            email: 'bob.bob@example.com'
+            email: 'bob.bob@example.com',
+            team_id: Team.find_by(name: 'development').id
           },
           {
             first_name: 'carl',
             last_name: 'carl',
-            email: 'carl.carl@example.com'
+            email: 'carl.carl@example.com',
+            team_id: Team.find_by(name: 'business').id
           },
           {
             first_name: 'dave',
             last_name: 'dave',
-            email: 'dave.dave@example.com'
+            email: 'dave.dave@example.com',
+            team_id: Team.find_by(name: 'business').id
           },
           {
             first_name: 'eve',
             last_name: 'eve',
-            email: 'eve.eve@example.com'
+            email: 'eve.eve@example.com',
+            team_id: Team.find_by(name: 'marketing').id
           },
           {
             first_name: 'frank',
             last_name: 'frank',
-            email: 'frank.frank@example.com'
+            email: 'frank.frank@example.com',
+            team_id: Team.find_by(name: 'marketing').id
           },
           {
             first_name: 'grace',
             last_name: 'grace',
-            email: 'grace.grace@example.com'
+            email: 'grace.grace@example.com',
+            team_id: Team.find_by(name: 'dev ops').id
           },
           {
             first_name: 'henry',
             last_name: 'henry',
-            email: 'henry.henry@example.com'
+            email: 'henry.henry@example.com',
+            team_id: Team.find_by(name: 'dev ops').id
           }
         ]
   
@@ -138,99 +147,42 @@ namespace :development do
           end
         end
 
-        # add some test roles
-        admin = Member.includes(:role).find_by(first_name: "admin")
-        admin_role_id = Role.find_by(name: "admin").id
-        if admin.role.nil?
-          MemberRole.create(member_id: admin.id, role_id: admin_role_id)
-        end
-
-        alice = Member.includes(:role).find_by(first_name: "alice")
-        manager_role_id = Role.find_by(name: "manager").id
-        if alice.role.nil?
-          MemberRole.create(member_id: alice.id, role_id: manager_role_id)
-        end
-
-        # set admin password to something easy
+        # set passwords to something easy
+        admin = Member.find_by(first_name: 'admin')
         admin.password = "password"
         admin.save(validate: false)
-  
-        sql = <<-SQL.squish
-          select memberships.*,
-            members.email,
-            members.id as new_member_id,
-            teams.name as team_name,
-            teams.id as new_team_id
-          from memberships
-          inner join members on members.id = memberships.member_id
-          inner join teams on teams.id = memberships.team_id
-        SQL
-        existing_teams = Team.all
-        existing_members = Member.all
-        existing_memberships = Membership.find_by_sql(sql)
-        memberships = [
+
+        alice = Member.find_by(first_name: 'alice')
+        alice.password = "password"
+        admin.save(validate: false)
+
+        holidays = [
           {
-            team_name: 'development',
-            member_email: 'admin@example.com'
+            name: "Independence Day",
+            date: "2021-07-04"
           },
           {
-            team_name: 'development',
-            member_email: 'alice.alice@example.com'
-          },
-          {
-            team_name: 'development',
-            member_email: 'bob.bob@example.com'
-          },
-          {
-            team_name: 'business',
-            member_email: 'carl.carl@example.com'
-          },
-          {
-            team_name: 'business',
-            member_email: 'dave.dave@example.com'
-          },
-          {
-            team_name: 'marketing',
-            member_email: 'eve.eve@example.com'
-          },
-          {
-            team_name: 'marketing',
-            member_email: 'frank.frank@example.com'
-          },
-          {
-            team_name: 'dev ops',
-            member_email: 'grace.grace@example.com'
-          },
-          {
-            team_name: 'dev ops',
-            member_email: 'henry.henry@example.com'
+            name: "Labor Day",
+            date: "2021-09-06"
           }
         ]
   
-        memberships.each do |membership|
-          exists = existing_memberships.detect do |field|
-            field.email == membership[:member_email] && field.team_name == membership[:team_name]
-          end
-
-          if !exists
-            member = existing_members.detect { |member| membership[:member_email] == member.email }
-            team = existing_teams.detect { |team| membership[:team_name] == team.name }
-            Membership.create(member_id: member.id, team_id: team.id) if member && team
-          end
-        end
-
         # seed monthly forecasts
         monthly_forecasts = [
           {
-            date: '2021-07-01',
-            total_hours: 180,
-            holiday_hours: 8
+            date: '2021-07-01'
           },
           {
-            date: '2021-08-01',
-            total_hours: 188
+            date: '2021-08-01'
+          },
+          {
+            date: '2021-09-01'
+          },
+          {
+            date: '2021-10-01'
           }
         ]
+
         existing_forecasts = MonthlyForecast.all.pluck(:date).map { |date| date.strftime('%Y-%m-%d') }
         monthly_forecasts.each do |forecast|
           MonthlyForecast.create(forecast) unless existing_forecasts.include?(forecast[:date])

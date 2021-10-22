@@ -5,6 +5,8 @@ class CreateMembers < ActiveRecord::Migration[6.1]
       t.string :middle_name
       t.string :last_name
       t.string :email, index: { unique: true }, null: false
+      t.references :team, foreign_key: true
+      t.references :role, foreign_key: true
       t.timestamps
     end
 

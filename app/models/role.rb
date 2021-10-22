@@ -19,8 +19,7 @@ class Role < ApplicationRecord
   before_validation :format_fields
 
   # associations
-  has_many :member_roles, dependent: :destroy
-  has_many :members, through: :member_roles
+  has_many :members, dependent: :destroy
 
   # validations
   validates :name, presence: true, uniqueness: { case_sensitive: false }

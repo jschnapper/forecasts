@@ -19,6 +19,8 @@
 #  unconfirmed_email      :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  role_id                :bigint
+#  team_id                :bigint
 #
 # Indexes
 #
@@ -26,6 +28,13 @@
 #  index_members_on_email                                     (email) UNIQUE
 #  index_members_on_last_name_and_middle_name_and_first_name  (last_name,middle_name,first_name) UNIQUE
 #  index_members_on_reset_password_token                      (reset_password_token) UNIQUE
+#  index_members_on_role_id                                   (role_id)
+#  index_members_on_team_id                                   (team_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (role_id => roles.id)
+#  fk_rails_...  (team_id => teams.id)
 #
 class Member < ApplicationRecord
   # Include default devise modules. Others available are:
@@ -40,13 +49,11 @@ class Member < ApplicationRecord
   before_validation :format_fields
 
   # send set password email if new user has a role or changed from nothing to something
-  after_create :send_reset_password_instructions, if: proc { member_role.present? }
+  after_create :send_reset_password_instructions, if: proc { role.present? }
 
   # associations
-  has_one :member_role, dependent: :destroy
-  has_one :role, through: :member_role
-  has_many :memberships, dependent: :destroy
-  has_many :teams, through: :memberships
+  belongs_to :team, optional: true
+  belongs_to :role, optional: true
   has_many :member_forecasts, dependent: :destroy
 
   # validations

@@ -1,6 +1,20 @@
 <!-- PRIORITY -->
-- [ ] rework routes for admin and manage
-- [ ] how will managing fields work and manage fields on a team work?
+- [ ] commit fixes from other repo
+- [ ] allow for inversion of spreadsheet (so each row is an entry from the user for a field)
+- [ ] members only belong to one team
+- [ ] test in prod (with emails)
+- [ ] forecasts should be team by team rather than shared
+- [ ] add paper trails to member forecast and members
+- [ ] allow member to change holiday hours
+- [ ] allow members to add custom fields
+- [ ] allow members to submit hours in advance
+- [ ] if "other" used, required notes
+- [ ] fields should be team by team, where an admin can create a field for everyone
+- [ ] finish designing all the pages
+- [ ] store submission in local storage
+- [ ] other suggestions they made
+- [ ] allow users to "magic login" by clicking link on email rather than dropdown
+
 
 - [x] other gems
   - [x] yard/rdoc

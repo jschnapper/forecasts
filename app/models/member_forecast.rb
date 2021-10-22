@@ -4,27 +4,24 @@
 #
 # Table name: member_forecasts
 #
-#  id                  :bigint           not null, primary key
-#  hours               :jsonb
-#  notes               :text
-#  created_at          :datetime         not null
-#  updated_at          :datetime         not null
-#  member_id           :bigint           not null
-#  monthly_forecast_id :bigint           not null
-#  team_id             :bigint           not null
+#  id                       :bigint           not null, primary key
+#  hours                    :jsonb
+#  notes                    :text
+#  created_at               :datetime         not null
+#  updated_at               :datetime         not null
+#  member_id                :bigint           not null
+#  team_monthly_forecast_id :bigint           not null
 #
 # Indexes
 #
-#  index_member_forecasts_on_member_id                         (member_id)
-#  index_member_forecasts_on_monthly_forecast_id               (monthly_forecast_id)
-#  index_member_forecasts_on_monthly_forecast_member_and_team  (monthly_forecast_id,member_id,team_id) UNIQUE
-#  index_member_forecasts_on_team_id                           (team_id)
+#  index_member_forecasts_on_member_id                     (member_id)
+#  index_member_forecasts_on_team_monthly_forecast_id      (team_monthly_forecast_id)
+#  index_member_forecasts_on_team_monthly_forecast_member  (team_monthly_forecast_id,member_id) UNIQUE
 #
 # Foreign Keys
 #
 #  fk_rails_...  (member_id => members.id)
-#  fk_rails_...  (monthly_forecast_id => monthly_forecasts.id)
-#  fk_rails_...  (team_id => teams.id)
+#  fk_rails_...  (team_monthly_forecast_id => team_monthly_forecasts.id)
 #
 class MemberForecast < ApplicationRecord
   # callbacks
@@ -32,13 +29,11 @@ class MemberForecast < ApplicationRecord
 
   # associations
   belongs_to :member
-  belongs_to :monthly_forecast
-  belongs_to :team
+  belongs_to :team_monthly_forecast
 
   # validations
   validates :member, presence: true
-  validates :monthly_forecast, presence: true
-  validates :team, presence: true
+  validates :team_monthly_forecast, presence: true
 
   scope :get_member_forecasts, ->(teams, monthly_forecast) { find_by_sql(get_member_forecasts_sql(teams, monthly_forecast)) }
 

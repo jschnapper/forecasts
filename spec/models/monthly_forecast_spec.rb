@@ -3,9 +3,9 @@
 # Table name: monthly_forecasts
 #
 #  id            :bigint           not null, primary key
-#  active        :boolean          default(TRUE), not null
 #  date          :date             not null
 #  holiday_hours :integer          default(0), not null
+#  message       :text
 #  total_hours   :integer          default(0), not null
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
