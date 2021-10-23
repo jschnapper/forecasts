@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_18_033522) do
+ActiveRecord::Schema.define(version: 2021_10_23_192131) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -57,6 +57,17 @@ ActiveRecord::Schema.define(version: 2021_09_18_033522) do
     t.index ["team_id"], name: "index_mail_jobs_on_team_id"
   end
 
+  create_table "member_forecast_versions", force: :cascade do |t|
+    t.string "item_type"
+    t.string "{:null=>false}"
+    t.bigint "item_id", null: false
+    t.string "event", null: false
+    t.string "whodunnit"
+    t.text "object"
+    t.datetime "created_at"
+    t.index ["item_type", "item_id"], name: "index_member_forecast_versions_on_item_type_and_item_id"
+  end
+
   create_table "member_forecasts", force: :cascade do |t|
     t.bigint "member_id", null: false
     t.bigint "team_monthly_forecast_id", null: false
@@ -67,6 +78,17 @@ ActiveRecord::Schema.define(version: 2021_09_18_033522) do
     t.index ["member_id"], name: "index_member_forecasts_on_member_id"
     t.index ["team_monthly_forecast_id", "member_id"], name: "index_member_forecasts_on_team_monthly_forecast_member", unique: true
     t.index ["team_monthly_forecast_id"], name: "index_member_forecasts_on_team_monthly_forecast_id"
+  end
+
+  create_table "member_versions", force: :cascade do |t|
+    t.string "item_type"
+    t.string "{:null=>false}"
+    t.bigint "item_id", null: false
+    t.string "event", null: false
+    t.string "whodunnit"
+    t.text "object"
+    t.datetime "created_at"
+    t.index ["item_type", "item_id"], name: "index_member_versions_on_item_type_and_item_id"
   end
 
   create_table "members", force: :cascade do |t|

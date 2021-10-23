@@ -32,7 +32,7 @@
       <% else %>
         <div class="mb-4">
           <%= form.label :team_id, "Team", class: "text-gray-700"  %>
-          <%= form.select :team_id, options_for_select(@teams&.map { |tm| [tm.name.titleize, tm.id] }, member.team_id), prompt: "select team", name: "team_id", id: "team-id", class: "block w-full mt-4 rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
+          <%= form.select :team_id, options_for_select(@teams&.map { |tm| [tm.name.titleize, tm.id] } + [["no team", '']], member.team_id), prompt: "select team", name: "team_id", id: "team-id", class: "block w-full mt-4 rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
         </div>
       <% end %>
       <div class="mb-4">
@@ -45,7 +45,7 @@
         </ul>
         <div>
           <%= form.label :role_id, "Role", class: "text-gray-700"  %>
-          <%= form.select :role_id, options_for_select(@roles&.map { |role| [role.name.downcase, role.id] } + [["no role", -1]], member.role_id), prompt: "select role", name: "role_id", id: "role-id", class: "block w-full rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
+          <%= form.select :role_id, options_for_select(@roles&.map { |role| [role.name.downcase, role.id] } + [["no role", '']], member.role_id), prompt: "select role", name: "role_id", id: "role-id", class: "block w-full rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
         </div>
       </div>
       <div class="flex justify-end">

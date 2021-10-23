@@ -24,6 +24,10 @@
 #  fk_rails_...  (team_monthly_forecast_id => team_monthly_forecasts.id)
 #
 class MemberForecast < ApplicationRecord
+  has_paper_trail versions: {
+    class_name: 'MemberForecastVersion'
+  }
+
   # callbacks
   before_save :format_hours
 
