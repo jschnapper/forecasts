@@ -1,16 +1,21 @@
 <!-- PRIORITY -->
-- [ ] commit fixes from other repo
+- [x] commit fixes from other repo
 - [ ] allow for inversion of spreadsheet (so each row is an entry from the user for a field)
 - [x] members only belong to one team
 - [ ] allow members to pick a different date to submit for
 - [ ] test in prod (with emails)
-- [ ] forecasts should be team by team rather than shared
+- [x] forecasts should be team by team rather than shared
 - [ ] add paper trails to member forecast and members
-- [ ] allow member to change holiday hours
+- [x] allow member to change holiday hours
 - [ ] allow members to add custom fields
+- [ ] select different forecast from show page
+- [ ] close forecast from show page
 - [ ] allow members to submit hours in advance
+- [ ] alternate row colors
 - [ ] if "other" used, required notes
 - [ ] finish designing all the pages
+- [ ] field names should be the same case as the way they are created
+- [ ] order fields: everything... holiday, pto, other, notes
 - [ ] store submission in local storage
 - [ ] other suggestions they made
 - [ ] allow users to "magic login" by clicking link on email rather than dropdown

@@ -68,7 +68,7 @@ class SubmitForecastsController < ApplicationController
       @team = Team.includes(:members).find_by('lower(slug) = ?', name)
     elsif params[:team_id].present?
       @team = Team.includes(:members).find_by(id: params[:team_id])
-    elsif params[:member_forecast][:team_monthly_forecast_id]
+    elsif params.dig(:member_forecast,:team_monthly_forecast_id)
       @team = TeamMonthlyForecast.find_by(id: params[:member_forecast][:team_monthly_forecast_id])&.team
     end
   end

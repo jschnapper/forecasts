@@ -69,7 +69,8 @@ class MemberForecast < ApplicationRecord
       left join member_forecasts
       on member_forecasts.member_id = members.id
       and member_forecasts.team_monthly_forecast_id = team_monthly_forecasts.id
-      where members.team_id in (#{[teams].flatten.map(&:id).join(",")})
+      where team_monthly_forecasts.team_id = members.team_id
+      and members.team_id in (#{[teams].flatten.map(&:id).join(",")})
       order by members.first_name
     SQL
   end

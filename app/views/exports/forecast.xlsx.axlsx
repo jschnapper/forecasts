@@ -1,25 +1,25 @@
 wb = xlsx_package.workbook
 headers = ['first name', 'last name', 'email', 'total hours']
-headers << 'holiday' if @monthly_forecast.has_holidays?
+headers << 'holiday' if @team_monthly_forecast.has_holidays?
 headers += @team.ordered_fields.map { |field| field.name.downcase }.excluding("holiday")
 headers << "notes"
 num_rows = 0
-wb.add_worksheet(name: "#{@team.name.parameterize.underscore}_#{@monthly_forecast.month_name.downcase}_#{@monthly_forecast.year}") do |sheet|
-  sheet.add_row ["Expected total hours: #{@monthly_forecast.total_hours}"]
-  sheet.add_row ["Expected holiday hours: #{@monthly_forecast.holiday_hours}"]
+wb.add_worksheet(name: "#{@team.name.parameterize.underscore}_#{@team_monthly_forecast.month_name.downcase}_#{@team_monthly_forecast.year}") do |sheet|
+  sheet.add_row ["Expected total hours: #{@team_monthly_forecast.total_hours}"]
+  sheet.add_row ["Expected holiday hours: #{@team_monthly_forecast.holiday_hours}"]
   sheet.add_row [*headers]
-  MemberForecast.get_member_forecasts(@team, @monthly_forecast).each do |member_forecast|
+  MemberForecast.get_member_forecasts(@team, @team_monthly_forecast.monthly_forecast).each do |member_forecast|
     row = []
     row << member_forecast.first_name
     row << member_forecast.last_name
     row << member_forecast.email
     row << member_forecast.total_hours
-    if @monthly_forecast.has_holidays?
+    if @team_monthly_forecast.has_holidays?
       row << member_forecast.hours&.fetch(:holiday, 0)
     end
     @team.ordered_fields.each do |field|
       if field.name != "holiday"
-        val = member_forecast&.hours&.fetch(field.name).present? ? member_forecast&.hours&.fetch(field.name) : 0
+        val = member_forecast.hours&.fetch(field.name, 0).present? ? member_forecast.hours&.fetch(field.name, 0) : 0
         row << val
       end
     end
@@ -37,5 +37,5 @@ wb.add_worksheet(name: "#{@team.name.parameterize.underscore}_#{@monthly_forecas
       pane.active_pane = :bottom_right
     end
   end
-  sheet.add_table "A3:#{[*'A'..'ZZ'][headers.size - 1] + (3 + num_rows).to_s}", name: "#{@team.name.titleize} #{@monthly_forecast.month_name} #{@monthly_forecast.year} Forecast", style_info: { name: 'TableStyleLight11' }
+  sheet.add_table "A3:#{[*'A'..'ZZ'][headers.size - 1] + (3 + num_rows).to_s}", name: "#{@team.name.titleize} #{@team_monthly_forecast.month_name} #{@team_monthly_forecast.year} Forecast", style_info: { name: 'TableStyleLight11' }
 end

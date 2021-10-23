@@ -4,6 +4,9 @@
   <% if @team.present? %>
     <%= hidden_field_tag :team_name, @team.slug %>
   <% end %>
+  <% if @monthly_forecast.present? %>
+      <%= hidden_field_tag :monthly_forecast_id, @monthly_forecast.id %>
+  <% end %>
   <%= form.label :message, "(Optional) Add Message", class: "text-gray-700 text-sm" %>
   <%= form.text_area :message, class:"block w-full mt-1 rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
   <div class="bg-gray-50 py-3 sm:flex sm:flex-row-reverse">

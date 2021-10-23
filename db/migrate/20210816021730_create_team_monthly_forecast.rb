@@ -7,5 +7,7 @@ class CreateTeamMonthlyForecast < ActiveRecord::Migration[6.1]
       t.text :message # message to display on forecast
       t.timestamps
     end
+
+    add_index :team_monthly_forecasts, [:team_id, :monthly_forecast_id], unique: true
   end
 end

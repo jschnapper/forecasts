@@ -1,5 +1,6 @@
 class RemindersController < ManagementController
   before_action -> { requires_at_least_role :manager }
+  before_action :monthly_forecast, only: :new
   before_action :set_members, only: :create
 
   # send reminder
@@ -21,7 +22,15 @@ class RemindersController < ManagementController
   private
 
   def monthly_forecast
-    @monthly_forecast ||= MonthlyForecast.last
+    @monthly_forecast ||= set_monthly_forecast
+  end
+
+  def set_monthly_forecast
+    if params[:monthly_forecast_id]
+      MonthlyForecast.find_by(id: params[:monthly_forecast_id]) || (MonthlyForecast.find_by(date: Date.parse("#{Date.today.strftime('%Y/%B')}")) || MonthlyForecast.last)
+    else
+      MonthlyForecast.find_by(date: Date.parse("#{Date.today.strftime('%Y/%B')}")) || MonthlyForecast.last
+    end
   end
 
   def set_members

@@ -3,7 +3,7 @@ document.querySelector("#forecast-title #team-name").innerText = "<%= team&.name
 <%# replace container with form relevant to team %>
 document.getElementById("forecast-form-container").innerHTML = "<%= j render "form", team: team, team_monthly_forecast: team_monthly_forecast, member_forecast: member_forecast, member: member  %>"
 <%# Replace members %>
-document.querySelector("#forecast-form-container #member-emails").innerHTML = "<%= j select_tag "member-id", options_from_collection_for_select(@members || [], :id, :email, @member&.id), { prompt: "select email", id: "member-emails", required: true } %>"
+document.querySelector("#forecast-form-container #member-emails").innerHTML = "<%= j select_tag "member-id", options_from_collection_for_select(@members&.sort_by { |member| member&.email&.downcase } || [], :id, :email, @member&.id), { prompt: "select email", id: "member-emails", required: true } %>"
 <%# Clear email under header %>
 document.querySelector("#member-email").innerText = null
 

@@ -166,6 +166,13 @@ namespace :development do
             date: "2021-09-06"
           }
         ]
+
+        existing_holidays = Holiday.all.pluck(:name)
+        holidays.each do |holiday|
+          if !existing_holidays.include?(holiday[:name]&.downcase)
+            Holiday.create!(holiday)
+          end
+        end
   
         # seed monthly forecasts
         monthly_forecasts = [

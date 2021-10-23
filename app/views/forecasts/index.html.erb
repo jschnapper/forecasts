@@ -1,8 +1,8 @@
 <div class="mt-8 mb-4 px-4 sm:px-0">
   <h2 class="font-bold mb-2"><%= @team.name.titleize %> Forecasts</h2>
-  <% if @monthly_forecasts.size > 0 %>
+  <% if @team_monthly_forecasts.size > 0 %>
   <ul>
-    <% @monthly_forecasts.each do |forecast| %>
+    <% @team_monthly_forecasts.each do |forecast| %>
       <li class="no-underline hover:underline text-indigo-500">
         <%= 
           link_to forecast.friendly_name, forecast_path( 
