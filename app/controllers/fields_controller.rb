@@ -48,7 +48,6 @@ class FieldsController < ManagementController
 
   def destroy
     @field = Field.find_by(id: params[:id])
-    @field.admin_approved_deletion = current_member.is_admin?
     if @field&.destroy
       redirect_to action: :index
     else
@@ -59,6 +58,6 @@ class FieldsController < ManagementController
   private
 
   def field_params
-    params.require(:field).permit(:name, :code, :description, :default, :only_admins_can_delete)
+    params.require(:field).permit(:name, :code, :description, :default)
   end
 end

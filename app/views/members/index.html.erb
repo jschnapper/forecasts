@@ -19,8 +19,8 @@
         <td><%= member.last_name %></td>
         <td><%= member.email %></td>
         <td><%= member.role&.name %></td>
-        <% if member.teams&.first&.present? %>
-          <td><%= link_to member.teams.first.name.titleize, team_path(member.teams.first.slug) %></td>
+        <% if member.team_id %>
+          <td><%= link_to member.team.name.titleize, team_path(member.team.slug) %></td>
         <% else %>
           <td>No team</td>
         <% end %>

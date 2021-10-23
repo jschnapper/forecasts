@@ -40,27 +40,7 @@ class MembersController < ManagementController
 
   def update
     @member = Member.find_by(id: params[:id])
-    update = true
-    if @member.teams.first.id != params[:team_id] 
-      membership = Membership.new(member_id: @member.id, team_id: params[:team_id])
-      if membership
-        @member.memberships.replace([membership])
-      else
-        update = false
-      end
-    end
-    if params[:role_id].present? && params[:role_id].to_i != -1 && @member.role&.id != params[:role_id] 
-      role = MemberRole.new(member_id: @member.id, role_id: params[:role_id])
-      if role
-        @member.build_member_role(role_id: params[:role_id])
-      else
-        update = false
-      end
-    end
-    if update && @member&.update(member_params)
-      if params[:role_id].to_i == -1
-        @member.member_role.destroy
-      end
+    if @member&.update(member_params)
       redirect_to(@member)
     else
       redirect_to action: :edit
@@ -79,7 +59,7 @@ class MembersController < ManagementController
   private
 
   def member_params
-    params.require(:member).permit(:first_name, :middle_name, :last_name, :email)
+    params.require(:member).permit(:first_name, :middle_name, :last_name, :email, :team_id, :role_id)
   end
 
   def set_teams

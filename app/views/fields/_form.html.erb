@@ -28,10 +28,6 @@
           <%= form.label :default, "Is default field for all teams", class: "text-gray-700" %>
           <%= form.check_box :default, class: "rounded border-gray-300 text-indigo-600 focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50" %>
         </div>
-        <div class="mb-2">
-          <%= form.label :only_admins_can_delete, "Requires admin role to delete", class: "text-gray-700" %>
-          <%= form.check_box :only_admins_can_delete, class: "rounded border-gray-300 text-indigo-600 focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50" %>
-        </div>
       <% end %>
       <% if (defined? team) && team.present? %>
         <%= hidden_field_tag :team_id, team.id, id: "team-id", name: "team_id" %>  

@@ -32,10 +32,11 @@ class MemberForecast < ApplicationRecord
   belongs_to :team_monthly_forecast
 
   # validations
-  validates :member, presence: true
+  validates :member, presence: true, uniqueness: { scope: :team_monthly_forecast }
   validates :team_monthly_forecast, presence: true
 
   scope :get_member_forecasts, ->(teams, monthly_forecast) { find_by_sql(get_member_forecasts_sql(teams, monthly_forecast)) }
+  scope :member_forecast, -> (member_id) { }
 
   def hours
     self[:hours]&.with_indifferent_access
@@ -63,12 +64,12 @@ class MemberForecast < ApplicationRecord
     <<-SQL.squish
       select members.*, member_forecasts.hours, member_forecasts.notes
       from members
-      inner join memberships
-      on memberships.member_id = members.id
-      and memberships.team_id in (#{[teams].flatten.map(&:id).join(",")})
+      left join team_monthly_forecasts
+      on team_monthly_forecasts.monthly_forecast_id = #{monthly_forecast.id}
       left join member_forecasts
       on member_forecasts.member_id = members.id
-      and member_forecasts.monthly_forecast_id = #{monthly_forecast.id}
+      and member_forecasts.team_monthly_forecast_id = team_monthly_forecasts.id
+      where members.team_id in (#{[teams].flatten.map(&:id).join(",")})
       order by members.first_name
     SQL
   end

@@ -1,7 +1,8 @@
 <!-- PRIORITY -->
 - [ ] commit fixes from other repo
 - [ ] allow for inversion of spreadsheet (so each row is an entry from the user for a field)
-- [ ] members only belong to one team
+- [x] members only belong to one team
+- [ ] allow members to pick a different date to submit for
 - [ ] test in prod (with emails)
 - [ ] forecasts should be team by team rather than shared
 - [ ] add paper trails to member forecast and members
@@ -9,7 +10,6 @@
 - [ ] allow members to add custom fields
 - [ ] allow members to submit hours in advance
 - [ ] if "other" used, required notes
-- [ ] fields should be team by team, where an admin can create a field for everyone
 - [ ] finish designing all the pages
 - [ ] store submission in local storage
 - [ ] other suggestions they made

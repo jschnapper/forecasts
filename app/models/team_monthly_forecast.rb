@@ -2,13 +2,13 @@
 #
 # Table name: team_monthly_forecasts
 #
-#  id                  :bigint           not null, primary key
-#  message             :text
-#  open                :boolean          default(TRUE), not null
-#  created_at          :datetime         not null
-#  updated_at          :datetime         not null
-#  monthly_forecast_id :bigint           not null
-#  team_id             :bigint           not null
+#  id                   :bigint           not null, primary key
+#  message              :text
+#  open_for_submissions :boolean          default(TRUE), not null
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  monthly_forecast_id  :bigint           not null
+#  team_id              :bigint           not null
 #
 # Indexes
 #
@@ -23,4 +23,6 @@
 class TeamMonthlyForecast < ApplicationRecord
   belongs_to :team
   belongs_to :monthly_forecast
+
+  alias_attribute :open?, :open_for_submissions
 end

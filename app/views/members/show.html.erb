@@ -10,8 +10,8 @@
 <% if @member.role %>
   <p class="text-gray-700">Role: <%= @member.role.name %>
 <% end %>
-<% if @member.teams&.first&.present? %>
-  <p><%= link_to @member.teams.first.name.titleize, team_path(@member.teams.first.slug), class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4"  %></p>
+<% if @member.team_id%>
+  <p><%= link_to @member.team.name.titleize, team_path(@member.team.slug), class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4"  %></p>
 <% else %>
   <p><%= @member.full_name %> does not belong to a team</p>
 <% end %>

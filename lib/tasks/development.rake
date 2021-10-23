@@ -154,7 +154,7 @@ namespace :development do
 
         alice = Member.find_by(first_name: 'alice')
         alice.password = "password"
-        admin.save(validate: false)
+        alice.save(validate: false)
 
         holidays = [
           {

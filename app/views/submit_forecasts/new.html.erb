@@ -1,13 +1,13 @@
 <div class="flex justify-center">
   <div class="min-w-64 w-full sm:w-7/12 md:w-1/2 lg:w-4/12 bg-white px-4 sm:px-8 py-8 my-16 shadow-sm rounded">
     <div id="forecast-title" class="text-lg mb-2"><span id="team-name" class="font-bold"><%= @team&.name&.titleize || "Team"%></span> <span class="text-gray-500"><%= "#{@monthly_forecast&.date&.strftime('%B %Y')} " %>Forecast</span></div>
-    <% if !@monthly_forecast&.active %>
+    <% if @team_monthly_forecast.present? && !@team_monthly_forecast&.open? %>
       <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4">
         <p>This form is no longer accepting submissions</p>
       </div>
     <% end %>
     <div id="forecast-form-container">
-      <%= render "form", team: @team, monthly_forecast: @monthly_forecast, member_forecast: @member_forecast, member: @member %>
+      <%= render "form", team: @team, team_monthly_forecast: @team_monthly_forecast, member_forecast: @member_forecast, member: @member %>
     </div>
     <%= form_with url: new_forecast_path, method: :get, id: "forecast-user-details-form", class: "hidden", data: { remote: true } do |form| %>
       <%= hidden_field_tag :team_id, @team&.id, id: "user-details-team-id", name: "team_id" %>

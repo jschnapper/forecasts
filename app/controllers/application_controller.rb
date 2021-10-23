@@ -8,18 +8,17 @@ class ApplicationController < ActionController::Base
   # override after sign in path
   def after_sign_in_path_for(member) 
     case member.role.name
-    when "admin"
+    when 'admin'
       # redirect to admin home
       admin_home_path
-    when "manager"
+    when 'manager'
       # redirect to current forecast
-      forecast_path(member.teams.first.slug)
-    when "representative"
+      forecast_path(member.team.slug)
+    when 'representative'
       # redirect to team details page
-      team_path(member.teams.first.slug)
+      team_path(member.team.slug)
     end
   end 
-
   
   helper_method :home_path
 end

@@ -124,7 +124,7 @@ ActiveRecord::Schema.define(version: 2021_09_18_033522) do
   create_table "team_monthly_forecasts", force: :cascade do |t|
     t.bigint "monthly_forecast_id", null: false
     t.bigint "team_id", null: false
-    t.boolean "open", default: true, null: false
+    t.boolean "open_for_submissions", default: true, null: false
     t.text "message"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

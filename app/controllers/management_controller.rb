@@ -31,7 +31,7 @@ class ManagementController < ApplicationController
       # verify they belong to team
       if team_name_slug && !current_member.is_admin?
         @team = Team.find_by(slug: team_name_slug)
-        if current_member.teams.first.id != @team.id  
+        if current_member.team_id != @team.id  
           flash.now[:alert] = "You do not have the permission for this action"
           redirect_back fallback_location: root_path
         end
