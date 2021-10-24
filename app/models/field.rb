@@ -20,7 +20,6 @@
 class Field < ApplicationRecord
   # callbacks
   before_validation :format_fields
-  before_destroy :verify_deletion
 
   # associations
   has_many :team_fields, dependent: :destroy
@@ -31,26 +30,13 @@ class Field < ApplicationRecord
   validates :code, uniqueness: true, allow_nil: true
   validates :name, presence: true, uniqueness: { case_sensitive: false }
 
-  # additional attribtues
-  # set to true for admin approval to delete field
-  attr_accessor :admin_approved_deletion
-
   private
-
-  # when a deletion can only be made by an admin
-  # and this attribute is set to true
-  # then a field can be deleted
-  # if a filed does not require admin approval to be deleted
-  # it can be deleted
-  def verify_deletion
-    if only_admins_can_delete && !admin_approved_deletion
-      errors.add(:base, "Only admins can delete this field")
-    end
-  end
 
   # format fields before saving
   #   - strip whitespace
+  #   - set empty code to null
   def format_fields
     self.name = name.strip if name.present?
+    self.code = nil if !code.present?
   end
 end

@@ -5,11 +5,11 @@
 - [ ] allow members to pick a different date to submit for
 - [ ] test in prod (with emails)
 - [x] forecasts should be team by team rather than shared
-- [ ] add paper trails to member forecast and members
+- [x] add paper trails to member forecast and members
 - [x] allow member to change holiday hours
 - [ ] allow members to add custom fields
 - [ ] select different forecast from show page
-- [ ] close forecast from show page
+- [ ] allow admins/manager to close forecast from show page
 - [ ] allow members to submit hours in advance
 - [ ] alternate row colors
 - [ ] if "other" used, required notes

@@ -51,7 +51,7 @@ class SubmitForecastsController < ApplicationController
   private
 
   def member_forecast_params
-    params.require(:member_forecast).permit(:member_id, :team_monthly_forecast_id, :notes, hours: [team&.fields&.map { |field| field.name.downcase }])
+    params.require(:member_forecast).permit(:member_id, :team_monthly_forecast_id, :notes, hours: [team&.fields&.map { |field| field.name }])
   end
 
   # memoized field fetch

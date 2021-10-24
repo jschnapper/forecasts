@@ -1,0 +1,11 @@
+wb = xlsx_package.workbook
+headers = ['email', 'field', 'total hours']
+headers << 'holiday' if @team_monthly_forecast.has_holidays?
+headers += @team.ordered_fields.map { |field| field.name.downcase }.excluding("holiday")
+headers << "notes"
+num_rows = 0
+wb.add_worksheet(name: "#{@team.name.parameterize.underscore}_#{@team_monthly_forecast.month_name.downcase}_#{@team_monthly_forecast.year}") do |sheet|
+  sheet.add_row ["Expected total hours: #{@team_monthly_forecast.total_hours}"]
+  sheet.add_row ["Expected holiday hours: #{@team_monthly_forecast.holiday_hours}"]
+  sheet.add_row headers
+end

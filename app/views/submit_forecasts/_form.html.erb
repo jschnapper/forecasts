@@ -17,7 +17,7 @@
           </tr>
         </thead>
         <tbody>
-        <% team.fields.order(:name).each do |field| %>
+        <% team.fields.order("lower(name)").each do |field| %>
           <%# Only show holiday when there is a holiday %>
           <% if field.name.downcase == "holiday" && @team_monthly_forecast.monthly_forecast.holiday_hours == 0 %>
             <% next %>
@@ -37,7 +37,7 @@
           <% else %>
             <tr>
               <td class="text-right pr-4 align-middle">
-                <%= form.label field.name, class: "text-gray-700 whitespace-nowrap" %>
+                <%= form.label field.name, field.name, class: "text-gray-700 whitespace-nowrap" %>
                 <% if field.code.present? %>
                   <p class="text-gray-500 text-sm"><%= field.code %></p>
                 <% end %>

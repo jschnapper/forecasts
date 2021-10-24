@@ -4,7 +4,12 @@ class ExportsController < ManagementController
 
   # export and download
   def create
-    render xlsx: "#{@team.name.parameterize.underscore}_#{@team_monthly_forecast.date.strftime("%Y_%m")}_forecast_#{Time.now.strftime('%Y%m%dT%H%M%S')}", template: 'exports/forecast.xlsx.axlsx'
+    name = "#{@team.name.parameterize.underscore}_#{@team_monthly_forecast.date.strftime("%Y_%m")}_forecast_#{Time.now.strftime('%Y%m%dT%H%M%S')}"
+    if params[:export_type].to_i == 1
+      render xlsx: name, template: 'exports/forecast.xlsx.axlsx'
+    elsif params[:export_type].to_i == 2
+      render xlsx: name, template: 'exports/forecast_row_per_field.xlsx.axlsx'
+    end
   end
   
   private

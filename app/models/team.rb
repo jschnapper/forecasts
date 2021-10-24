@@ -38,7 +38,7 @@ class Team < ApplicationRecord
 
   # -------- helpers -------- #
   def ordered_fields
-    fields.order(:name) 
+    fields.order("lower(name)") 
   end
 
   private

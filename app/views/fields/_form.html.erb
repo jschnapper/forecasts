@@ -8,7 +8,7 @@
         <% end %>
       </div>
     <% end %>
-    <h2 class="text-lg font-bold mb-4"><%= field&.name&.titleize || "New Field" %></h2>
+    <h2 class="text-lg font-bold mb-4"><%= field&.name || "New Field" %></h2>
     <%= form_with model: field, url: path, method: action, id: "field-form" do |form| %>
       <div class="mb-2">
         <%= form.label :name, "Name", class: "text-gray-700" %>
