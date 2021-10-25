@@ -18,6 +18,13 @@
 #  index_fields_on_name  (name) UNIQUE
 #
 class Field < ApplicationRecord
+  # fields that we probably want to restrict from people deleting
+  SPECIAL_FIELDS = [
+    'holiday',
+    'pto',
+    'other'
+  ].freeze
+
   # callbacks
   before_validation :format_fields
 

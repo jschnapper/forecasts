@@ -37,8 +37,28 @@ class Team < ApplicationRecord
 
 
   # -------- helpers -------- #
-  def ordered_fields
+
+  # Sort all fields by name
+  def alpha_sort_fields
     fields.order("lower(name)") 
+  end
+
+  # order fields
+  #   - alphabetize
+  #   - holiday
+  #   - pto
+  #   - other
+  def ordered_fields
+    @ordered_fields ||= order_fields
+  end
+
+  # order team fields association
+  #   - alphabetize
+  #   - holiday
+  #   - pto
+  #   - other
+  def ordered_team_fields
+    @ordered_team_fields || order_team_fields
   end
 
   private
@@ -51,6 +71,61 @@ class Team < ApplicationRecord
   # use the name to set the slug
   def set_slug
     self.slug = name.strip.downcase.tr(' ', '-')
+  end
+
+  # order fields
+  #   - alphabetize
+  #   - holiday
+  #   - pto
+  #   - other
+  def order_fields
+    special_fields = {
+      holiday: nil,
+      pto: nil,
+      other: nil
+    }
+    sorted_fields = []
+    fields.each do |field|
+      if !special_fields.keys.include?(field.name.downcase.to_sym)
+        sorted_fields.each do |s_field|
+          if s_field.name.downcase < field.name.downcase
+            break
+          end
+        end
+        sorted_fields << field
+      else
+        special_fields[field.name.downcase.to_sym] = field
+      end
+    end
+    sorted_fields << special_fields[:holiday] if special_fields[:holiday]
+    sorted_fields << special_fields[:pto] if special_fields[:pto]
+    sorted_fields << special_fields[:other] if special_fields[:other]
+    return sorted_fields
+  end
+
+  def order_team_fields
+    special_fields = {
+      holiday: nil,
+      pto: nil,
+      other: nil
+    }
+    sorted_team_fields = []
+    team_fields.each do |team_field|
+      if !special_fields.keys.include?(team_field.field.name.downcase.to_sym)
+        sorted_team_fields.each do |s_field|
+          if s_field.field.name.downcase < team_field.field.name.downcase
+            break
+          end
+        end
+        sorted_team_fields << team_field
+      else
+        special_fields[team_field.field.name.downcase.to_sym] = team_field
+      end
+    end
+    sorted_team_fields << special_fields[:holiday] if special_fields[:holiday]
+    sorted_team_fields << special_fields[:pto] if special_fields[:pto]
+    sorted_team_fields << special_fields[:other] if special_fields[:other]
+    return sorted_team_fields
   end
 
   # Create the default fields that are required for each team

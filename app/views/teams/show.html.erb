@@ -33,7 +33,7 @@
       </thead>
     <tbody>
       <% if @team.members.size > 0 %>
-        <% @team.members.each_with_index do |member, index| %>
+        <% @team.members.order('lower(members.first_name)').each_with_index do |member, index| %>
           <% odd_even_style = index % 2 == 0 ? "" : " bg-gray-100" %>
           <tr class="text-left hover:bg-gray-200<%= odd_even_style %>">
             <td class="px-4 py-2 sm:py-4"><%= member.first_name %></td>
@@ -74,7 +74,7 @@
       </thead>
     <tbody>
       <% if @team.team_fields.size > 0 %>
-        <% @team.team_fields.each_with_index do |team_field, index| %>
+        <% @team.ordered_team_fields.each_with_index do |team_field, index| %>
           <% odd_even_style = index % 2 == 0 ? "" : " bg-gray-100" %>
           <tr class="text-left hover:bg-gray-200<%= odd_even_style %>">
             <td class="px-4 py-2 sm:py-4"><%= team_field.field.name %></td>
@@ -82,7 +82,7 @@
             <td class="px-4 py-2 sm:py-4"><%= team_field.field.description || "No description" %></td>
             <td class="px-4 py-2 sm:py-4">
               <%= link_to 'Show', field_path(team_field.field.id), class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4" %>
-              <% if team_field.field.name.downcase != "holiday" %>
+              <% if !Field::SPECIAL_FIELDS.include?(team_field.field.name.downcase) %>
                 <%= link_to 'Remove from team', url_for(controller: :team_fields, action: :destroy, id: team_field.id), method: :delete, data: {confirm: "Are you sure you want to remove #{team_field.field.name} from #{@team.name.titleize}"}, class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4"%>
               <% end %>
             </td>

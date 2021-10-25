@@ -10,16 +10,37 @@
 Role.create(
   [
     {
-      name: 'admin',
+      name: 'Admin',
       description: 'Administrator for entire application and all teams'
     },
     {
-      name: 'manager',
+      name: 'Manager',
       description: 'Team manager. Can only manage own team and see team related forecasts'
     },
     {
-      name: 'representative',
+      name: 'Representative',
       description: 'Can manage members and fields for own team, but cannot see forecasts'
+    }
+  ]
+)
+
+# Create required fields
+Field.create(
+  [
+    { 
+      name: 'PTO', 
+      description: 'paid time off',
+      default: true
+    },
+    { 
+      name: 'Holiday', 
+      description: 'Holiday',
+      default: true
+    },
+    { 
+      name: 'Other', 
+      description: 'Anything not covered by the other fields',
+      default: true
     }
   ]
 )

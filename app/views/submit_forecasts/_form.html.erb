@@ -17,7 +17,7 @@
           </tr>
         </thead>
         <tbody>
-        <% team.fields.order("lower(name)").each do |field| %>
+        <% team.ordered_fields.each do |field| %>
           <%# Only show holiday when there is a holiday %>
           <% if field.name.downcase == "holiday" && @team_monthly_forecast.monthly_forecast.holiday_hours == 0 %>
             <% next %>

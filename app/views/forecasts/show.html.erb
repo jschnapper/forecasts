@@ -42,11 +42,8 @@
     <th class="px-4 py-4">Last Name</th>
     <th class="px-4 py-4">Email</th>
     <th class="px-4 py-4">Total</th>
-    <% if @team_monthly_forecast.has_holidays? %>
-      <th class="px-4 py-4">Holiday</th>
-    <% end %>
     <% @team.ordered_fields.each do |field| %>
-      <% if field.name.downcase != "holiday" %>
+      <% if field.name.downcase != "holiday" ||  (field.name.downcase == "holiday" && @team_monthly_forecast.has_holidays?) %>
         <th class="px-4 py-4"><%= field.name %></th> 
       <% end %>
     <% end %>
@@ -61,11 +58,8 @@
       <td class="px-4 py-2 sm:py-4"><%= member_forecast.last_name %></td>
       <td class="px-4 py-2 sm:py-4"><%= member_forecast.email %></td>
       <td class="px-4 py-2 sm:py-4"><%= member_forecast.total_hours %></td>
-      <% if @team_monthly_forecast.has_holidays? %>
-        <td class="px-4 py-2 sm:py-4"><%= member_forecast.hours&.fetch(:holiday, 0) || 0 %></td>
-      <% end %>
       <% @team.ordered_fields.each do |field| %>
-        <% if field.name != "holiday" %>
+        <% if field.name.downcase != "holiday" ||  (field.name.downcase == "holiday" && @team_monthly_forecast.has_holidays?) %>
           <td class="px-4 py-2 sm:py-4">
             <%= member_forecast.hours&.fetch(field.name, 0).present? ? member_forecast.hours&.fetch(field.name, 0) : 0 %>
           </td>

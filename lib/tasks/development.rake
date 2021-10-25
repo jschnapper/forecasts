@@ -8,21 +8,6 @@ namespace :development do
       ActiveRecord::Base.transaction do
         # Create fields
         fields = [
-          { 
-            name: 'pto', 
-            description: 'paid time off',
-            default: true
-          },
-          { 
-            name: 'holiday', 
-            description: 'Holiday',
-            default: true
-          },
-          { 
-            name: 'Other', 
-            description: 'Anything not covered by the other fields',
-            default: true
-          },
           {
             name: 'project 1',
             code: '001',
