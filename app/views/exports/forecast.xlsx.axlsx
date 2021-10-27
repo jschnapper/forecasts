@@ -1,31 +1,35 @@
 wb = xlsx_package.workbook
 headers = ['first name', 'last name', 'email', 'total hours']
-headers << 'holiday' if @team_monthly_forecast.has_holidays?
-headers += @team.ordered_fields.map(&:name).excluding("holiday")
+headers += @team.ordered_fields.map(&:name)
 headers << "notes"
-num_rows = 0
+# calculate last column
+last_column = [*'A'..'ZZZ'][headers.size - 1]
+last_column_no_notes = [*'A'..'ZZZ'][headers.size - 2]
+num_rows = 3
 wb.add_worksheet(name: "#{@team.name.parameterize.underscore}_#{@team_monthly_forecast.month_name.downcase}_#{@team_monthly_forecast.year}") do |sheet|
   sheet.add_row ["Expected total hours: #{@team_monthly_forecast.total_hours}"]
   sheet.add_row ["Expected holiday hours: #{@team_monthly_forecast.holiday_hours}"]
   sheet.add_row headers
   MemberForecast.get_member_forecasts(@team, @team_monthly_forecast.monthly_forecast).each do |member_forecast|
+    num_rows += 1
     row = []
     row << member_forecast.first_name
     row << member_forecast.last_name
     row << member_forecast.email
-    row << member_forecast.total_hours
-    if @team_monthly_forecast.has_holidays?
-      row << member_forecast.hours&.fetch(:holiday, 0) || 0
-    end
+    row << "=SUM(E#{num_rows}:#{last_column_no_notes}#{num_rows})"
     @team.ordered_fields.each do |field|
-      if field.name.downcase != "holiday"
-        val = member_forecast.hours&.fetch(field.name, 0).present? ? member_forecast.hours&.fetch(field.name, 0) : 0
-        row << val
-      end
+      val = member_forecast.hours&.fetch(field.name, 0).present? ? member_forecast.hours&.fetch(field.name, 0) : 0
+      row << val
     end
     row << member_forecast.notes
-    sheet.add_row row
-    num_rows += 1
+    # need to pre-calculate the value
+    # When you generate an xlsx file, the value is usually empty and it get calculated 
+    # on the first run.
+    # calculate via each cell value (in case a field was removed after someone submitted)
+    formula_values = [nil] * headers.size 
+    # check if row[5] if present because that means there is a field + notes
+    formula_values[3] = row[5].present? ? row[4..(row.size - 2)].reduce(0) { |sum, n| sum + n.to_i } : 0
+    sheet.add_row row, formula_values: formula_values
   end
   # freeze panes
   if num_rows > 0
@@ -37,5 +41,5 @@ wb.add_worksheet(name: "#{@team.name.parameterize.underscore}_#{@team_monthly_fo
       pane.active_pane = :bottom_right
     end
   end
-  sheet.add_table "A3:#{[*'A'..'ZZ'][headers.size - 1] + (3 + num_rows).to_s}", name: "#{@team.name.titleize} #{@team_monthly_forecast.month_name} #{@team_monthly_forecast.year} Forecast", style_info: { name: 'TableStyleLight11' }
+  sheet.add_table "A3:#{last_column + (num_rows).to_s}", name: "#{@team.name.titleize} #{@team_monthly_forecast.month_name} #{@team_monthly_forecast.year} Forecast", style_info: { name: 'TableStyleLight11' }
 end

@@ -19,6 +19,8 @@
 - [ ] store submission in local storage
 - [ ] other suggestions they made
 - [ ] allow users to "magic login" by clicking link on email rather than dropdown
+- [ ] changing forecast fields will affect previous submissions AND previous forecast pages -- need way to track this
+- [ ] track team-fields as paper trail?
 
 
 - [x] other gems

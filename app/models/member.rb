@@ -80,7 +80,7 @@ class Member < ApplicationRecord
   # display full name
   def full_name
     # remove repeat whitespace and display full name
-    "#{first_name} #{middle_name} #{last_name}".squeeze(' ')
+    "#{first_name} #{middle_name} #{last_name}".squeeze(' ').strip
   end
 
     # member roles

@@ -66,7 +66,7 @@ class MemberForecast < ApplicationRecord
 
   def self.get_member_forecasts_sql(teams, monthly_forecast)
     <<-SQL.squish
-      select members.*, member_forecasts.hours, member_forecasts.notes
+      select members.*, members.id as member_id, member_forecasts.hours, member_forecasts.notes
       from members
       left join team_monthly_forecasts
       on team_monthly_forecasts.monthly_forecast_id = #{monthly_forecast.id}
