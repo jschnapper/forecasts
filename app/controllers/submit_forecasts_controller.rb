@@ -31,21 +31,25 @@ class SubmitForecastsController < ApplicationController
 
   def create
     existing_submission = MemberForecast.includes(:member, team_monthly_forecast: :team).find_by(member_id: params[:member_forecast][:member_id], team_monthly_forecast_id: params[:member_forecast][:team_monthly_forecast_id])
-    if existing_submission && existing_submission.team_monthly_forecast.open?
-      existing_submission.update(hours: member_forecast_params[:hours], notes: member_forecast_params[:notes])
-      existing_submission.reload
-      @member_forecast = existing_submission
-      @team_monthly_forecast = existing_submission.team_monthly_forecast
-      @member = existing_submission.member
-      @team = existing_submission.team_monthly_forecast.team
-    else
-      @member_forecast = MemberForecast.create(member_forecast_params)
-      @team_monthly_forecast = TeamMonthlyForecast.find_by(id: params.dig(:member_forecast, :team_monthly_forecast_id), open_for_submissions: true)
-      @member = Member.find_by(id: params.dig(:member_forecast, :member_id))
-      @team = Team.find_by(id: params.dig(:member_forecast, :team_id))
+    @team_monthly_forecast = TeamMonthlyForecast.find_by(id: params.dig(:member_forecast, :team_monthly_forecast_id), open_for_submissions: true)
+    if @team_monthly_forecast
+      if existing_submission
+        existing_submission.update(hours: member_forecast_params[:hours], notes: member_forecast_params[:notes])
+        @member_forecast = existing_submission
+      else
+        @member_forecast = MemberForecast.create(member_forecast_params)
+      end
     end
-    ForecastMailer.confirmation_email(@member_forecast).deliver_now
-    render :success
+    @member = @member_forecast.member
+    @team = @member_forecast.team_monthly_forecast.team
+    if @member_forecast.errors.present?
+      # need all members for dropdown
+      @members = @team&.members
+      render :new
+    else
+      ForecastMailer.confirmation_email(@member_forecast).deliver_now
+      render :success
+    end
   end
 
   private

@@ -38,6 +38,7 @@ class MemberForecast < ApplicationRecord
   # validations
   validates :member, presence: true, uniqueness: { scope: :team_monthly_forecast }
   validates :team_monthly_forecast, presence: true
+  validate :has_notes
 
   scope :get_member_forecasts, ->(teams, monthly_forecast) { find_by_sql(get_member_forecasts_sql(teams, monthly_forecast)) }
   scope :member_forecast, -> (member_id) { }
@@ -61,6 +62,14 @@ class MemberForecast < ApplicationRecord
   def format_hours
     hours.each do |field, amount|
       hours[field.downcase] = amount.to_i
+    end
+  end
+
+  # ensure that if they are passing "other"
+  # that they have notes to accompany it
+  def has_notes
+    if hours["Other"].present? && notes.empty?
+      errors.add(:notes, "If including 'other' hours, please list what the hours are for in the notes")
     end
   end
 

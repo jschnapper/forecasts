@@ -8,6 +8,18 @@
   <% end %>
   <%= form.select :member_id, options_from_collection_for_select(@members&.sort_by { |member| member&.email&.downcase } || [], :id, :email, @member&.id), { prompt: "select email" }, { id: "member-emails", required: true, class: "block w-full mt-4 rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" } %>
   <% if team %>
+    <% if @member_forecast&.errors&.present? %>
+      <div class="bg-red-100 border border-red-400 text-red-700 my-4 px-4 py-3 rounded relative">
+      <div class="mt-2 mb-4">
+        <b class="font-bold">Failed to submit forecast</b>
+      </div>
+      <ul class="list-disc list-outside px-4">
+      <% @member_forecast.errors.each do |name, message| %>
+          <li><b class="font-bold"><%= name %>:</b> <%= message %></li>
+      <% end %>
+      </ul>
+      </div>
+    <% end %>
     <div class="mt-8 flex flex-col">
       <table class="table-auto">
         <thead>
@@ -27,7 +39,7 @@
                 <%= form.label field.name, field.name, class: "text-gray-700 whitespace-nowrap" %>
               </td>
               <td class="align-middle">
-                <%= form.number_field :hours, step: 1, min: 0, name: "member_forecast[hours[#{field.name}]]", class: "hour-input block w-full rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50", value: @team_monthly_forecast.monthly_forecast.holiday_hours, required: true %>
+                <%= form.number_field :hours, step: 1, min: 0, name: "member_forecast[hours[#{field.name}]]", value: @member_forecast&.hours&.fetch(field.name, nil),  class: "hour-input block w-full rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50", value: @team_monthly_forecast.monthly_forecast.holiday_hours, required: true %>
               </td>
             </tr>
             <tr>
@@ -43,10 +55,7 @@
                 <% end %>
               </td>
               <td class="align-middle">
-                <%= form.number_field :hours, step: 1, min: 0, name: "member_forecast[hours[#{field.name}]]", class: "hour-input block w-full rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
-                <% if field.description.present? %>
-                  <span class=></span>
-                <% end %>
+                <%= form.number_field :hours, step: 1, min: 0, name: "member_forecast[hours[#{field.name}]]", value: @member_forecast&.hours&.fetch(field.name, nil), class: "hour-input block w-full rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
               </td>
             </tr>
             <tr>
@@ -57,8 +66,9 @@
         <% end %> 
         </tbody>
       </table>
-      <%= form.label "notes", class: "text-gray-700 mt-4" %>
+      <%= form.label "notes", class: "text-gray-700 mt-4", value: @member_forecast&.notes %>
       <%= form.text_area :notes, name: "member_forecast[notes]", id: "notes-input", class: "block w-full mt-1 rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
+      <div class="text-gray-500 text-sm pb-4">If you include hours in the 'other' field, please indicate what the hours are for in the notes</div>
       <table class="table-auto my-8">
         <tbody>
           <tr class="text-gray-500">
@@ -66,7 +76,7 @@
             <td id="expected-hours"><%= team_monthly_forecast.monthly_forecast.total_hours %></td>
           </tr>
           <tr>
-            <td class="pr-4">You Hours</td>
+            <td class="pr-4">Your Hours</td>
             <td id="member-hours"><%= member_forecast.total_hours %></td>
           </tr>
         </tbody>

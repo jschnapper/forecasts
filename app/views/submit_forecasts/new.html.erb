@@ -1,5 +1,5 @@
 <div class="flex justify-center">
-  <div class="min-w-64 w-full sm:w-7/12 md:w-1/2 lg:w-4/12 bg-white px-4 sm:px-8 py-8 my-16 shadow rounded">
+  <div class="min-w-64 w-full sm:w-7/12 md:w-1/2 lg:w-4/12 bg-white px-4 sm:px-8 py-8 my-16 sm:shadow-md rounded">
     <div id="forecast-title" class="text-lg mb-2"><span id="team-name" class="font-bold"><%= @team&.name&.titleize || "Team"%></span> <span class="text-gray-500"><%= "#{@monthly_forecast&.date&.strftime('%B %Y')} " %>Forecast</span></div>
     <% if @team_monthly_forecast.present? && !@team_monthly_forecast&.open? %>
       <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4">

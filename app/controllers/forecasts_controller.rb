@@ -13,6 +13,9 @@ class ForecastsController < ManagementController
     @member_forecasts = MemberForecast.get_member_forecasts(@team, @team_monthly_forecast.monthly_forecast)
   end
 
+  def update
+  end
+
   private
 
   def team

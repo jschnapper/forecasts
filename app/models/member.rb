@@ -83,7 +83,7 @@ class Member < ApplicationRecord
     "#{first_name} #{middle_name} #{last_name}".squeeze(' ').strip
   end
 
-    # member roles
+  # member roles
   # role hierarchy: admin > manager > representative
   def at_least_a_manager?
     case role&.name&.downcase

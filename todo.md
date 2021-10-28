@@ -1,6 +1,18 @@
 <!-- PRIORITY -->
+- [x] Fix member field
+- [ ] Address adding/removing fields and how that will affect the history
+- [ ] allow closing forecast from forecast page
+- [ ] test emails
+- [ ] allow members to submit hours in advance (pick different forecast)
+- [ ] figure out timing for forecasts (when home page should navigate to which forecast)
+- [x] require notes if entering details in other
+- [ ] list features
+
+
+
+- [ ] allow people to suggest fixes and improvements and rank them
 - [x] commit fixes from other repo
-- [ ] allow for inversion of spreadsheet (so each row is an entry from the user for a field)
+- [x] allow for inversion of spreadsheet (so each row is an entry from the user for a field)
 - [x] members only belong to one team
 - [ ] allow members to pick a different date to submit for
 - [ ] test in prod (with emails)
@@ -9,15 +21,12 @@
 - [x] allow member to change holiday hours
 - [ ] allow members to add custom fields
 - [ ] select different forecast from show page
-- [ ] allow admins/manager to close forecast from show page
-- [ ] allow members to submit hours in advance
 - [ ] alternate row colors
-- [ ] if "other" used, required notes
 - [ ] finish designing all the pages
-- [ ] field names should be the same case as the way they are created
-- [ ] order fields: everything... holiday, pto, other, notes
+- [x] field names should be the same case as the way they are created
+- [x] order fields: everything... holiday, pto, other, notes
 - [ ] store submission in local storage
-- [ ] other suggestions they made
+- [ ] allow searching for email
 - [ ] allow users to "magic login" by clicking link on email rather than dropdown
 - [ ] changing forecast fields will affect previous submissions AND previous forecast pages -- need way to track this
 - [ ] track team-fields as paper trail?

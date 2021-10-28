@@ -33,10 +33,11 @@
         </tr>
       </thead>
       <tbody>
-        <% @member_forecast.hours.each do |field, hours| %>
-          <% if hours.present? && hours.to_i > 0 %>
+        <% @team_monthly_forecast.team.ordered_fields.each do |field| %>
+          <% hours = @member_forecast.hours.fetch(field.name, nil).present? ? @member_forecast.hours.fetch(field.name, nil) : 0 %>
+          <% if hours.to_i > 0 %>
             <tr>
-              <td class="pr-4 text-right"><%= field %></td>
+              <td class="pr-4 text-right"><%= field.name %></td>
               <td><%= hours %></td>
             </tr>
           <% end %>
