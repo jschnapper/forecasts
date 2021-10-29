@@ -2,21 +2,15 @@
 #
 # Table name: holidays
 #
-#  id                  :bigint           not null, primary key
-#  date                :date             not null
-#  name                :string
-#  created_at          :datetime         not null
-#  updated_at          :datetime         not null
-#  monthly_forecast_id :bigint
+#  id         :bigint           not null, primary key
+#  date       :date             not null
+#  name       :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #
 # Indexes
 #
-#  index_holidays_on_date                 (date) UNIQUE
-#  index_holidays_on_monthly_forecast_id  (monthly_forecast_id)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (monthly_forecast_id => monthly_forecasts.id)
+#  index_holidays_on_date  (date) UNIQUE
 #
 require 'rails_helper'
 

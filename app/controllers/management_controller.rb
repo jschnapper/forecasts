@@ -2,6 +2,7 @@ class ManagementController < ApplicationController
   # All admin and management actions must route through the 
   # management controller to ensure authentication
   before_action :authenticate_member!
+  before_action :set_whodunnit
 
   protected
 
@@ -31,7 +32,7 @@ class ManagementController < ApplicationController
       # verify they belong to team
       if team_name_slug && !current_member.is_admin?
         @team = Team.find_by(slug: team_name_slug)
-        if current_member.teams.first.id != @team.id  
+        if current_member.team_id != @team.id  
           flash.now[:alert] = "You do not have the permission for this action"
           redirect_back fallback_location: root_path
         end
@@ -40,5 +41,10 @@ class ManagementController < ApplicationController
       flash.now[:alert] = "You do not have the permission for this action"
       redirect_back fallback_location: root_path
     end
+  end
+
+  # Store person who changes an entry (where applicable)
+  def set_whodunnit
+    PaperTrail.request.whodunnit = current_member&.email
   end
 end

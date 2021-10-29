@@ -23,9 +23,10 @@ Rails.application.routes.draw do
     scope '/teams/:team_name' do
       get '/forecasts', to: 'forecasts#index'
       get '/forecast/(:year)/(:month)', to: 'forecasts#show', as: :forecast
+      put '/forecast/status', to: 'forecast_status#update', as: :forecast_status
       get '/members', to: 'members#team_members', as: :team_members
       post '/forecast/export', to: 'exports#create', as: :export_forecast
-      delete '/membership/:membership_id', to: 'memberships#destroy', as: :delete_membership
+      put '/membership', to: 'memberships#update', as: :delete_membership
       resource :fields, controller: :team_fields, as: :team_fields, except: :index
     end
   end

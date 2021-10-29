@@ -2,14 +2,13 @@
 #
 # Table name: fields
 #
-#  id                     :bigint           not null, primary key
-#  code                   :string
-#  default                :boolean          default(FALSE), not null
-#  description            :text
-#  name                   :string           not null
-#  only_admins_can_delete :boolean          default(FALSE), not null
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
+#  id          :bigint           not null, primary key
+#  code        :string
+#  default     :boolean          default(FALSE), not null
+#  description :text
+#  name        :string           not null
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
 #
 # Indexes
 #

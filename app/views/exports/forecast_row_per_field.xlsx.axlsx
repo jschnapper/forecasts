@@ -1,0 +1,32 @@
+wb = xlsx_package.workbook
+s = wb.styles
+total_row_style = s.add_style bg_color: 'D0CECE', b: true, border: { color: '000000', style: :thin, outline: true }
+headers = ['Name', 'Field', 'Hours']
+num_rows = 3
+wb.add_worksheet(name: "#{@team.name.parameterize.underscore}_#{@team_monthly_forecast.month_name.downcase}_#{@team_monthly_forecast.year}") do |sheet|
+  sheet.add_row ["Expected total hours: #{@team_monthly_forecast.total_hours}"]
+  sheet.add_row ["Expected holiday hours: #{@team_monthly_forecast.holiday_hours}"]
+  sheet.add_row headers, b: true
+  MemberForecast.includes(:member).get_member_forecasts(@team, @team_monthly_forecast.monthly_forecast).each do |member_forecast|
+    num_rows += 1
+    row_start = num_rows + 1
+    row_end = num_rows + @team.ordered_fields.size
+    row = [member_forecast.member.full_name, 'total']
+    row << "=SUM(C#{row_start}:C#{row_end})"
+    # calculate total based on fields being used in case field was removed after submission
+    total = @team.ordered_fields.reduce(0) { |sum, field| sum + (member_forecast.hours&.fetch(field.name, 0)&.to_i || 0) } 
+    sheet.add_row row, style: total_row_style, formula_values: [nil, nil, total]
+    @team.ordered_fields.each do |field|
+      row = [member_forecast.member.full_name, field.name]
+      val = member_forecast.hours&.fetch(field.name, 0).present? ? member_forecast.hours&.fetch(field.name, 0) : 0
+      row << val
+      sheet.add_row row
+      num_rows += 1
+    end
+    row = [member_forecast.member.full_name, 'notes']
+    row << member_forecast.notes
+    sheet.add_row row
+    num_rows += 1
+  end
+  sheet.add_table "A3:#{'C' + num_rows.to_s}", name: "#{@team.name.titleize} #{@team_monthly_forecast.month_name} #{@team_monthly_forecast.year} Forecast", style_info: { name: 'TableStyleLight11' }
+end

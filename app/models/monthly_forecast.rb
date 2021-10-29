@@ -5,9 +5,9 @@
 # Table name: monthly_forecasts
 #
 #  id            :bigint           not null, primary key
-#  active        :boolean          default(TRUE), not null
 #  date          :date             not null
 #  holiday_hours :integer          default(0), not null
+#  message       :text
 #  total_hours   :integer          default(0), not null
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
@@ -19,13 +19,10 @@
 class MonthlyForecast < ApplicationRecord
   # callback
   before_create :calculate_hours
+  before_create :build_team_monthly_forecasts
 
   # associations
-  has_many :holidays, dependent: :destroy
-  has_many :member_forecast, dependent: :destroy
-
-  scope :active, -> { where(active: true) }
-
+  has_many :team_monthly_forecasts, dependent: :destroy
 
   # validations
   validates :date, presence: true
@@ -67,5 +64,11 @@ class MonthlyForecast < ApplicationRecord
     end
 
     self.holiday_hours = Holiday.where(date: start_date..end_date).count * 8
+  end
+
+  # build monthly forecasts for each team
+  def build_team_monthly_forecasts
+    team_ids = Team.all.pluck(:id).map { |team_id| { team_id: team_id } }
+    self.team_monthly_forecasts.new(team_ids)
   end
 end

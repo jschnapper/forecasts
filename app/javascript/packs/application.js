@@ -13,7 +13,7 @@ Turbolinks.start()
 ActiveStorage.start()
 
 // Handler when the DOM is fully loaded
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("turbolinks:load", () => {
   /*****************************************
    ********* submit_forecasts start ********
    *****************************************/
@@ -100,6 +100,39 @@ document.addEventListener("DOMContentLoaded", () => {
    ********* submit_forecasts end ********
    ***************************************/
 
+  /*******************************
+   ***** Team forecast start *****
+   *******************************/
+
+  const exportButton = document.getElementById("export-button")
+  const exportOptionsWrapper = document.getElementById("export-options-wrapper")
+  if (exportButton) {
+    exportButton.addEventListener('click', () => {
+      if (exportButton.classList.contains('active')) {
+        hideExportOptions()
+      } else {
+        exportOptionsWrapper.classList.remove('opacity-0', 'duration-75', 'ease-in', 'scale-95', 'hidden')
+        exportOptionsWrapper.classList.add('ease-out', 'duration-100', 'scale-100')
+        exportButton.classList.add('active')
+      }
+    })
+
+    window.addEventListener('click', (event) => {
+      if (event.target != exportButton && exportButton.classList.contains('active')) {
+        hideExportOptions()
+      }
+    })
+  }
+
+  const hideExportOptions = () => {
+    exportButton.classList.remove('active')
+    exportOptionsWrapper.classList.remove('ease-out', 'duration-100')
+    exportOptionsWrapper.classList.add('ease-in', 'duration-75', 'opacity-0', 'scale-95', 'hidden')
+  }
+
+  /*****************************
+   ***** Team forecast end *****
+   *****************************/
 
   /***********************************
    ************** MODAL **************

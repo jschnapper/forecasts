@@ -7,8 +7,9 @@ class ForecastMailer < ApplicationMailer
   # @param [MemberForecast] member_forecast_submission - instance of MemberForecast
   def confirmation_email(member_forecast_submission)
     @member_forecast = member_forecast_submission
-    @monthly_forecast = member_forecast_submission.monthly_forecast
-    @team = member_forecast_submission.team
+    @team_monthly_forecast = member_forecast_submission.team_monthly_forecast
+    @monthly_forecast = @team_monthly_forecast.monthly_forecast
+    @team = @team_monthly_forecast.team
     @member = member_forecast_submission.member
     mail(
       to: @member.email,

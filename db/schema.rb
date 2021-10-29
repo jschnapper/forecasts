@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_18_033522) do
+ActiveRecord::Schema.define(version: 2021_10_23_192131) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,7 +19,6 @@ ActiveRecord::Schema.define(version: 2021_09_18_033522) do
     t.string "name", null: false
     t.string "code"
     t.boolean "default", default: false, null: false
-    t.boolean "only_admins_can_delete", default: false, null: false
     t.text "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -30,11 +29,9 @@ ActiveRecord::Schema.define(version: 2021_09_18_033522) do
   create_table "holidays", force: :cascade do |t|
     t.string "name"
     t.date "date", null: false
-    t.bigint "monthly_forecast_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["date"], name: "index_holidays_on_date", unique: true
-    t.index ["monthly_forecast_id"], name: "index_holidays_on_monthly_forecast_id"
   end
 
   create_table "mail_histories", force: :cascade do |t|
@@ -60,27 +57,38 @@ ActiveRecord::Schema.define(version: 2021_09_18_033522) do
     t.index ["team_id"], name: "index_mail_jobs_on_team_id"
   end
 
+  create_table "member_forecast_versions", force: :cascade do |t|
+    t.string "item_type"
+    t.string "{:null=>false}"
+    t.bigint "item_id", null: false
+    t.string "event", null: false
+    t.string "whodunnit"
+    t.text "object"
+    t.datetime "created_at"
+    t.index ["item_type", "item_id"], name: "index_member_forecast_versions_on_item_type_and_item_id"
+  end
+
   create_table "member_forecasts", force: :cascade do |t|
     t.bigint "member_id", null: false
-    t.bigint "team_id", null: false
-    t.bigint "monthly_forecast_id", null: false
+    t.bigint "team_monthly_forecast_id", null: false
     t.text "notes"
     t.jsonb "hours"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["member_id"], name: "index_member_forecasts_on_member_id"
-    t.index ["monthly_forecast_id", "member_id", "team_id"], name: "index_member_forecasts_on_monthly_forecast_member_and_team", unique: true
-    t.index ["monthly_forecast_id"], name: "index_member_forecasts_on_monthly_forecast_id"
-    t.index ["team_id"], name: "index_member_forecasts_on_team_id"
+    t.index ["team_monthly_forecast_id", "member_id"], name: "index_member_forecasts_on_team_monthly_forecast_member", unique: true
+    t.index ["team_monthly_forecast_id"], name: "index_member_forecasts_on_team_monthly_forecast_id"
   end
 
-  create_table "member_roles", force: :cascade do |t|
-    t.bigint "role_id", null: false
-    t.bigint "member_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["member_id"], name: "index_member_roles_on_member_id"
-    t.index ["role_id"], name: "index_member_roles_on_role_id"
+  create_table "member_versions", force: :cascade do |t|
+    t.string "item_type"
+    t.string "{:null=>false}"
+    t.bigint "item_id", null: false
+    t.string "event", null: false
+    t.string "whodunnit"
+    t.text "object"
+    t.datetime "created_at"
+    t.index ["item_type", "item_id"], name: "index_member_versions_on_item_type_and_item_id"
   end
 
   create_table "members", force: :cascade do |t|
@@ -88,6 +96,8 @@ ActiveRecord::Schema.define(version: 2021_09_18_033522) do
     t.string "middle_name"
     t.string "last_name"
     t.string "email", null: false
+    t.bigint "team_id"
+    t.bigint "role_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "encrypted_password", default: "", null: false
@@ -102,22 +112,15 @@ ActiveRecord::Schema.define(version: 2021_09_18_033522) do
     t.index ["email"], name: "index_members_on_email", unique: true
     t.index ["last_name", "middle_name", "first_name"], name: "index_members_on_last_name_and_middle_name_and_first_name", unique: true
     t.index ["reset_password_token"], name: "index_members_on_reset_password_token", unique: true
-  end
-
-  create_table "memberships", force: :cascade do |t|
-    t.bigint "team_id", null: false
-    t.bigint "member_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["member_id"], name: "index_memberships_on_member_id"
-    t.index ["team_id"], name: "index_memberships_on_team_id"
+    t.index ["role_id"], name: "index_members_on_role_id"
+    t.index ["team_id"], name: "index_members_on_team_id"
   end
 
   create_table "monthly_forecasts", force: :cascade do |t|
     t.date "date", null: false
     t.integer "total_hours", default: 0, null: false
     t.integer "holiday_hours", default: 0, null: false
-    t.boolean "active", default: true, null: false
+    t.text "message"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["date"], name: "index_monthly_forecasts_on_date", unique: true
@@ -140,9 +143,21 @@ ActiveRecord::Schema.define(version: 2021_09_18_033522) do
     t.index ["team_id"], name: "index_team_fields_on_team_id"
   end
 
+  create_table "team_monthly_forecasts", force: :cascade do |t|
+    t.bigint "monthly_forecast_id", null: false
+    t.bigint "team_id", null: false
+    t.boolean "open_for_submissions", default: true, null: false
+    t.text "message"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["monthly_forecast_id"], name: "index_team_monthly_forecasts_on_monthly_forecast_id"
+    t.index ["team_id"], name: "index_team_monthly_forecasts_on_team_id"
+  end
+
   create_table "teams", force: :cascade do |t|
     t.string "name", null: false
     t.string "slug", null: false
+    t.boolean "allow_custom_fields", default: false, null: false
     t.text "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -150,16 +165,14 @@ ActiveRecord::Schema.define(version: 2021_09_18_033522) do
     t.index ["slug"], name: "index_teams_on_slug", unique: true
   end
 
-  add_foreign_key "holidays", "monthly_forecasts"
   add_foreign_key "mail_histories", "mail_jobs"
   add_foreign_key "mail_jobs", "teams"
   add_foreign_key "member_forecasts", "members"
-  add_foreign_key "member_forecasts", "monthly_forecasts"
-  add_foreign_key "member_forecasts", "teams"
-  add_foreign_key "member_roles", "members"
-  add_foreign_key "member_roles", "roles"
-  add_foreign_key "memberships", "members"
-  add_foreign_key "memberships", "teams"
+  add_foreign_key "member_forecasts", "team_monthly_forecasts"
+  add_foreign_key "members", "roles"
+  add_foreign_key "members", "teams"
   add_foreign_key "team_fields", "fields"
   add_foreign_key "team_fields", "teams"
+  add_foreign_key "team_monthly_forecasts", "monthly_forecasts"
+  add_foreign_key "team_monthly_forecasts", "teams"
 end

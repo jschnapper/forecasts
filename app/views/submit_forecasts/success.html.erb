@@ -1,26 +1,26 @@
 <div class="flex justify-center">
-  <div class="min-w-64 w-full sm:w-7/12 md:w-1/2 lg:w-4/12 bg-white px-4 sm:px-8 py-8 my-16 shadow-sm rounded">
-    <div id="forecast-title" class="text-lg mb-2"><span id="team-name" class="font-bold"><%= @team&.name&.titleize || "Team"%></span> <span class="text-gray-500"><%= "#{@monthly_forecast&.date&.strftime('%B %Y')} " %>Forecast</span></div>
+  <div class="min-w-64 w-full sm:w-7/12 md:w-1/2 lg:w-4/12 bg-white px-4 sm:px-8 py-8 my-16 shadow rounded">
+    <div id="forecast-title" class="text-lg mb-2"><span id="team-name" class="font-bold"><%= @team&.name&.titleize || "Team"%></span> <span class="text-gray-500"><%= "#{@team_monthly_forecast&.date&.strftime('%B %Y')} " %>Forecast</span></div>
     <div class="mb-2">Thank you for submitting, <%= @member.first_name.capitalize %>!</div>
     <%# If holiday hours are not correct %>
-    <% if @monthly_forecast.holiday_hours > 0 && @monthly_forecast.holiday_hours != @member_forecast.hours["holiday"].to_i %>
+    <% if @team_monthly_forecast.holiday_hours > 0 && @team_monthly_forecast.holiday_hours != @member_forecast.hours["holiday"].to_i %>
       <div class="bg-red-100 border border-red-400 text-red-700 my-4 px-4 py-3 rounded relative">
-        <b class="font-bold">Action Required:</b> Please correct your forecasted holiday hours. Expected <%= @monthly_forecast.holiday_hours %> holiday hours. 
+        <b class="font-bold">Action Required:</b> Please correct your forecasted holiday hours. Expected <%= @team_monthly_forecast.holiday_hours %> holiday hours. 
         You submitted <%= @member_forecast.hours["holiday"] || 0 %> holiday hours.
       </div>
     <% end %>
     <%# If total hours are over expected hours %>
-    <% if @member_forecast.total_hours > @monthly_forecast.total_hours %>
+    <% if @member_forecast.total_hours > @team_monthly_forecast.total_hours %>
       <div class="bg-indigo-100 border border-indigo-400 text-indigo-700 my-4 px-4 py-3 rounded relative">
-        You have forecasted <%= @member_forecast.total_hours - @monthly_forecast.total_hours %> hours of overtime.
+        You have forecasted <%= @member_forecast.total_hours - @team_monthly_forecast.total_hours %> hours of overtime.
       </div> 
     <% end %>
     <%# If total hours are less than expected hours %>
-    <% if @member_forecast.total_hours < @monthly_forecast.total_hours %>
+    <% if @member_forecast.total_hours < @team_monthly_forecast.total_hours %>
       <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 my-4 px-4 py-3 rounded relative">
         <b>Action may be required:</b> your submitted hours is less than what is expected
         this month. You submitted <%= @member_forecast.total_hours %> hours and 
-        <%= @monthly_forecast.total_hours %> hours were expected. If this was an error, please resubmit.
+        <%= @team_monthly_forecast.total_hours %> hours were expected. If this was an error, please resubmit.
       </div> 
     <% end %>
     <div class="mb-2">A confirmation email has been sent to <%= @member.email %></div>
@@ -33,10 +33,11 @@
         </tr>
       </thead>
       <tbody>
-        <% @member_forecast.hours.each do |field, hours| %>
-          <% if hours.present? && hours.to_i > 0 %>
+        <% @team_monthly_forecast.team.ordered_fields.each do |field| %>
+          <% hours = @member_forecast.hours.fetch(field.name, nil).present? ? @member_forecast.hours.fetch(field.name, nil) : 0 %>
+          <% if hours.to_i > 0 %>
             <tr>
-              <td class="pr-4 text-right"><%= field %></td>
+              <td class="pr-4 text-right"><%= field.name %></td>
               <td><%= hours %></td>
             </tr>
           <% end %>
@@ -46,7 +47,7 @@
         </tr>
         <tr>
           <td class="pr-4 text-right">Expected Total</td>
-          <td><%= @monthly_forecast.total_hours%></td>
+          <td><%= @team_monthly_forecast.total_hours%></td>
         </tr>
         <tr>
           <td class="font-bold pr-4 text-right">Your Total</td>
@@ -59,9 +60,9 @@
       <div class="text-gray-500"><%= @member_forecast.notes %></div>
     <% end %>
     <%= button_to "submit again", new_team_forecast_path(
-      team_name: @team.slug,
-      year: @monthly_forecast.date.strftime("%Y"),
-      month: @monthly_forecast.date.strftime("%B")
+      team_name: @team_monthly_forecast.team.slug,
+      year: @team_monthly_forecast.date.strftime("%Y"),
+      month: @team_monthly_forecast.date.strftime("%B")
       ), method: :get, data: { turbolinks: false }, params: { member_id: @member.id }, class: "mt-8 w-full cursor-pointer bg-transparent hover:bg-indigo-500 text-indigo-700 hover:text-white py-2 px-4 border border-indigo-500 hover:border-transparent rounded" %>
   </div>
 </div>

@@ -16,7 +16,7 @@ class SendReminder < ApplicationService
 
   def execute
     forecasts = MemberForecast.get_member_forecasts(teams, monthly_forecast).select { |member| member.hours.nil? || member.hours == 0 }
-    Member.includes(:teams).where(id: forecasts.map(&:id)).each do |member|
+    Member.includes(:team).where(id: forecasts.map(&:id)).each do |member|
       ReminderMailer.reminder(member, monthly_forecast, message).deliver_now
     end
   end

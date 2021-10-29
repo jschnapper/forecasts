@@ -8,7 +8,7 @@
         <% end %>
       </div>
     <% end %>
-    <h2 class="text-lg font-bold mb-4"><%= field&.name&.titleize || "New Field" %></h2>
+    <h2 class="text-lg font-bold mb-4"><%= field&.name || "New Field" %></h2>
     <%= form_with model: field, url: path, method: action, id: "field-form" do |form| %>
       <div class="mb-2">
         <%= form.label :name, "Name", class: "text-gray-700" %>
@@ -27,10 +27,6 @@
         <div class="mb-2">
           <%= form.label :default, "Is default field for all teams", class: "text-gray-700" %>
           <%= form.check_box :default, class: "rounded border-gray-300 text-indigo-600 focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50" %>
-        </div>
-        <div class="mb-2">
-          <%= form.label :only_admins_can_delete, "Requires admin role to delete", class: "text-gray-700" %>
-          <%= form.check_box :only_admins_can_delete, class: "rounded border-gray-300 text-indigo-600 focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50" %>
         </div>
       <% end %>
       <% if (defined? team) && team.present? %>

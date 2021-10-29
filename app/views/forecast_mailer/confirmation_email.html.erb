@@ -1,21 +1,21 @@
 <p>Hi <%= @member.first_name.capitalize %>,</p>
-<p>Thanks for submitting your <%= @team.name.titleize %> <%= @monthly_forecast.friendly_name %></p>
-<p>There are <%= @monthly_forecast.total_hours %> hours this month.</p>
+<p>Thanks for submitting your <%= @team.name.titleize %> <%= @team_monthly_forecast.monthly_forecast.friendly_name %></p>
+<p>There are <%= @team_monthly_forecast.monthly_forecast.total_hours %> hours this month.</p>
 <%# If holiday hours are not correct %>
-<% if @monthly_forecast.holiday_hours > 0 && @monthly_forecast.holiday_hours != @member_forecast.hours["holiday"]%>
+<% if @team_monthly_forecast.monthly_forecast.holiday_hours > 0 && @team_monthly_forecast.monthly_forecast.holiday_hours != @member_forecast.hours["holiday"]%>
   <p>
-    <b>Action Required:</b> Please correct your forecasted holiday hours. Expected <%= @monthly_forecast.holiday_hours %> holiday hours. 
+    <b>Action Required:</b> Please correct your forecasted holiday hours. Expected <%= @team_monthly_forecast.monthly_forecast.holiday_hours %> holiday hours. 
     You submitted <%= @member_forecast.hours["holiday"] || 0 %> holiday hours.
   </p>
 <% end %>
 <%# If total hours are over expected hours %>
-<% if @member_forecast.total_hours > @monthly_forecast.total_hours %>
+<% if @member_forecast.total_hours > @team_monthly_forecast.monthly_forecast.total_hours %>
   <p>
-    You have forecasted <%= @member_forecast.total_hours - @monthly_forecast.total_hours %> hours of overtime.
+    You have forecasted <%= @member_forecast.total_hours - @team_monthly_forecast.monthly_forecast.total_hours %> hours of overtime.
   </p> 
 <% end %>
 <%# If total hours are less than expected hours %>
-<% if @member_forecast.total_hours < @monthly_forecast.total_hours %>
+<% if @member_forecast.total_hours < @team_monthly_forecast.monthly_forecast.total_hours %>
   <p>
     <b>Action may be required:</b> your submitted hours is less than what is expected
     this month. If this was an error, please resubmit.
@@ -43,7 +43,7 @@
     </tr>
     <tr>
       <td style="border: 1px solid black; text-align: right; padding: 0 8px; font-weight: bold">Expected Total</td>
-      <td style="border: 1px solid black; padding: 0 8px;"><%= @monthly_forecast.total_hours%></td>
+      <td style="border: 1px solid black; padding: 0 8px;"><%= @team_monthly_forecast.monthly_forecast.total_hours%></td>
     </tr>
     <tr>
       <td style="border: 1px solid black; text-align: right; padding: 0 8px; font-weight: bold">Your Total</td>
@@ -58,8 +58,8 @@
 <p>
   To make a change, please submit a new forecast <%= link_to "here", new_team_forecast_url(
   team_name: @team.slug,
-  year: @monthly_forecast.date.strftime("%Y"),
-  month: @monthly_forecast.date.strftime("%B"),
+  year: @team_monthly_forecast.monthly_forecast.date.strftime("%Y"),
+  month: @team_monthly_forecast.monthly_forecast.date.strftime("%B"),
   member_id: @member.id
   )%>. Only your most recent submssion will be used.
 </p>
