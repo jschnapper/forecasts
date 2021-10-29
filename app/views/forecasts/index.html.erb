@@ -3,14 +3,16 @@
   <% if @team_monthly_forecasts.size > 0 %>
   <ul>
     <% @team_monthly_forecasts.each do |forecast| %>
-      <li class="no-underline hover:underline text-indigo-500">
+      <% status_color = forecast.open? ? "green" : "red" %>
+      <li>
         <%= 
           link_to forecast.friendly_name, forecast_path( 
             team_name: @team.slug, 
             year: forecast.date.year,
             month: forecast.month_name
-          )
+          ), class: "no-underline hover:underline text-indigo-500"
         %>
+        <span class="font-bold leading-none text-xs mx-2 align-middle py-1 px-2 text-<%= status_color %>-50 bg-<%= status_color %>-500 rounded"><%= forecast.open? ? "Open" : "Closed" %></span>
       </li>
     <% end %>
   </ul>

@@ -1,12 +1,15 @@
 <!-- PRIORITY -->
 - [x] Fix member field
 - [ ] Address adding/removing fields and how that will affect the history
-- [ ] allow closing forecast from forecast page
+- [x] allow closing forecast from forecast page
 - [ ] test emails
 - [ ] allow members to submit hours in advance (pick different forecast)
 - [ ] figure out timing for forecasts (when home page should navigate to which forecast)
 - [x] require notes if entering details in other
 - [ ] list features
+- [ ] test production app
+- [ ] create artifact/docker image
+- [ ] tag for release
 
 
 
@@ -15,7 +18,6 @@
 - [x] allow for inversion of spreadsheet (so each row is an entry from the user for a field)
 - [x] members only belong to one team
 - [ ] allow members to pick a different date to submit for
-- [ ] test in prod (with emails)
 - [x] forecasts should be team by team rather than shared
 - [x] add paper trails to member forecast and members
 - [x] allow member to change holiday hours

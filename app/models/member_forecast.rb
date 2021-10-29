@@ -51,6 +51,7 @@ class MemberForecast < ApplicationRecord
   def total_hours
     # grab fields since fields could be different from what was submitted
     # TODO: why is rails complaining about team_id?
+    # TODO: should base this on active team fields for the current forecast in case fields are removed after submission
     # hours&.slice(*team&.fields&.map(&:name))&.values&.reduce { |total, amount| total.to_i + amount.to_i } || 0
     hours&.values&.reduce { |total, amount| total.to_i + amount.to_i } || 0
   end
