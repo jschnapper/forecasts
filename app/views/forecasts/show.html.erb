@@ -1,8 +1,4 @@
 <div id="team-forecast-container" class="mt-8 mb-4 px-4 sm:px-0">
-  <div class="mb-4">
-  <%= link_to "#{@team.name.titleize} team page", team_path(team_name: @team.slug), class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4" %>
-  <%= link_to "All forecasts", forecasts_path(team_name: @team.slug), class: "cursor-pointer no-underline hover:underline mr-4 text-indigo-500" %>
-  </div>
   <% status_color = @team_monthly_forecast.open? ? "green" : "red" %>
   <% opposite_status_color = @team_monthly_forecast.open? ? "red" : "green" %>
   <h2 class="text-lg"><span class="font-bold"><%= @team.name.titleize %></span> <span class="text-gray-500"><%= @team_monthly_forecast.friendly_name%></span>
@@ -12,21 +8,21 @@
   <div class="text-gray-700">Expected total hours: <span class="expected-hours"><b><%= @team_monthly_forecast&.total_hours %></b></span></div>
   <div class="text-gray-700">Expected holiday hours: <span class="expected-hours"><b><%= @team_monthly_forecast&.holiday_hours %></b></span></div>
 </div>
-<div class="bg-white mx-0 pt-8 mt-8 mb-16 shadow-md rounded overflow-x-auto">
-<div class="flex justify-between mt-0 m-4">
+<div class="my-12">
+<div class="flex justify-between mb-4">
   <div>
     <%= button_to "Send Reminder", send_reminder_path(team_name: @team.slug, monthly_forecast_id: @team_monthly_forecast.monthly_forecast_id), remote: true, method: :get, class: "cursor-pointer bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-indigo-200 text-sm" %>
   </div>
   <div>
-  <div class="relative inline-block text-left">
-    <div>
-      <button type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500" id="export-button" aria-expanded="true" aria-haspopup="true">
-        Export
-        <!-- Heroicon name: solid/chevron-down -->
-        <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-          <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-        </svg>
-      </button>
+    <div class="relative inline-block text-left">
+      <div>
+        <button type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500" id="export-button" aria-expanded="true" aria-haspopup="true">
+          Export
+          <!-- Heroicon name: solid/chevron-down -->
+          <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+        </button>
       </div>
       <div id="export-options-wrapper" class="origin-top-right absolute z-50 right-0 mt-2 w-72 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none transform transition opacity-0 duration-75 ease-in scale-95 hidden" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
         <div class="py-1" role="none">
@@ -37,16 +33,17 @@
     </div>
   </div>
 </div>
+<div class="bg-white rounded shadow overflow-x-auto">
 <table class="relative w-full table-auto text-sm">
 <thead>
-  <tr class="text-left bg-gray-300 text-gray-600">
+  <tr class="text-left text-gray-500">
     <th class="px-4 py-4">First Name</th>
     <th class="px-4 py-4">Last Name</th>
     <th class="px-4 py-4">Email</th>
     <th class="px-4 py-4">Total</th>
-    <% @team.ordered_fields.each do |field| %>
-      <% if field.name.downcase != "holiday" ||  (field.name.downcase == "holiday" && @team_monthly_forecast.has_holidays?) %>
-        <th class="px-4 py-4"><%= field.name %></th> 
+    <% @team_monthly_forecast.ordered_team_fields.each do |team_field| %>
+      <% if team_field.field.name.downcase != "holiday" ||  (team_field.field.name.downcase == "holiday" && @team_monthly_forecast.has_holidays?) %>
+        <th class="px-4 py-4"><%= team_field.field.name %></th> 
       <% end %>
     <% end %>
     <th class="px-4 py-4">Notes</th>
@@ -54,17 +51,16 @@
 </thead>
 <tbody>
   <% @member_forecasts.each_with_index do |member_forecast, index| %>
-    <% odd_even_style = index % 2 == 0 ? "" : " bg-gray-100" %>
+    <% odd_even_style = index % 2 == 0 ? " bg-gray-100" : "" %>
     <tr class="text-left hover:bg-gray-200<%= odd_even_style %>">
       <td class="px-4 py-2 sm:py-4"><%= member_forecast.first_name %></td>
       <td class="px-4 py-2 sm:py-4"><%= member_forecast.last_name %></td>
       <td class="px-4 py-2 sm:py-4"><%= member_forecast.email %></td>
-      <% font_color = member_forecast.total_hours == 0 ? "text-red-500" : "text-current" %>
-      <td class="px-4 py-2 <%= font_color %> sm:py-4"><%= member_forecast.total_hours %></td>
-      <% @team.ordered_fields.each do |field| %>
-        <% if field.name.downcase != "holiday" ||  (field.name.downcase == "holiday" && @team_monthly_forecast.has_holidays?) %>
+      <td class="px-4 py-2 sm:py-4"><%= member_forecast.total_hours %></td>
+      <% @team_monthly_forecast.ordered_team_fields.each do |team_field| %>
+        <% if team_field.field.name.downcase != "holiday" ||  (team_field.field.name.downcase == "holiday" && @team_monthly_forecast.has_holidays?) %>
           <td class="px-4 py-2 sm:py-4">
-            <%= member_forecast.hours&.fetch(field.name, 0).present? ? member_forecast.hours&.fetch(field.name, 0) : 0 %>
+            <%= member_forecast.hours&.fetch(team_field.field.name, 0).present? ? member_forecast.hours&.fetch(team_field.field.name, 0) : 0 %>
           </td>
         <% end %>
       <% end %>
@@ -73,5 +69,6 @@
   <% end %>
 </tbody>
 </table>
+</div>
 </div>
 </div>

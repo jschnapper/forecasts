@@ -27,6 +27,7 @@ class Field < ApplicationRecord
 
   # callbacks
   before_validation :format_fields
+  after_commit :add_to_teams
 
   # associations
   has_many :team_fields, dependent: :destroy
@@ -45,5 +46,12 @@ class Field < ApplicationRecord
   def format_fields
     self.name = name.strip if name.present?
     self.code = nil if !code.present?
+  end
+
+  def add_to_teams
+    if default
+      team_fields = Team.all.select(:id).map { |team| { team_id: team.id, field_id: id, start_on: Time.zone.today.beginning_of_month}}
+      TeamField.create(team_fields)
+    end
   end
 end

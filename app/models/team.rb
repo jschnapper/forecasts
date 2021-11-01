@@ -26,6 +26,7 @@ class Team < ApplicationRecord
 
   # associations
   has_many :team_fields, dependent: :destroy, autosave: true
+  has_many :team_monthly_forecasts, dependent: :destroy
   has_many :fields, through: :team_fields
   has_many :members, dependent: :destroy
   has_many :mail_jobs, dependent: :destroy
@@ -41,6 +42,14 @@ class Team < ApplicationRecord
   # Sort all fields by name
   def alpha_sort_fields
     fields.order("lower(name)") 
+  end
+
+  def active_fields
+    team_fields.active
+  end
+
+  def inactive_fields
+    team_fields.inactive
   end
 
   # order fields
@@ -59,6 +68,11 @@ class Team < ApplicationRecord
   #   - other
   def ordered_team_fields
     @ordered_team_fields || order_team_fields
+  end
+
+  # Get current forecast for team
+  def current_forecast
+    team_monthly_forecasts.joins(:monthly_forecast).find_by(monthly_forecasts: { date: Time.zone.today.beginning_of_month}) || team_monthly_forecasts.last
   end
 
   private
@@ -110,7 +124,7 @@ class Team < ApplicationRecord
       other: nil
     }
     sorted_team_fields = []
-    team_fields.each do |team_field|
+    active_fields.each do |team_field|
       if !special_fields.keys.include?(team_field.field.name.downcase.to_sym)
         sorted_team_fields.each do |s_field|
           if s_field.field.name.downcase < team_field.field.name.downcase
@@ -133,7 +147,7 @@ class Team < ApplicationRecord
   # - holiday
   # - other
   def add_default_fields
-    default_fields = Field.where(default: true).pluck(:id).map { |field_id| {field_id: field_id} }
+    default_fields = Field.where(default: true).pluck(:id).map { |field_id| {field_id: field_id, start_on: Time.zone.today.beginning_of_month} }
     team_fields.build(default_fields)
   end
 end

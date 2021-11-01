@@ -1,24 +1,6 @@
-# README
+# Forecasts
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This application provides an interface for companies and businesses to track hours for specific contracts.
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## Technical Details
+`fields` are shared across teams, but `team_fields` are used to track which fields a team uses at a particular time.

@@ -1,6 +1,6 @@
 class MonthlyForecastsController < ManagementController
   before_action -> { requires_at_least_role :admin }
-  before_action :set_date, only: [:create, :update]
+  before_action :set_date, only: [:create]
 
   def index
     @monthly_forecasts = MonthlyForecast.order(date: :desc).first(12)
@@ -39,7 +39,7 @@ class MonthlyForecastsController < ManagementController
 
   def update
     @monthly_forecast = MonthlyForecast.find_by(id: params[:id])
-    if @monthly_forecast&.update(monthly_forecast_params)
+    if @monthly_forecast&.update(monthly_forecast_update_params)
       redirect_to(@monthly_forecast)
     else
       render :edit
@@ -58,7 +58,11 @@ class MonthlyForecastsController < ManagementController
   private
 
   def monthly_forecast_params
-    params.require(:monthly_forecast).permit(:date, :active, :total_hours)
+    params.require(:monthly_forecast).permit(:date, :total_hours, :holiday_hours)
+  end
+
+  def monthly_forecast_update_params
+    params.require(:monthly_forecast).permit(:total_hours, :holiday_hours)
   end
 
   def set_date

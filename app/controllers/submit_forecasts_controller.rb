@@ -89,9 +89,9 @@ class SubmitForecastsController < ApplicationController
       # if only one param provided, redirect to forecasts
       redirect_to new_team_forecast_path, team_name: @team&.name
     else
-      # get most current forecast
+      # get current forecast
       # Date
-      @monthly_forecast = MonthlyForecast.find_by(date: Date.today.beginning_of_month) || MonthlyForecast.last
+      @monthly_forecast = MonthlyForecast.find_by(date: Time.zone.today.beginning_of_month) || MonthlyForecast.last
     end
     @team_monthly_forecast = @monthly_forecast.team_monthly_forecasts.detect { |tmf| tmf.team_id == @team&.id }
   end

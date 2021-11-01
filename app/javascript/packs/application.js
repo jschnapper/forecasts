@@ -134,6 +134,25 @@ document.addEventListener("turbolinks:load", () => {
    ***** Team forecast end *****
    *****************************/
 
+  /*****************************
+   ***** Team field start *****
+   *****************************/
+
+  const teamFieldDetailsForm = document.getElementById("team-field-field-id-form")
+  const teamFieldDetailsFormField = document.querySelector("#team-field-field-id-form #team-field-details-field-id")
+  const teamFieldSelector = document.querySelector("#team-field-form #field-selector")
+  if (teamFieldSelector && teamFieldDetailsFormField && teamFieldDetailsForm) {
+    teamFieldSelector.addEventListener('change', (e) => {
+      teamFieldDetailsFormField.value = teamFieldSelector.value 
+      Rails.fire(teamFieldDetailsForm, 'submit')
+    })
+  }
+
+
+  /*****************************
+   ***** Team field end *****
+   *****************************/
+
   /***********************************
    ************** MODAL **************
    ***********************************/

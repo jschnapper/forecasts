@@ -1,15 +1,41 @@
 <!-- PRIORITY -->
+- [x] adding/removing fields but keeping history
+- [ ] navigate to future forecasts
+- [ ] submissions should use field id -- not name
+- [x] creating new forecasts
+- [x] improved design for team management page
+- [x] improved design for forecast page
+- [ ] Local storage feature toggle
+  - [ ] save submissions in local storage
+- [ ] test production app
+- [ ] test emails
+- [ ] create artifact/docker image
+- [ ] docker image pipeline
+- [ ] tag for release
+
+
+
+
+- [ ] Magic login feature toggle
+  - [ ] a "magic" login for members
+  - [ ] save submissions for users
+- [ ] search/sort forecasts page
+- [ ] CRUD for users to search/rank/submit suggestions
+- [ ] CRUD for admin to indicate feature roadmap
+
+
+
+
+
+- [ ] Use kaminari gem to paginate pages
 - [x] Fix member field
 - [ ] Address adding/removing fields and how that will affect the history
 - [x] allow closing forecast from forecast page
-- [ ] test emails
 - [ ] allow members to submit hours in advance (pick different forecast)
 - [ ] figure out timing for forecasts (when home page should navigate to which forecast)
 - [x] require notes if entering details in other
 - [ ] list features
-- [ ] test production app
-- [ ] create artifact/docker image
-- [ ] tag for release
+
 
 
 

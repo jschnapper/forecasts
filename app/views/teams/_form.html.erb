@@ -1,5 +1,8 @@
 <%= link_to "Back", :back %>
 <%= link_to "All teams", teams_path %>
+<% if current_member.is_admin? %>
+<%= link_to 'Delete team', url_for(action: :destroy,team_name: @team.slug), method: :delete, data: {confirm: "Are you sure you want to delete #{@team.name}"}, class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4" %>
+<% end %>
 <h2><%= team&.name&.titleize || "New Team" %></h2>
 <%= form_with model: team, url: path, method: action, id: "team-form" do |form| %>
   <%= form.label :name, "Team name" %>

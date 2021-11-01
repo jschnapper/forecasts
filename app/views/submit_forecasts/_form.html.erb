@@ -14,8 +14,8 @@
         <b class="font-bold">Failed to submit forecast</b>
       </div>
       <ul class="list-disc list-outside px-4">
-      <% @member_forecast.errors.each do |name, message| %>
-          <li><b class="font-bold"><%= name %>:</b> <%= message %></li>
+      <% @member_forecast.errors.each do |error| %>
+          <li><b class="font-bold"><%= error.attribute %>:</b> <%= error.message %></li>
       <% end %>
       </ul>
       </div>
@@ -81,7 +81,7 @@
           </tr>
         </tbody>
       </table>
-      <% if team_monthly_forecast.open? %>
+    <% if team_monthly_forecast.open? %>
         <%= button_tag id: "forecast-submit", name: nil, class: "w-full cursor-pointer bg-green-600 text-white text-base py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-green-200" do %>
           Submit Forecast
         <% end %>
