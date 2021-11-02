@@ -18,7 +18,7 @@ wb.add_worksheet(name: "#{@team.name.parameterize.underscore}_#{@team_monthly_fo
     row << member_forecast.email
     row << "=SUM(E#{num_rows}:#{last_column_no_notes}#{num_rows})"
     @team_monthly_forecast.ordered_team_fields.each do |team_field|
-      val = member_forecast.hours&.fetch(team_field.field.name, 0).present? ? member_forecast.hours&.fetch(team_field.field.name, 0) : 0
+      val = member_forecast.hours&.fetch(team_field.field.id.to_s, 0).present? ? member_forecast.hours&.fetch(team_field.field.id.to_s, 0) : 0
       row << val
     end
     row << member_forecast.notes

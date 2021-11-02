@@ -29,7 +29,10 @@
           <%= link_to "Logout", destroy_member_session_path, method: :delete, class: "hover:text-gray-500" %>
           </div>
         <% else %>
+          <div class="flex space-x-4">
+          <%= link_to "Forecasts", team_forecasts_path, class: "hover:text-gray-500" %>
           <%= link_to "Login", new_member_session_path, class: "hover:text-gray-500" %>
+          </div>
         <% end %>
       </div>
     </nav>

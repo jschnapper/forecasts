@@ -13,7 +13,8 @@
   <div>
     <%= button_to "Send Reminder", send_reminder_path(team_name: @team.slug, monthly_forecast_id: @team_monthly_forecast.monthly_forecast_id), remote: true, method: :get, class: "cursor-pointer bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-indigo-200 text-sm" %>
   </div>
-  <div>
+  <div class="flex">
+    <%= button_to "Edit Fields", edit_team_fields_path(team_name: @team.slug), remote: true, method: :get, params: { team_monthly_forecast_id: @team_monthly_forecast.id }, class: "cursor-pointer rounded-md border border-gray-300 shadow-sm mx-4 px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500" %>
     <div class="relative inline-block text-left">
       <div>
         <button type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500" id="export-button" aria-expanded="true" aria-haspopup="true">
@@ -60,7 +61,7 @@
       <% @team_monthly_forecast.ordered_team_fields.each do |team_field| %>
         <% if team_field.field.name.downcase != "holiday" ||  (team_field.field.name.downcase == "holiday" && @team_monthly_forecast.has_holidays?) %>
           <td class="px-4 py-2 sm:py-4">
-            <%= member_forecast.hours&.fetch(team_field.field.name, 0).present? ? member_forecast.hours&.fetch(team_field.field.name, 0) : 0 %>
+            <%= member_forecast.hours&.fetch(team_field.field.id.to_s, 0).present? ? member_forecast.hours&.fetch(team_field.field.id.to_s, 0) : 0 %>
           </td>
         <% end %>
       <% end %>

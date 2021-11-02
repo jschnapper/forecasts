@@ -5,7 +5,7 @@ class CreateTeamFields < ActiveRecord::Migration[6.1]
       t.references :field, foreign_key: true, null: false
       t.date :start_on, null: false
       t.date :end_after
-      t.datetime :revoked_at
+      t.date :revoked_at
       t.timestamps
     end
   end

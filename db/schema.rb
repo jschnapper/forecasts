@@ -150,7 +150,7 @@ ActiveRecord::Schema.define(version: 2021_10_23_192131) do
     t.bigint "field_id", null: false
     t.date "start_on", null: false
     t.date "end_after"
-    t.datetime "revoked_at"
+    t.date "revoked_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["field_id"], name: "index_team_fields_on_field_id"

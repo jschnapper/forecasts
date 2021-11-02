@@ -4,7 +4,7 @@
 #
 #  id         :bigint           not null, primary key
 #  end_after  :date
-#  revoked_at :datetime
+#  revoked_at :date
 #  start_on   :date             not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null

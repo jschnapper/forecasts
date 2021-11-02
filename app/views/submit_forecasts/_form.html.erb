@@ -29,38 +29,38 @@
           </tr>
         </thead>
         <tbody>
-        <% team.ordered_fields.each do |field| %>
+        <% team_monthly_forecast.ordered_team_fields.each do |team_field| %>
           <%# Only show holiday when there is a holiday %>
-          <% if field.name.downcase == "holiday" && @team_monthly_forecast.monthly_forecast.holiday_hours == 0 %>
+          <% if team_field.field.name.downcase == "holiday" && @team_monthly_forecast.monthly_forecast.holiday_hours == 0 %>
             <% next %>
-          <% elsif field.name.downcase == "holiday" %>
+          <% elsif team_field.field.name.downcase == "holiday" %>
             <tr>
               <td class="text-right pr-4 align-middle py-4">
-                <%= form.label field.name, field.name, class: "text-gray-700 whitespace-nowrap" %>
+                <%= form.label team_field.field.name, team_field.field.name, class: "text-gray-700 whitespace-nowrap" %>
               </td>
               <td class="align-middle">
-                <%= form.number_field :hours, step: 1, min: 0, name: "member_forecast[hours[#{field.name}]]", value: @member_forecast&.hours&.fetch(field.name, nil),  class: "hour-input block w-full rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50", value: @team_monthly_forecast.monthly_forecast.holiday_hours, required: true %>
+                <%= form.number_field :hours, step: 1, min: 0, name: "member_forecast[hours[#{team_field.field.id}]]", value: @member_forecast&.hours&.fetch(team_field.field.id.to_s, nil),  class: "hour-input block w-full rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50", value: @team_monthly_forecast.monthly_forecast.holiday_hours, required: true %>
               </td>
             </tr>
             <tr>
               <td></td>
-              <td class="text-gray-500 text-sm pb-4"><%= field.description %></td>
+              <td class="text-gray-500 text-sm pb-4"><%= team_field.field.description %></td>
             </tr>
           <% else %>
             <tr>
               <td class="text-right pr-4 align-middle">
-                <%= form.label field.name, field.name, class: "text-gray-700 whitespace-nowrap" %>
-                <% if field.code.present? %>
-                  <p class="text-gray-500 text-sm"><%= field.code %></p>
+                <%= form.label team_field.field.name, team_field.field.name, class: "text-gray-700 whitespace-nowrap" %>
+                <% if team_field.field.code.present? %>
+                  <p class="text-gray-500 text-sm"><%= team_field.field.code %></p>
                 <% end %>
               </td>
               <td class="align-middle">
-                <%= form.number_field :hours, step: 1, min: 0, name: "member_forecast[hours[#{field.name}]]", value: @member_forecast&.hours&.fetch(field.name, nil), class: "hour-input block w-full rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
+                <%= form.number_field :hours, step: 1, min: 0, name: "member_forecast[hours[#{team_field.field.id}]]", value: @member_forecast&.hours&.fetch(team_field.field.id.to_s, nil), class: "hour-input block w-full rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
               </td>
             </tr>
             <tr>
               <td></td>
-              <td class="text-gray-500 text-sm pb-4"><%= field.description %></td>
+              <td class="text-gray-500 text-sm pb-4"><%= team_field.field.description %></td>
             </tr>
           <% end %>
         <% end %> 

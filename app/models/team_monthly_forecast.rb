@@ -66,7 +66,7 @@ class TeamMonthlyForecast < ApplicationRecord
   end
 
   def active_fields
-    team.team_fields.active(monthly_forecast.date)
+    team.team_fields.includes(:field).active(monthly_forecast.date)
   end
 
   def order_team_fields

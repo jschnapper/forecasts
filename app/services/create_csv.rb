@@ -35,11 +35,11 @@ class CreateCsv < ApplicationService
         row << member_forecast.email
         row << member_forecast.total_hours
         if monthly_forecast.has_holidays?
-          row << member_forecast.hours&.fetch(:holiday, 0)
+          row << member_forecast.hours&.fetch(team.holiday_field.id.to_s, 0)
         end
         team.ordered_fields.each do |field|
           if field.name != "holiday"
-            val = member_forecast&.hours&.fetch(field.name).present? ? member_forecast&.hours&.fetch(field.name) : 0
+            val = member_forecast&.hours&.fetch(field.id.to_s).present? ? member_forecast&.hours&.fetch(field.id.to_s) : 0
             row << val
           end
         end

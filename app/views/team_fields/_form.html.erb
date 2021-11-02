@@ -38,7 +38,17 @@
   <div class="mb-2">
     <%= form.label :start_on, "Start using on", class: "text-gray-700" %>
     <div class="flex w-full">
-    <%= form.date_select :start_on, { start_year: Time.zone.today.year, discard_day: true }, { required: true, class: "mt-1 mr-2 flex-grow-0 block rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" } %>
+    <%= form.date_select :start_on, 
+      { 
+        start_year: Time.zone.today.year,
+        default: @team_monthly_forecast&.date,
+        discard_day: true 
+      }, 
+      { 
+        required: true, 
+        class: "mt-1 mr-2 flex-grow-0 block rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" 
+      } 
+    %>
     </div>
   </div>
   <div class="mb-2">
@@ -55,6 +65,7 @@
       <%= form.check_box :default, class: "rounded border-gray-300 text-indigo-600 focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50" %>
     </div>
   <% end %>
+  <%= hidden_field_tag :team_monthly_forecast_id, @team_monthly_forecast&.id, id: "team-field-details-team-monthly-forecast-id", name: "team_monthly_forecast_id" %>
   <div class="flex justify-end">
     <%= form.submit "Save", class: "ml-4 cursor-pointer bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-indigo-200" %>
   </div>
@@ -62,4 +73,5 @@
 
 <%= form_with url: new_team_fields_path(@team.slug), method: :get, id: "team-field-field-id-form", class: "hidden", data: { remote: true } do |form| %>
   <%= hidden_field_tag :field_id, @field&.id, id: "team-field-details-field-id", name: "field_id" %>
+  <%= hidden_field_tag :team_monthly_forecast_id, @team_monthly_forecast&.id, id: "team-field-details-team-monthly-forecast-id", name: "team_monthly_forecast_id" %>
 <% end %>

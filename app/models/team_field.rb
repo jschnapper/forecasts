@@ -6,7 +6,7 @@
 #
 #  id         :bigint           not null, primary key
 #  end_after  :date
-#  revoked_at :datetime
+#  revoked_at :date
 #  start_on   :date             not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
@@ -43,9 +43,9 @@ class TeamField < ApplicationRecord
   validates :start_on, presence: true
   validate :valid_dates
 
-  scope :active, -> (time = Time.zone.today) { where("start_on <= '#{time}' and revoked_at is NULL and (end_after is NULL or end_after >= '#{time}')")}
+  scope :active, -> (time = Time.zone.today) { where("start_on <= '#{time}' and (revoked_at is NULL or revoked_at >= '#{time.beginning_of_month + 1.month}') and (end_after is NULL or end_after >= '#{time}')")}
   scope :future, -> (time = Time.zone.today) { where("start_on > '#{time}' and revoked_at is NULL") }
-  scope :inactive, -> (time = Time.zone.today) { where("revoked_at is not NULL or (end_after is not NULL and end_after <= '#{time}')") }
+  scope :inactive, -> (time = Time.zone.today) { where("(revoked_at is NOT NULL and <= '#{time.end_of_month}') or (end_after is not NULL and end_after <= '#{time}')") }
 
   def status
     if active
@@ -85,6 +85,10 @@ class TeamField < ApplicationRecord
   def valid_dates
     if end_after.present? && end_after < start_on
       errors.add(:end_after, "The 'end after' date must be after the 'start on' date.")
+    end
+    # start on cannot be in a previous month
+    if start_on.present? && start_on < Time.zone.today.beginning_of_month
+      errors.add(:start_on, "Cannot add field to a previous forecast")
     end
   end
 end

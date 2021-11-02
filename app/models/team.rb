@@ -44,6 +44,10 @@ class Team < ApplicationRecord
     fields.order("lower(name)") 
   end
 
+  def holiday_field
+    fields.detect { |field| field.name.downcase == 'holiday' }
+  end
+
   def active_fields
     team_fields.active
   end
