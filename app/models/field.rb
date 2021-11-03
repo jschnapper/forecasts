@@ -50,6 +50,7 @@ class Field < ApplicationRecord
 
   def add_to_teams
     if default
+      # TODO: fix this. It will not work if setting default fields for a future month
       team_fields = Team.all.select(:id).map { |team| { team_id: team.id, field_id: id, start_on: Time.zone.today.beginning_of_month}}
       TeamField.create(team_fields)
     end

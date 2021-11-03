@@ -49,11 +49,11 @@ class Team < ApplicationRecord
   end
 
   def active_fields
-    team_fields.active
+    team_fields.active.join(:field).order("lower(fields.name)")
   end
 
   def inactive_fields
-    team_fields.inactive
+    team_fields.inactive.join(:field).order("lower(fields.name)")
   end
 
   # order fields
@@ -103,13 +103,8 @@ class Team < ApplicationRecord
       other: nil
     }
     sorted_fields = []
-    fields.each do |field|
+    fields.order("lower(fields.name)").each do |field|
       if !special_fields.keys.include?(field.name.downcase.to_sym)
-        sorted_fields.each do |s_field|
-          if s_field.name.downcase < field.name.downcase
-            break
-          end
-        end
         sorted_fields << field
       else
         special_fields[field.name.downcase.to_sym] = field

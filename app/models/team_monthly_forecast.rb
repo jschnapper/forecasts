@@ -66,7 +66,7 @@ class TeamMonthlyForecast < ApplicationRecord
   end
 
   def active_fields
-    team.team_fields.includes(:field).active(monthly_forecast.date)
+    team.team_fields.includes(:field).joins(:field).active(monthly_forecast.date).order("lower(fields.name)")
   end
 
   def order_team_fields
@@ -78,11 +78,6 @@ class TeamMonthlyForecast < ApplicationRecord
     sorted_team_fields = []
     active_fields.each do |team_field|
       if !special_fields.keys.include?(team_field.field.name.downcase.to_sym)
-        sorted_team_fields.each do |s_field|
-          if s_field.field.name.downcase < team_field.field.name.downcase
-            break
-          end
-        end
         sorted_team_fields << team_field
       else
         special_fields[team_field.field.name.downcase.to_sym] = team_field

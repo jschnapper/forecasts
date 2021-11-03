@@ -1,12 +1,12 @@
 <div class="flex justify-center">
   <div class="min-w-64 w-full sm:w-7/12 md:w-1/2 lg:w-4/12 bg-white px-4 sm:px-8 py-8 mt-8 mb-16 shadow-sm rounded">
     <% if (!defined? form_only)|| (defined? form_only && !form_only) %>
-      <div class="mb-4">
-        <%= link_to "Back", :back, class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4" %>
-        <% if current_member.is_admin? %>
+      <% if current_member.is_admin? %>
+        <div class="mb-4">
+          <%= link_to "Back", :back, class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4" %>
           <%= link_to "All fields", fields_path, class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4" %>
-        <% end %>
-      </div>
+        </div>
+      <% end %>
     <% end %>
     <h2 class="text-lg font-bold mb-4"><%= field&.name || "New Field" %></h2>
     <%= form_with model: field, url: path, method: action, id: "field-form" do |form| %>
@@ -32,6 +32,7 @@
       <% if (defined? team) && team.present? %>
         <%= hidden_field_tag :team_id, team.id, id: "team-id", name: "team_id" %>  
       <% end %>
+      <%= hidden_field_tag :team_monthly_forecast_id, @team_monthly_forecast&.id, id: "team-monthly-forecast-id", name: "team_monthly_forecast_id" %>  
       <div class="flex justify-end">
         <%= form.submit field.persisted? ? "Save" : "Create", class: "ml-4 cursor-pointer bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-indigo-200" %>
       </div>

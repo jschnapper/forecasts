@@ -1,13 +1,13 @@
 <div class="p-4">
   <div class="flex flex-wrap justify-between mb-4">
     <div>
-    <h3 class="text-lg font-bold mb-4"><%= @current_team_monthly_forecast.friendly_date %> Fields</h3>
+    <h3 class="text-lg font-bold mb-4"><%= @team_monthly_forecast.friendly_date %> Fields</h3>
     </div>
     <div>
-      <%= link_to "Add fields", new_team_fields_path(@team.slug, team_monthly_forecast_id: @current_team_monthly_forecast.id), class: "cursor-pointer bg-transparent hover:bg-indigo-500 text-indigo-700 hover:text-white -mt-2 py-2 px-4 border border-indigo-500 hover:border-transparent rounded text-sm" %>
+      <%= link_to "Create new field", new_field_path(@team.slug, team_monthly_forecast_id: @team_monthly_forecast.id), class: "cursor-pointer bg-transparent hover:bg-gray-500 text-gray-700 hover:text-white -mt-2 py-2 px-4 border border-gray-500 hover:border-transparent rounded text-sm" %>
     </div>
   </div>
-  <div class="overflow-x-auto -mx-4">
+  <div class="overflow-x-auto">
     <table class="relative w-full table-auto text-sm divide-y divide-gray-200">
       <thead>
         <tr class="text-left text-gray-500">
@@ -18,14 +18,14 @@
         </tr>
       </thead>
       <tbody class="divide-y divide-gray-200">
-        <% @current_team_monthly_forecast.ordered_team_fields.each_with_index do |team_field, index| %>
+        <% @team_monthly_forecast.ordered_team_fields.each_with_index do |team_field, index| %>
           <tr class="text-left hover:bg-gray-50">
             <td class="px-4 py-2 sm:py-4"><%= team_field.field.name %></td>
             <td class="px-4 py-2 sm:py-4"><%= team_field.field.code || "No code" %></td>
             <td class="px-4 py-2 sm:py-4"><%= team_field.field.description || "No description" %></td>
             <td class="px-4 py-2 sm:py-4">
               <% if !Field::SPECIAL_FIELDS.include?(team_field.field.name.downcase) %>
-                <%= link_to 'Remove', url_for(controller: :team_fields, action: :destroy, id: team_field.id), method: :delete, data: {confirm: "Are you sure you want to remove #{team_field.field.name} from #{@team.name.titleize}"}, class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4"%>
+                <%= link_to 'Remove', url_for(controller: :team_fields, action: :destroy, id: team_field.id, team_monthly_forecast_id: @team_monthly_forecast.id), method: :delete, data: {confirm: "Are you sure you want to remove #{team_field.field.name} from #{@team.name.titleize}"}, class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4"%>
               <% end %>
             </td>
           </tr>
@@ -33,4 +33,19 @@
       </tbody>
     </table>
   </div>
+  <% if @fields.size > 0 %>
+    <div class="mt-8">
+      <h3 class="text-lg font-bold mb-4">Add existing field</h3>
+      <%= form_with model: @team_field, url: team_fields_path(team_name: @team.slug), method: :post, id: "team-field-form" do |form| %>
+        <%= form.hidden_field :team_id, value: @team.id %>
+          <div class="mb-4">
+            <%= form.select :field_ids, options_from_collection_for_select(@fields || [], :id, :name), { include_hidden: false }, { id: "field-selector", class: "block w-full mt-4 rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50", multiple: true } %>
+          </div>
+        <%= hidden_field_tag :team_monthly_forecast_id, @team_monthly_forecast&.id, id: "team-field-details-team-monthly-forecast-id", name: "team_monthly_forecast_id" %>
+        <div class="flex justify-end">
+          <%= form.submit "Add", class: "cursor-pointer bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-indigo-200" %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
 </div>
