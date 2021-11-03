@@ -1,0 +1,28 @@
+<div class="flex justify-center">
+  <div class="min-w-64 w-full sm:w-7/12 md:w-1/2 lg:w-4/12 my-16">
+    <h2 class="text-2xl font-bold mb-4"><%= @team.present? ? "#{@team.name.capitalize} Forecasts" : "Teams" %></h2>
+    <div class="bg-white rounded sm:shadow-md">
+      <% if @team_monthly_forecasts %>
+        <div class="divide-y-2 divide-gray-100">
+          <% @team_monthly_forecasts.each do |forecast| %>
+              <%= link_to new_team_forecast_path(team_name: forecast.team.slug, month: forecast.month_name, year: forecast.year) do %>
+                <div class="p-4 pl-4 sm:pl-8 rounded hover:bg-gray-100 cursor-pointer text-indigo-500 no-underline">
+                  <%= forecast.friendly_date %>
+                </div>
+              <% end %>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="divide-y-2 divide-gray-100">
+        <% @teams.each do |team| %>
+            <%= link_to team_forecasts_path(team_name: team.slug) do %>
+              <div class="p-4 pl-4 sm:pl-8 rounded hover:bg-gray-100 cursor-pointer text-indigo-500 no-underline">
+                <%= team.name %>
+              </div>
+            <% end %>
+        <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

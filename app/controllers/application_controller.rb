@@ -11,11 +11,8 @@ class ApplicationController < ActionController::Base
     when 'admin'
       # redirect to admin home
       admin_home_path
-    when 'manager'
-      # redirect to current forecast
-      forecast_path(member.team.slug)
-    when 'representative'
-      # redirect to team details page
+    when 'manager', 'representative'
+      # redirect to team page
       team_path(member.team.slug)
     end
   end 

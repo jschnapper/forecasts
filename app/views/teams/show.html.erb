@@ -5,95 +5,145 @@
       <%= link_to "All teams", teams_path, class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4" %>
     </div>
   <% end %>
-  <div class="mb-4">
-    <h2 class="text-xl font-bold"><%= @team.name&.titleize %></h2>
-    <p class="text-gray-700"><%= @team.description || "No description" %></p>
-  </div>
-  <div class="mb-4">
-    <%= link_to "See team forecasts", forecasts_path(@team.slug), class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4"%>
-    <%= link_to 'Edit team', edit_team_path(@team.slug), class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4"%>
-    <%= link_to 'Delete team', url_for(action: :destroy,team_name: @team.slug), method: :delete, data: {confirm: "Are you sure you want to delete #{@team.name}"}, class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4" %>
-  </div>
-  <div class="bg-white mx-0 pt-4 my-8 shadow-md rounded overflow-x-auto">
-    <div class="mt-0 mb-8 m-4">
-      <h3 class="text-lg font-bold mb-4">Members</h3>
-      <div>
-        <%= link_to "Add Members", new_member_path(team_id: @team.id), class: "cursor-pointer bg-transparent hover:bg-gray-500 text-gray-700 hover:text-white py-2 px-4 border border-gray-500 hover:border-transparent rounded"%>
-      </div>
+  <div class="flex mb-4 justify-between">
+    <div>
+      <h2 class="text-2xl font-bold"><%= @team.name&.titleize %></h2>
+      <p class="text-gray-700"><%= @team.description&.capitalize || "No description" %></p>
     </div>
-    <table class="relative w-full table-auto text-sm">
-      <thead>
-        <tr class="text-left uppercase bg-gray-300 text-gray-600">
-          <th class="px-4 py-4">First Name</th>
-          <th class="px-4 py-4">Last Name</th>
-          <th class="px-4 py-4">Email</th>
-          <th class="px-4 py-4">Role</th>
-          <th class="px-4 py-4">Actions</th>
-        </tr>
-      </thead>
-    <tbody>
-      <% if @team.members.size > 0 %>
-        <% @team.members.order('lower(members.first_name)').each_with_index do |member, index| %>
-          <% odd_even_style = index % 2 == 0 ? "" : " bg-gray-100" %>
-          <tr class="text-left hover:bg-gray-200<%= odd_even_style %>">
-            <td class="px-4 py-2 sm:py-4"><%= member.first_name %></td>
-            <td class="px-4 py-2 sm:py-4"><%= member.last_name %></td>
-            <td class="px-4 py-2 sm:py-4"><%= member.email %></td>
-            <td class="px-4 py-2 sm:py-4"><%= member.role&.name %></td>
-            <td class="px-4 py-2 sm:py-4">
-              <%= link_to 'Show', member_path(member.id), class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4"%>
-              <%= link_to 'Edit', edit_member_path(member.id), class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4"%>
-              <%= link_to 'Remove from team', url_for(action: :update, controller: :memberships, team_name: @team.slug, member_id: member.id), method: :put, data: {confirm: "Are you sure you want to remove #{member.full_name} from this team"}, class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4"%>
-              <%= link_to 'Delete', url_for(action: :destroy, controller: :members, id: member.id), method: :delete, data: {confirm: "Are you sure you want to delete #{member.full_name}"}, class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4" %>
-            </td>
-          </tr>
-        <% end %>
-      <% else %>
-        <tr>
-          <td class="px-4 py-2 sm:py-4" colspan=4>No members</td>
-        </tr>
-      <% end %>
-    </tbody>
-    </table>
-  </div>
-  <div class="bg-white mx-0 pt-4 my-8 shadow-md rounded overflow-x-auto">
-    <div class="mt-0 mb-8 m-4">
-      <h3 class="text-lg font-bold mb-4">Fields</h3>
-      <div>
-        <%= link_to "Add fields to team", new_team_fields_path(@team.slug), class: "cursor-pointer bg-transparent hover:bg-gray-500 text-gray-700 hover:text-white py-2 px-4 border border-gray-500 hover:border-transparent rounded" %>
-      </div>
+    <div>
+      <%= link_to "Edit", edit_team_path(@team.slug), class: "cursor-pointer inline-flex items-center -mt-2 px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
     </div>
-    <table class="relative w-full table-auto text-sm">
-      <thead>
-        <tr class="text-left uppercase bg-gray-300 text-gray-600">
-          <th class="px-4 py-4">Name</th>
-          <th class="px-4 py-4">Code</th>
-          <th class="px-4 py-4">Description</th>
-          <th class="px-4 py-4">Actions</th>
-        </tr>
-      </thead>
-    <tbody>
-      <% if @team.team_fields.size > 0 %>
-        <% @team.ordered_team_fields.each_with_index do |team_field, index| %>
-          <% odd_even_style = index % 2 == 0 ? "" : " bg-gray-100" %>
-          <tr class="text-left hover:bg-gray-200<%= odd_even_style %>">
-            <td class="px-4 py-2 sm:py-4"><%= team_field.field.name %></td>
-            <td class="px-4 py-2 sm:py-4"><%= team_field.field.code || "No code" %></td>
-            <td class="px-4 py-2 sm:py-4"><%= team_field.field.description || "No description" %></td>
-            <td class="px-4 py-2 sm:py-4">
-              <%= link_to 'Show', field_path(team_field.field.id), class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4" %>
-              <% if !Field::SPECIAL_FIELDS.include?(team_field.field.name.downcase) %>
-                <%= link_to 'Remove from team', url_for(controller: :team_fields, action: :destroy, id: team_field.id), method: :delete, data: {confirm: "Are you sure you want to remove #{team_field.field.name} from #{@team.name.titleize}"}, class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4"%>
+  </div>
+  <div class="my-8">
+    <div class="grid gap-8 grid-cols-1 sm:grid-cols-4 md:grid-cols-12">
+      <div class="bg-white col-span-1 sm:col-span-2 md:col-span-3 px-4 py-8 shadow rounded flex flex-col justify-between">
+        <div class="flex flex-wrap justify-between mb-4">
+          <div>
+            <h3 class="text-lg font-bold mb-4"><%= @current_team_monthly_forecast.friendly_date %></h3>
+          </div>
+        </div>
+        <div class="flex flex-wrap justify-center align-center">
+          <div class="py-8 text-center">
+            <div id="submission-count-wrapper" class="text-5xl flex justify-center">
+              <% submission_text_color = @current_team_monthly_forecast.number_of_submissions == @team.members.size ? "text-green-500" : ""%>
+              <div id="submission-count" class="transform -translate-y-4 -translate-x-1 <%= submission_text_color %>"><%= @current_team_monthly_forecast.number_of_submissions %></div>
+              <div id="divider" class="text-4xl">/</div>
+              <div id="team-total" class="transform translate-y-2 translate-x-1"><%= @team.members.size %></div>
+            </div>
+            <div class="text-gray-500 mt-2">submissions</div>
+          </div>
+        </div>
+        <div>
+          <%= button_to "Send Reminder", send_reminder_path(team_name: @team.slug, monthly_forecast_id: @current_team_monthly_forecast.monthly_forecast_id), remote: true, method: :get, class: "cursor-pointer bg-indigo-600 text-white w-full py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-indigo-200 text-sm" %>
+        </div>
+        <div>
+          <%= button_to "View Forecast",
+            forecast_path( 
+              team_name: @team.slug, 
+              year: @current_team_monthly_forecast.date.year,
+              month: @current_team_monthly_forecast.month_name
+            ), 
+            method: :get, 
+            class: "cursor-pointer bg-transparent hover:bg-gray-500 text-gray-700 hover:text-white w-full py-2 px-4 mt-4 border border-gray-500 hover:border-transparent rounded text-sm" 
+          %>
+        </div>
+      </div>
+      <div class="bg-white col-span-1 sm:col-span-2 md:col-span-9 px-4 py-8 shadow rounded">
+        <div class="flex flex-wrap justify-between mb-4">
+          <div>
+            <h3 class="text-lg font-bold mb-4">Forecasts</h3>
+          </div>
+          <div>
+            <%= link_to "View All", forecasts_path(@team.slug), class: "cursor-pointer bg-transparent hover:bg-indigo-500 text-indigo-700 hover:text-white -mt-2 py-2 px-4 border border-indigo-500 hover:border-transparent rounded text-sm" %>
+          </div>
+        </div>
+        <div class="overflow-x-scroll -mx-4">
+          <table class="relative w-full table-auto text-sm">
+            <thead>
+              <tr class="text-left text-gray-500">
+                <th class="px-4 py-4">Forecast</th>
+                <th class="px-4 py-4 text-center">Status</th>
+                <th class="px-4 py-4 text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+            <% if @recent_team_monthly_forecasts.present? %>
+              <% @recent_team_monthly_forecasts.each do |forecast| %>
+                <% status_color = forecast.open? ? "green" : "red" %>
+                <tr class="text-left hover:bg-gray-100">
+                  <td class="px-4 py-2 sm:py-4">
+                    <%=
+                      link_to forecast.friendly_date, forecast_path( 
+                        team_name: @team.slug, 
+                        year: forecast.date.year,
+                        month: forecast.month_name
+                      ), class: "no-underline hover:underline text-indigo-500"                     %>
+                  </td>
+                  <td class="px-4 py-2 sm:py-4 text-center">
+                    <span class="font-bold leading-none text-xs mx-2 align-middle py-1 px-2 text-<%= status_color %>-50 bg-<%= status_color %>-500 rounded"><%= forecast.open? ? "Open" : "Closed" %></span>
+                  </td>
+                  <td class="px-4 py-2 sm:py-4 text-center">
+                    <%= link_to forecast.open? ? "Close" : "Open", forecast_status_path(team_monthly_forecast_id: forecast.id, status: forecast.open? ? 0 : 1), method: :put, class: "text-sm cursor-pointer no-underline hover:underline text-indigo-500" %>
+                  </td>
+                </tr>
               <% end %>
-            </td>
+            <% else %>
+              <tr>
+                <td class="text-center" colspan=3>No forecasts</td>
+              </tr>
+            <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bg-white px-4 my-8 pt-8 shadow rounded">
+    <div class="flex flex-wrap justify-between mb-4">
+      <div>
+        <h3 class="text-lg font-bold mb-4">Member</h3>
+      </div>
+      <div>
+        <%= link_to "Add Members", new_member_path(team_id: @team.id), class: "cursor-pointer bg-transparent hover:bg-indigo-500 text-indigo-700 hover:text-white -mt-2 py-2 px-4 border border-indigo-500 hover:border-transparent rounded text-sm" %>
+      </div>
+    </div>
+    <div class="overflow-x-auto -mx-4">
+      <table class="relative w-full table-auto text-sm">
+        <thead>
+          <tr class="text-left text-gray-500">
+            <th class="px-4 py-4">First Name</th>
+            <th class="px-4 py-4">Last Name</th>
+            <th class="px-4 py-4">Email</th>
+            <th class="px-4 py-4">Role</th>
+            <th class="px-4 py-4">Actions</th>
           </tr>
-        <% end %>
-      <% else %>
-        <tr>
-          <td class="px-4 py-2 sm:py-4" colspan=4>No Fields</td>
-        </tr>
-      <% end %>
-    </tbody>
-    </table>
+        </thead>
+        <tbody>
+          <% if @team.members.size > 0 %>
+            <% @team.members.order('lower(members.first_name)').each_with_index do |member, index| %>
+              <% odd_even_style = index % 2 == 0 ? " bg-gray-100" : ""%>
+              <tr class="text-left hover:bg-gray-200<%= odd_even_style %>">
+                <td class="px-4 py-2 sm:py-4"><%= member.first_name %></td>
+                <td class="px-4 py-2 sm:py-4"><%= member.last_name %></td>
+                <td class="px-4 py-2 sm:py-4"><%= member.email %></td>
+                <td class="px-4 py-2 sm:py-4"><%= member.role&.name %></td>
+                <td class="px-4 py-2 sm:py-4">
+                  <%= link_to 'Show', member_path(member.id), class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4"%>
+                  <%= link_to 'Edit', edit_member_path(member.id), class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4"%>
+                  <%= link_to 'Remove', url_for(action: :update, controller: :memberships, team_name: @team.slug, member_id: member.id), method: :put, data: {confirm: "Are you sure you want to remove #{member.full_name} from this team"}, class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4"%>
+                    <% if current_member.is_admin? %>
+                  <%= link_to 'Delete', url_for(action: :destroy, controller: :members, id: member.id), method: :delete, data: {confirm: "Are you sure you want to delete #{member.full_name}"}, class: "cursor-pointer text-indigo-500 no-underline hover:underline mr-4" %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          <% else %>
+            <tr>
+              <td class="px-4 py-2 sm:py-4" colspan=4>No members</td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>

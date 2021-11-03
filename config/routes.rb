@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   post '/forecasts', to: 'submit_forecasts#create', as: :create_forecast
   # /forecasts/team_name/year/month
   get '/forecasts/(:team_name)/(:year)/(:month)', to: 'submit_forecasts#new', as: :new_team_forecast
+  get '/forecast/teams/(:team_name)', to: 'submit_forecasts#index', as: :team_forecasts
 
   scope :manage do
     resources :teams, param: :team_name

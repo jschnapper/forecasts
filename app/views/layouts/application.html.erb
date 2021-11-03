@@ -12,7 +12,7 @@
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <body class="bg-gray-50">
+  <body class="bg-gray-100">
     <nav class="flex bg-white py-2 sm:py-4 px-2 sm:px-6 lg:px-8 w-full shadow-sm">
       <div class="flex-1">
         <h2 class="font-bold text-2xl">
@@ -23,17 +23,25 @@
         <% if member_signed_in? %>
           <div class="flex space-x-4">
           <%= link_to "Home", home_path, class: "hover:text-gray-500" %>
+          <% if current_member.team_id.present? %>          
+            <%= link_to "Current Forecast", forecast_path(current_member.team.slug), class: "hover:text-gray-500" %>
+          <% end %>
           <%= link_to "Logout", destroy_member_session_path, method: :delete, class: "hover:text-gray-500" %>
           </div>
         <% else %>
+          <div class="flex space-x-4">
+          <%= link_to "Forecasts", team_forecasts_path, class: "hover:text-gray-500" %>
           <%= link_to "Login", new_member_session_path, class: "hover:text-gray-500" %>
+          </div>
         <% end %>
       </div>
     </nav>
     <% if !devise_controller? %>
-      <div>
+      <div class="flex justify-end">
         <% if notice.present? %>
-          <div class="notice"><%= notice %></div>
+          <div class="mr-8 notice bg-indigo-100 border border-indigo-400 text-indigo-700 my-4 px-4 py-3 rounded relative">
+            <%= notice %>
+          </div> 
         <% end %>
         <% if alert.present? %>
           <div class="alert m-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"><%= alert %></div>

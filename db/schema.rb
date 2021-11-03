@@ -134,9 +134,23 @@ ActiveRecord::Schema.define(version: 2021_10_23_192131) do
     t.index ["name"], name: "index_roles_on_name", unique: true
   end
 
+  create_table "team_field_versions", force: :cascade do |t|
+    t.string "item_type"
+    t.string "{:null=>false}"
+    t.bigint "item_id", null: false
+    t.string "event", null: false
+    t.string "whodunnit"
+    t.text "object"
+    t.datetime "created_at"
+    t.index ["item_type", "item_id"], name: "index_team_field_versions_on_item_type_and_item_id"
+  end
+
   create_table "team_fields", force: :cascade do |t|
     t.bigint "team_id", null: false
     t.bigint "field_id", null: false
+    t.date "start_on", null: false
+    t.date "end_after"
+    t.date "revoked_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["field_id"], name: "index_team_fields_on_field_id"
@@ -151,6 +165,7 @@ ActiveRecord::Schema.define(version: 2021_10_23_192131) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["monthly_forecast_id"], name: "index_team_monthly_forecasts_on_monthly_forecast_id"
+    t.index ["team_id", "monthly_forecast_id"], name: "index_team_monthly_forecasts_on_team_id_and_monthly_forecast_id", unique: true
     t.index ["team_id"], name: "index_team_monthly_forecasts_on_team_id"
   end
 

@@ -6,7 +6,7 @@ class ForecastStatusController < ManagementController
   def update
     status = params[:status]&.to_i == 1
     @team_monthly_forecast.update(open_for_submissions: status)
-    redirect_to forecast_path(team_name: @team_monthly_forecast.team.slug, year: @team_monthly_forecast.year, month: @team_monthly_forecast.month_name)
+    redirect_back fallback_location: home_path
   end
 
   private

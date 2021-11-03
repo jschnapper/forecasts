@@ -28,18 +28,18 @@ Role.create(
 Field.create(
   [
     { 
-      name: 'PTO', 
+      name: 'PTO',
       description: 'paid time off',
       default: true
     },
     { 
-      name: 'Holiday', 
+      name: 'Holiday',
       description: 'Holiday',
       default: true
     },
     { 
-      name: 'Other', 
-      description: 'Anything not covered by the other fields',
+      name: 'Other',
+      description: 'Anything not covered by the other fields. Trainings, etc.',
       default: true
     }
   ]

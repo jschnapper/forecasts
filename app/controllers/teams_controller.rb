@@ -21,7 +21,13 @@ class TeamsController < ManagementController
   end
 
   def show
-    @team = Team.includes(members: :role, team_fields: :field).find_by(slug: params[:team_name])
+    @team = Team.includes(
+      team_monthly_forecasts: :monthly_forecast,
+      members: :role, 
+      team_fields: :field
+    ).find_by(slug: params[:team_name])
+    @recent_team_monthly_forecasts = @team.team_monthly_forecasts.joins(:monthly_forecast).order("monthly_forecasts.date DESC").first(4)
+    @current_team_monthly_forecast = @team.current_forecast
     if @team.nil?
       redirect_to teams_path
     end

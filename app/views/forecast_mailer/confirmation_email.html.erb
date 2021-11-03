@@ -2,10 +2,10 @@
 <p>Thanks for submitting your <%= @team.name.titleize %> <%= @team_monthly_forecast.monthly_forecast.friendly_name %></p>
 <p>There are <%= @team_monthly_forecast.monthly_forecast.total_hours %> hours this month.</p>
 <%# If holiday hours are not correct %>
-<% if @team_monthly_forecast.monthly_forecast.holiday_hours > 0 && @team_monthly_forecast.monthly_forecast.holiday_hours != @member_forecast.hours["holiday"]%>
+<% if @team_monthly_forecast.monthly_forecast.holiday_hours > 0 && @team_monthly_forecast.monthly_forecast.holiday_hours != @member_forecast.hours[Field.find_by(name: "Holiday").id.to_s]&.to_i %>
   <p>
     <b>Action Required:</b> Please correct your forecasted holiday hours. Expected <%= @team_monthly_forecast.monthly_forecast.holiday_hours %> holiday hours. 
-    You submitted <%= @member_forecast.hours["holiday"] || 0 %> holiday hours.
+    You submitted <%= @member_forecast.hours[Field.find_by(name: "Holiday").id.to_s] || 0 %> holiday hours.
   </p>
 <% end %>
 <%# If total hours are over expected hours %>
@@ -30,11 +30,11 @@
     </tr>
   </thead>
   <tbody>
-    <% @member_forecast.hours.each do |field, hours| %>
-      <% if hours.present? && hours.to_i > 0 %>
+    <% @team_monthly_forecast.ordered_team_fields.each do |team_field| %>
+      <% if @member_forecast.hours[team_field.field_id.to_s].present? && @member_forecast.hours[team_field.field_id.to_s].to_i > 0 %>
         <tr>
-          <td style="border: 1px solid black; text-align: right; padding: 0 8px"><%= field %></td>
-          <td style="border: 1px solid black; padding: 0 8px;"><%= hours %></td>
+          <td style="border: 1px solid black; text-align: right; padding: 0 8px"><%= team_field.field.name %></td>
+          <td style="border: 1px solid black; padding: 0 8px;"><%= @member_forecast.hours[team_field.field_id.to_s] %></td>
         </tr>
       <% end %>
     <% end %>

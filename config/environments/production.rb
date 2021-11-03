@@ -65,11 +65,20 @@ Rails.application.configure do
   config.action_mailer.perform_caching = false
 
   config.action_mailer.default_url_options = { 
-    host: ENV["PRODUCTION_HOST"] 
+    host: ENV["PRODUCTION_HOST"],
+    protocol: ENV["PRODUCTION_PROTOCOL"]
   }
 
   config.action_mailer.default_options = {
     from: ENV["NO_REPLY_EMAIL"] || 'no-reply@example.com'
+  }
+
+  # setup smtp mailer
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address: ENV["SMTP_HOST"],
+    port: ENV["SMTP_PORT"],
+    openssl_verify_mode: ENV["SMTP_OPENSSL_VERIFY_MODE"]
   }
 
   # Ignore bad email addresses and do not raise email delivery errors.

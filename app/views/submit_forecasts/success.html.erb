@@ -3,10 +3,10 @@
     <div id="forecast-title" class="text-lg mb-2"><span id="team-name" class="font-bold"><%= @team&.name&.titleize || "Team"%></span> <span class="text-gray-500"><%= "#{@team_monthly_forecast&.date&.strftime('%B %Y')} " %>Forecast</span></div>
     <div class="mb-2">Thank you for submitting, <%= @member.first_name.capitalize %>!</div>
     <%# If holiday hours are not correct %>
-    <% if @team_monthly_forecast.holiday_hours > 0 && @team_monthly_forecast.holiday_hours != @member_forecast.hours["holiday"].to_i %>
+    <% if @team_monthly_forecast.holiday_hours > 0 && @team_monthly_forecast.holiday_hours != @member_forecast.hours[Field.find_by(name: "Holiday").id.to_s].to_i %>
       <div class="bg-red-100 border border-red-400 text-red-700 my-4 px-4 py-3 rounded relative">
         <b class="font-bold">Action Required:</b> Please correct your forecasted holiday hours. Expected <%= @team_monthly_forecast.holiday_hours %> holiday hours. 
-        You submitted <%= @member_forecast.hours["holiday"] || 0 %> holiday hours.
+        You submitted <%= @member_forecast.hours[Field.find_by(name: "Holiday").id.to_s] || 0 %> holiday hours.
       </div>
     <% end %>
     <%# If total hours are over expected hours %>
@@ -33,11 +33,11 @@
         </tr>
       </thead>
       <tbody>
-        <% @team_monthly_forecast.team.ordered_fields.each do |field| %>
-          <% hours = @member_forecast.hours.fetch(field.name, nil).present? ? @member_forecast.hours.fetch(field.name, nil) : 0 %>
+        <% @team_monthly_forecast.ordered_team_fields.each do |team_field| %>
+          <% hours = @member_forecast.hours.fetch(team_field.field_id.to_s, nil).present? ? @member_forecast.hours.fetch(team_field.field_id.to_s, nil) : 0 %>
           <% if hours.to_i > 0 %>
             <tr>
-              <td class="pr-4 text-right"><%= field.name %></td>
+              <td class="pr-4 text-right"><%= team_field.field.name %></td>
               <td><%= hours %></td>
             </tr>
           <% end %>

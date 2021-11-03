@@ -1,6 +1,6 @@
 wb = xlsx_package.workbook
 headers = ['first name', 'last name', 'email', 'total hours']
-headers += @team.ordered_fields.map(&:name)
+headers += @team_monthly_forecast.ordered_team_fields.map { |team_field| team_field.field.name }
 headers << "notes"
 # calculate last column
 last_column = [*'A'..'ZZZ'][headers.size - 1]
@@ -17,8 +17,8 @@ wb.add_worksheet(name: "#{@team.name.parameterize.underscore}_#{@team_monthly_fo
     row << member_forecast.last_name
     row << member_forecast.email
     row << "=SUM(E#{num_rows}:#{last_column_no_notes}#{num_rows})"
-    @team.ordered_fields.each do |field|
-      val = member_forecast.hours&.fetch(field.name, 0).present? ? member_forecast.hours&.fetch(field.name, 0) : 0
+    @team_monthly_forecast.ordered_team_fields.each do |team_field|
+      val = member_forecast.hours&.fetch(team_field.field.id.to_s, 0).present? ? member_forecast.hours&.fetch(team_field.field.id.to_s, 0) : 0
       row << val
     end
     row << member_forecast.notes

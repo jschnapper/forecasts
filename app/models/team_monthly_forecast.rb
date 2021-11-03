@@ -12,8 +12,9 @@
 #
 # Indexes
 #
-#  index_team_monthly_forecasts_on_monthly_forecast_id  (monthly_forecast_id)
-#  index_team_monthly_forecasts_on_team_id              (team_id)
+#  index_team_monthly_forecasts_on_monthly_forecast_id              (monthly_forecast_id)
+#  index_team_monthly_forecasts_on_team_id                          (team_id)
+#  index_team_monthly_forecasts_on_team_id_and_monthly_forecast_id  (team_id,monthly_forecast_id) UNIQUE
 #
 # Foreign Keys
 #
@@ -23,13 +24,13 @@
 class TeamMonthlyForecast < ApplicationRecord
   belongs_to :team
   belongs_to :monthly_forecast
-
+  has_many :member_forecasts, dependent: :destroy
   alias_attribute :open?, :open_for_submissions
 
   validates :team_id, presence: true, uniqueness: { scope: :monthly_forecast }
   validates :monthly_forecast_id, presence: true
 
-  scope :open_forecasts, -> { where(open: true) }
+  scope :open_forecasts, -> { where(open_for_submissions: true) }
 
   # delegate methods to monthly forecast
   # for monthly forecast info
@@ -42,4 +43,48 @@ class TeamMonthlyForecast < ApplicationRecord
            :holiday_hours,
            :has_holidays?,
            to: :monthly_forecast
+  
+  def number_of_submissions
+    @number_of_submissions || set_number_of_submissions
+  end
+
+  # order team fields association
+  #   - alphabetize
+  #   - holiday
+  #   - pto
+  #   - other
+  def ordered_team_fields
+    @ordered_team_fields || order_team_fields
+  end
+
+
+  private
+
+  def set_number_of_submissions
+    member_forecasts.reduce(0) { |num, forecast| forecast&.total_hours.present? && forecast&.total_hours > 0 ? num + 1 : num }
+  end
+
+  def active_fields
+    team.team_fields.includes(:field).joins(:field).active(monthly_forecast.date).order("lower(fields.name)")
+  end
+
+  def order_team_fields
+    special_fields = {
+      holiday: nil,
+      pto: nil,
+      other: nil
+    }
+    sorted_team_fields = []
+    active_fields.each do |team_field|
+      if !special_fields.keys.include?(team_field.field.name.downcase.to_sym)
+        sorted_team_fields << team_field
+      else
+        special_fields[team_field.field.name.downcase.to_sym] = team_field
+      end
+    end
+    sorted_team_fields << special_fields[:holiday] if special_fields[:holiday]
+    sorted_team_fields << special_fields[:pto] if special_fields[:pto]
+    sorted_team_fields << special_fields[:other] if special_fields[:other]
+    return sorted_team_fields
+  end
 end

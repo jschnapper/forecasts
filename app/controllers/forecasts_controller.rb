@@ -5,7 +5,7 @@ class ForecastsController < ManagementController
 
   # /manage/:team_name/forecasts
   def index
-    @team_monthly_forecasts = TeamMonthlyForecast.includes(:monthly_forecast).where(team_id: team.id).order("monthly_forecasts.date DESC").last(12)
+    @team_monthly_forecasts = TeamMonthlyForecast.includes(:monthly_forecast).where(team_id: team.id).order("monthly_forecasts.date DESC")
   end
 
   # /manage/:team_name/:year/:month

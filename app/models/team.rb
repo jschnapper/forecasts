@@ -26,6 +26,7 @@ class Team < ApplicationRecord
 
   # associations
   has_many :team_fields, dependent: :destroy, autosave: true
+  has_many :team_monthly_forecasts, dependent: :destroy
   has_many :fields, through: :team_fields
   has_many :members, dependent: :destroy
   has_many :mail_jobs, dependent: :destroy
@@ -43,6 +44,17 @@ class Team < ApplicationRecord
     fields.order("lower(name)") 
   end
 
+  def holiday_field
+    fields.detect { |field| field.name.downcase == 'holiday' }
+  end
+
+  def active_fields
+    team_fields.active.join(:field).order("lower(fields.name)")
+  end
+
+  def inactive_fields
+    team_fields.inactive.join(:field).order("lower(fields.name)")
+  end
   # order fields
   #   - alphabetize
   #   - holiday
@@ -59,6 +71,11 @@ class Team < ApplicationRecord
   #   - other
   def ordered_team_fields
     @ordered_team_fields || order_team_fields
+  end
+
+  # Get current forecast for team
+  def current_forecast
+    team_monthly_forecasts.joins(:monthly_forecast).find_by(monthly_forecasts: { date: Time.zone.today.beginning_of_month}) || team_monthly_forecasts.last
   end
 
   private
@@ -85,13 +102,8 @@ class Team < ApplicationRecord
       other: nil
     }
     sorted_fields = []
-    fields.each do |field|
+    fields.order("lower(fields.name)").each do |field|
       if !special_fields.keys.include?(field.name.downcase.to_sym)
-        sorted_fields.each do |s_field|
-          if s_field.name.downcase < field.name.downcase
-            break
-          end
-        end
         sorted_fields << field
       else
         special_fields[field.name.downcase.to_sym] = field
@@ -110,7 +122,7 @@ class Team < ApplicationRecord
       other: nil
     }
     sorted_team_fields = []
-    team_fields.each do |team_field|
+    active_fields.each do |team_field|
       if !special_fields.keys.include?(team_field.field.name.downcase.to_sym)
         sorted_team_fields.each do |s_field|
           if s_field.field.name.downcase < team_field.field.name.downcase
@@ -133,7 +145,7 @@ class Team < ApplicationRecord
   # - holiday
   # - other
   def add_default_fields
-    default_fields = Field.where(default: true).pluck(:id).map { |field_id| {field_id: field_id} }
+    default_fields = Field.where(default: true).pluck(:id).map { |field_id| {field_id: field_id, start_on: Time.zone.today.beginning_of_month} }
     team_fields.build(default_fields)
   end
 end

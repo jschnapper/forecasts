@@ -2,16 +2,9 @@
 <%= link_to "All Forecasts", monthly_forecasts_path %>
 <h2><%= @monthly_forecast.friendly_name %></h2>
 <p><%= @monthly_forecast.date %></p>
-<p>Active: <%= @monthly_forecast.active ? "yes" : "no" %></p>
 <p>Total hours: <%= @monthly_forecast.total_hours %>
 <% if @monthly_forecast.holiday_hours > 0 %>
   <p>Holiday hours: <%= @monthly_forecast.holiday_hours %>
-<% end %>
-<%# activate or deactivate %>
-<% if @monthly_forecast.active %>
-  <%= button_to "Close for submissions", monthly_forecast_path(id: @monthly_forecast.id, monthly_forecast: { active: 0 }), method: :put %>
-<% else %>
-  <%= button_to "Activate for submissions", monthly_forecast_path(id: @monthly_forecast.id, monthly_forecast: { active: 1 }), method: :put %>
 <% end %>
 
 <%= link_to 'Edit', edit_monthly_forecast_path(@monthly_forecast.id)%>

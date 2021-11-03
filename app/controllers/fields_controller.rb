@@ -1,5 +1,6 @@
 class FieldsController < ManagementController
   before_action -> { requires_at_least_role :representative }
+  before_action :set_team_monthly_forecast
 
   def index
     @fields = Field.all
@@ -11,11 +12,24 @@ class FieldsController < ManagementController
 
   def create
     @field = Field.new(field_params)
-    if params[:team_id].present?
-      @field.team_fields.new(team_id: params[:team_id])
-    end
     if @field.save
-      redirect_to @field
+      # if default is selected, it will be added to each foreact automatically
+      if @team_monthly_forecast.present? && params[:default] == "0"
+        TeamField.create(
+          team_id: @team_monthly_forecast.team_id, 
+          field_id: @field.id,
+          start_on: @team_monthly_forecast.date
+        )
+      end
+      if @team_monthly_forecast
+        redirect_to forecast_path( 
+          team_name: @team_monthly_forecast.team.slug, 
+          year: @team_monthly_forecast.date.year,
+          month: @team_monthly_forecast.month_name
+        )
+      else
+        redirect_to @field
+      end
     else
       render :new
     end
@@ -56,6 +70,10 @@ class FieldsController < ManagementController
   end
 
   private
+
+  def set_team_monthly_forecast
+    @team_monthly_forecast = TeamMonthlyForecast.includes(:team).find_by(id: params[:team_monthly_forecast_id])
+  end
 
   def field_params
     params.require(:field).permit(:name, :code, :description, :default)

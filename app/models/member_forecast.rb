@@ -53,7 +53,13 @@ class MemberForecast < ApplicationRecord
     # TODO: why is rails complaining about team_id?
     # TODO: should base this on active team fields for the current forecast in case fields are removed after submission
     # hours&.slice(*team&.fields&.map(&:name))&.values&.reduce { |total, amount| total.to_i + amount.to_i } || 0
-    hours&.values&.reduce { |total, amount| total.to_i + amount.to_i } || 0
+    sum = 0
+    if team_monthly_forecast_id && hours.present?
+      team_monthly_forecast&.ordered_team_fields&.each do |team_field|
+        sum += (hours[team_field.field_id.to_s]&.to_i || 0)
+      end
+    end
+    sum
   end
 
   private
@@ -62,7 +68,15 @@ class MemberForecast < ApplicationRecord
   # and are whole numbers
   def format_hours
     hours.each do |field, amount|
-      hours[field.downcase] = amount.to_i
+      hours[field] = amount.to_i
+    end
+  end
+
+  # ensure that if they are passing "other"
+  # that they have notes to accompany it
+  def has_notes
+    if hours[Field.find_by(name: "Other").id.to_s].present? && notes.empty?
+      errors.add(:notes, "If including 'other' hours, please list what the hours are for in the notes")
     end
   end
 
@@ -76,7 +90,7 @@ class MemberForecast < ApplicationRecord
 
   def self.get_member_forecasts_sql(teams, monthly_forecast)
     <<-SQL.squish
-      select members.*, members.id as member_id, member_forecasts.hours, member_forecasts.notes
+      select members.*, members.id as member_id, team_monthly_forecasts.id as team_monthly_forecast_id, member_forecasts.hours, member_forecasts.notes
       from members
       left join team_monthly_forecasts
       on team_monthly_forecasts.monthly_forecast_id = #{monthly_forecast.id}

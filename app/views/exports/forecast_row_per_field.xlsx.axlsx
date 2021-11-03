@@ -10,15 +10,15 @@ wb.add_worksheet(name: "#{@team.name.parameterize.underscore}_#{@team_monthly_fo
   MemberForecast.includes(:member).get_member_forecasts(@team, @team_monthly_forecast.monthly_forecast).each do |member_forecast|
     num_rows += 1
     row_start = num_rows + 1
-    row_end = num_rows + @team.ordered_fields.size
+    row_end = num_rows + @team_monthly_forecast.ordered_team_fields.size
     row = [member_forecast.member.full_name, 'total']
     row << "=SUM(C#{row_start}:C#{row_end})"
     # calculate total based on fields being used in case field was removed after submission
-    total = @team.ordered_fields.reduce(0) { |sum, field| sum + (member_forecast.hours&.fetch(field.name, 0)&.to_i || 0) } 
+    total = @team_monthly_forecast.ordered_team_fields.reduce(0) { |sum, team_field| sum + (member_forecast.hours&.fetch(team_field.field.id.to_s, 0)&.to_i || 0) } 
     sheet.add_row row, style: total_row_style, formula_values: [nil, nil, total]
-    @team.ordered_fields.each do |field|
-      row = [member_forecast.member.full_name, field.name]
-      val = member_forecast.hours&.fetch(field.name, 0).present? ? member_forecast.hours&.fetch(field.name, 0) : 0
+    @team_monthly_forecast.ordered_team_fields.each do |team_field|
+      row = [member_forecast.member.full_name, team_field.field.name]
+      val = member_forecast.hours&.fetch(team_field.field.id.to_s, 0).present? ? member_forecast.hours&.fetch(team_field.field.id.to_s, 0) : 0
       row << val
       sheet.add_row row
       num_rows += 1

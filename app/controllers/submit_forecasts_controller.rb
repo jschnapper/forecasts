@@ -6,6 +6,15 @@ class SubmitForecastsController < ApplicationController
                 :set_member,
                 only: :new
 
+  def index
+    if team.nil?
+      @teams = Team.all
+    else
+      @team_monthly_forecasts = TeamMonthlyForecast.joins(:monthly_forecast).where(team_id: team.id, open_for_submissions: true).where("monthly_forecasts.date >= '#{Time.zone.today.beginning_of_month}'")
+    end
+    render :index
+  end
+
   # root
   # /forecasts
   # /forecasts/:team_name/:year/:month
@@ -55,7 +64,7 @@ class SubmitForecastsController < ApplicationController
   private
 
   def member_forecast_params
-    params.require(:member_forecast).permit(:member_id, :team_monthly_forecast_id, :notes, hours: [team&.fields&.map { |field| field.name }])
+    params.require(:member_forecast).permit(:member_id, :team_monthly_forecast_id, :notes, hours: [team&.fields&.map { |field| field.id.to_s }])
   end
 
   # memoized field fetch
@@ -89,9 +98,9 @@ class SubmitForecastsController < ApplicationController
       # if only one param provided, redirect to forecasts
       redirect_to new_team_forecast_path, team_name: @team&.name
     else
-      # get most current forecast
+      # get current forecast
       # Date
-      @monthly_forecast = MonthlyForecast.find_by(date: Date.today.beginning_of_month) || MonthlyForecast.last
+      @monthly_forecast = MonthlyForecast.find_by(date: Time.zone.today.beginning_of_month) || MonthlyForecast.last
     end
     @team_monthly_forecast = @monthly_forecast.team_monthly_forecasts.detect { |tmf| tmf.team_id == @team&.id }
   end
