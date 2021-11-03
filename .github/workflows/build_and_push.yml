@@ -6,10 +6,8 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the main branch with tags
   push:
-    branches: [ main ]
     tags: '*'
   pull_request:
-    branches: [ main ]
     tags: '*'
     
   # Allows you to run this workflow manually from the Actions tab
@@ -33,6 +31,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/forecasts:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/forecasts:${GITHUB_REF#refs/*/}
 
 
