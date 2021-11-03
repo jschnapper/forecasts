@@ -55,7 +55,6 @@ class Team < ApplicationRecord
   def inactive_fields
     team_fields.inactive.join(:field).order("lower(fields.name)")
   end
-
   # order fields
   #   - alphabetize
   #   - holiday

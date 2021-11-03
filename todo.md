@@ -38,7 +38,6 @@
 
 
 
-
 - [ ] allow people to suggest fixes and improvements and rank them
 - [x] commit fixes from other repo
 - [x] allow for inversion of spreadsheet (so each row is an entry from the user for a field)

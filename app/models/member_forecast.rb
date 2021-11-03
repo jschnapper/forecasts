@@ -41,6 +41,7 @@ class MemberForecast < ApplicationRecord
   validate :has_notes
 
   scope :get_member_forecasts, ->(teams, monthly_forecast) { find_by_sql(get_member_forecasts_sql(teams, monthly_forecast)) }
+  scope :member_forecast, -> (member_id) { }
 
   def hours
     self[:hours]&.with_indifferent_access
@@ -75,6 +76,14 @@ class MemberForecast < ApplicationRecord
   # that they have notes to accompany it
   def has_notes
     if hours[Field.find_by(name: "Other").id.to_s].present? && notes.empty?
+      errors.add(:notes, "If including 'other' hours, please list what the hours are for in the notes")
+    end
+  end
+
+  # ensure that if they are passing "other"
+  # that they have notes to accompany it
+  def has_notes
+    if hours["Other"].present? && notes.empty?
       errors.add(:notes, "If including 'other' hours, please list what the hours are for in the notes")
     end
   end

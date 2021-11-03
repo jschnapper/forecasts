@@ -25,7 +25,6 @@ class TeamMonthlyForecast < ApplicationRecord
   belongs_to :team
   belongs_to :monthly_forecast
   has_many :member_forecasts, dependent: :destroy
-
   alias_attribute :open?, :open_for_submissions
 
   validates :team_id, presence: true, uniqueness: { scope: :monthly_forecast }
