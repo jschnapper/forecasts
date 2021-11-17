@@ -4,7 +4,8 @@ RUN apt-get update -qq && apt-get install -y nodejs postgresql-client
 WORKDIR /forecasts
 COPY Gemfile /forecasts/Gemfile
 COPY Gemfile.lock /forecasts/Gemfile.lock
-RUN bundle install
+RUN bundle install --deployment --without development test
+RUN RAILS_ENV=production bundle exec rake assets:precompile
 
 # Add a script to be executed every time the container starts.
 COPY entrypoint.sh /usr/bin/
