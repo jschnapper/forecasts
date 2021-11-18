@@ -1,6 +1,6 @@
 <div id="member-email" class="text-gray-500 mb-2"><%= @member&.email%></div>
 <div>There are <span class="expected-hours"><b><%= @team_monthly_forecast&.monthly_forecast&.total_hours %></b></span> hours this month.</div>
-<%= form_with model: member_forecast, url: create_forecast_path, method: :post, id: "forecast-form" do |form| %>
+<%= form_with model: member_forecast, url: create_forecast_path, method: :post, id: "forecast-form", data: { date:  @team_monthly_forecast&.date&.strftime("%Y-%m")} do |form| %>
   <% if team_monthly_forecast.present? %>
     <%= hidden_field_tag :team_monthly_forecast_id, team_monthly_forecast.id, id: "team-monthly-forecast-id", name: "member_forecast[team_monthly_forecast_id]", required: true %>
   <% else %>

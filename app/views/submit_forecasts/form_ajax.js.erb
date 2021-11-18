@@ -6,6 +6,8 @@ document.getElementById("forecast-form-container").innerHTML = "<%= j render "fo
 document.querySelector("#forecast-form-container #member-emails").innerHTML = "<%= j select_tag "member-id", options_from_collection_for_select(@members&.sort_by { |member| member&.email&.downcase } || [], :id, :email, @member&.id), { prompt: "select email", id: "member-emails", required: true } %>"
 <%# Clear email under header %>
 document.querySelector("#member-email").innerText = null
+<%# Add date %>
+document.querySelector("#forecast-form-container #forecast-form").dataset.date = "<%= team_monthly_forecast&.date&.strftime("%Y-%m") %>"
 
 history.pushState(
   { 'team': '<%= team&.slug %>' },
