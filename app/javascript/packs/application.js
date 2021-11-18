@@ -17,6 +17,30 @@ document.addEventListener("turbolinks:load", () => {
   /*****************************************
    ********* submit_forecasts start ********
    *****************************************/
+   const checkStorageForForecast = () => {
+    let member = document.querySelector("#forecast-form #member-emails")
+    let forecastForm = document.getElementById("forecast-form")
+    if (forecastForm && member) {
+      let inputs = forecastForm.elements
+      let storedValues = JSON.parse(localStorage.getItem(`${member.value};${forecastForm.dataset.date}`))
+      if (storedValues) {
+        for (let i = 0; i < inputs.length; i++) {
+          if (inputs[i].name && 
+            inputs[i].name.toLowerCase() != "authenticity_token" &&
+            inputs[i].name.toLowerCase() != "member_forecast[team_monthly_forecast_id]" &&
+            inputs[i].name.toLowerCase() != "member_forecast[member_id]") {
+            if (storedValues[inputs[i].name]) {
+              inputs[i].value = storedValues[inputs[i].name]
+            }
+          }
+        }
+        return true
+      } else {
+        return false
+      }
+    }
+  }
+
   // Handle changing form content based on selected team
   const userDetailsForm = document.getElementById("forecast-user-details-form")
   const userDetailsFormTeamField = document.querySelector("#forecast-user-details-form #user-details-team-id")
@@ -32,8 +56,8 @@ document.addEventListener("turbolinks:load", () => {
   if (userDetailsForm) {
     userDetailsForm.addEventListener("ajax:success", () => {
       bindMemberChangeHandler()
+      checkStorageForForecast()
       countHours()
-
     })
     userDetailsForm.addEventListener("ajax:error", () => {
       location.reload()
@@ -58,6 +82,24 @@ document.addEventListener("turbolinks:load", () => {
         // Re-enable button
         if (formButton) {
           formButton.disabled = false
+        }
+        // if false, clear inputs because member changed
+        if (!checkStorageForForecast()) {
+          let forecastForm = document.getElementById("forecast-form")
+          let inputs = forecastForm.elements
+          for (let i = 0; i < inputs.length; i++) {
+            if (inputs[i].name && 
+              inputs[i].name.toLowerCase() != "authenticity_token" && 
+              inputs[i].name.toLowerCase() != "member_forecast[team_monthly_forecast_id]" &&
+              inputs[i].name.toLowerCase() != "member_forecast[member_id]") {
+                // don't clear holiday
+              if (inputs[i].dataset.holiday) {
+                inputs[i].value = inputs[i].dataset.holiday
+              } else if (inputs[i].name) {
+                inputs[i].value = ""
+              }
+            }
+          }
         }
       })
     }  
@@ -94,8 +136,62 @@ document.addEventListener("turbolinks:load", () => {
       currentHours.classList.remove("text-green-600", "font-bold")
     }
   }
+  const submitForecastButton = document.querySelector("#forecast-form #forecast-submit")
 
-  countHours()
+  // Store the submission locally
+  if (submitForecastButton) {
+    submitForecastButton.addEventListener('click', (e) => {
+      let forecastForm = document.getElementById("forecast-form")
+      if (forecastForm) {
+        let inputs = forecastForm.elements
+        let memberId = document.querySelector("#forecast-form #member-emails").value
+        let submission = {}
+        for (let i = 0; i < inputs.length; i++) {
+          if (inputs[i].name && 
+            inputs[i].name.toLowerCase() != "authenticity_token" && 
+            inputs[i].name.toLowerCase() != "member_forecast[team_monthly_forecast_id]" &&
+            inputs[i].name.toLowerCase() != "member_forecast[member_id]") {
+            submission[inputs[i].name] = inputs[i].value
+          }
+        }
+        try {
+          localStorage.setItem(`${memberId};${forecastForm.dataset.date}`, JSON.stringify(submission));
+        } catch (e) {
+          if ((
+            // everything except Firefox
+            e.code === 22 ||
+            // Firefox
+            e.code === 1014 ||
+            // test name field too, because code might not be present
+            // everything except Firefox
+            e.name === 'QuotaExceededError' ||
+            // Firefox
+            e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+            // acknowledge QuotaExceededError only if there's something already stored
+            (storage && storage.length !== 0)) {
+              let keys = []
+              for ( let i = 0; i < localStorage.length; ++i ) {
+                keys.append(localStorage.key(i));
+              }
+              // remove last 4 submissions and store again
+              let sorted = keys.sort()
+              for (let i = 0; sorted[i] && i < 4; i++) {
+                localStorage.removeItem(sorted[i])
+              }
+              localStorage.setItem(`${memberId};${forecastForm.dataset.date}`, JSON.stringify(submission));
+            }
+        }
+      }
+    })
+  }
+
+  // Whenver form present and page reloads, check storage
+  let forecastForm = document.getElementById("forecast-form")
+  if (forecastForm) {
+    checkStorageForForecast()
+    countHours()
+  }
+
   /***************************************
    ********* submit_forecasts end ********
    ***************************************/
