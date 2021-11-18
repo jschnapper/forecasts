@@ -92,7 +92,10 @@ document.addEventListener("turbolinks:load", () => {
               inputs[i].name.toLowerCase() != "authenticity_token" && 
               inputs[i].name.toLowerCase() != "member_forecast[team_monthly_forecast_id]" &&
               inputs[i].name.toLowerCase() != "member_forecast[member_id]") {
-              if (inputs[i].name) {
+                // don't clear holiday
+              if (inputs[i].dataset.holiday) {
+                inputs[i].value = inputs[i].dataset.holiday
+              } else if (inputs[i].name) {
                 inputs[i].value = ""
               }
             }

@@ -39,7 +39,11 @@
                 <%= form.label team_field.field.name, team_field.field.name, class: "text-gray-700 whitespace-nowrap" %>
               </td>
               <td class="align-middle">
-                <%= form.number_field :hours, step: 1, min: 0, name: "member_forecast[hours[#{team_field.field.id}]]", value: @member_forecast&.hours&.fetch(team_field.field.id.to_s, nil),  class: "hour-input block w-full rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50", value: @team_monthly_forecast.monthly_forecast.holiday_hours, required: true %>
+                <%= form.number_field :hours, step: 1, min: 0, name: "member_forecast[hours[#{team_field.field.id}]]", 
+                  value: @member_forecast&.hours&.fetch(team_field.field.id.to_s, nil) || @team_monthly_forecast.monthly_forecast.holiday_hours, 
+                  class: "hour-input block w-full rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50", 
+                  data: { holiday: @team_monthly_forecast.monthly_forecast.holiday_hours },
+                  required: true %>
               </td>
             </tr>
             <tr>
