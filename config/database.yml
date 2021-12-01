@@ -83,6 +83,7 @@ test:
 #
 production:
   <<: *default
+  host: postgres
   database: forecasts_production
   username: <%= ENV["POSTGRES_USER"] %>
   password: <%= ENV["POSTGRES_PASSWORD"] %>

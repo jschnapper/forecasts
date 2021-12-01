@@ -78,7 +78,7 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = {
     address: ENV["SMTP_HOST"],
     port: ENV["SMTP_PORT"],
-    openssl_verify_mode: ENV["SMTP_OPENSSL_VERIFY_MODE"]
+    openssl_verify_mode: ENV["SMTP_OPENSSL_VERIFY_MODE"].presence || "none" 
   }
 
   # Ignore bad email addresses and do not raise email delivery errors.

@@ -65,4 +65,8 @@
       month: @team_monthly_forecast.date.strftime("%B")
       ), method: :get, data: { turbolinks: false }, params: { member_id: @member.id }, class: "mt-8 w-full cursor-pointer bg-transparent hover:bg-indigo-500 text-indigo-700 hover:text-white py-2 px-4 border border-indigo-500 hover:border-transparent rounded" %>
   </div>
+
+  <div class="mt-8 text-gray-500">
+    <p>If you have any questions or issues, please contact <%= Rails.application.config.contact_email %></p>
+  </div>
 </div>

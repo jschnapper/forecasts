@@ -18,5 +18,8 @@ module Forecasts
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # Contact information
+    config.contact_email = ENV['CONTACT_EMAIL'].presence || 'no-reply@example.com'
   end
 end

@@ -45,6 +45,7 @@ config/initializers/secret_token.rb
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity
+.yarn/
 
 # .env
 .env
