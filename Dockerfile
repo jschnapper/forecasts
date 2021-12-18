@@ -14,6 +14,11 @@ RUN apt-get update -qq \
 COPY entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
 
+# potential workaround for older docker versions
+# access each file as root prior to changing users
+# to avoid broken permissions
+RUN ls -R .
+
 USER forecasts
 ENV BUNDLER_VERSION 2.2.32
 COPY --chown=forecasts:forecasts Gemfile Gemfile.lock ./
