@@ -11,8 +11,6 @@ RUN apt-get update -qq \
   && useradd --create-home forecasts \
   && mkdir /node_modules && chown forecasts:forecasts -R /node_modules /app
 
-USER forecasts
-
 COPY --chown=forecasts:forecasts package.json *yarn* ./
 RUN yarn install --frozen-lockfile
 
@@ -34,8 +32,7 @@ ARG RAILS_ENV="production"
 ARG NODE_ENV="production"
 ENV RAILS_ENV="${RAILS_ENV}" \
     NODE_ENV="${NODE_ENV}" \
-    PATH="${PATH}:/home/forecasts/.local/bin:/node_modules/.bin" \
-    USER="forecasts"
+    PATH="${PATH}:/home/forecasts/.local/bin:/node_modules/.bin"
 
 ENV PATH="${PATH}:/app/bin"
 
@@ -62,12 +59,9 @@ RUN apt-get update \
   && useradd --create-home forecasts \
   && chown forecasts:forecasts -R /app
 
-USER forecasts
-
 ARG RAILS_ENV="production"
 ENV RAILS_ENV="${RAILS_ENV}" \
-    PATH="${PATH}:/home/forecasts/.local/bin" \
-    USER="forecasts"
+    PATH="${PATH}:/home/forecasts/.local/bin" 
 
 ENV PATH="${PATH}:/app/bin"
 
@@ -76,6 +70,10 @@ COPY --chown=forecasts:forecasts --from=builder /app /app
 RUN chmod 0755 bin/*
 
 EXPOSE 3000
+
+RUN ls -l -R
+
+USER forecasts
 
 CMD ["rails", "server", "-p", "3000", "-b", "0.0.0.0"]
 
