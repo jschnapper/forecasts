@@ -26,9 +26,9 @@
           <div class="py-8 text-center">
             <div id="submission-count-wrapper" class="text-5xl flex justify-center">
               <% submission_text_color = @current_team_monthly_forecast.number_of_submissions == @team.members.size ? "text-green-500" : ""%>
-              <div id="submission-count" class="transform -translate-y-4 -translate-x-1 <%= submission_text_color %>"><%= @current_team_monthly_forecast.number_of_submissions %></div>
+              <div id="submission-count" class="-translate-y-4 -translate-x-1 <%= submission_text_color %>"><%= @current_team_monthly_forecast.number_of_submissions %></div>
               <div id="divider" class="text-4xl">/</div>
-              <div id="team-total" class="transform translate-y-2 translate-x-1"><%= @team.members.size %></div>
+              <div id="team-total" class="translate-y-2 translate-x-1"><%= @team.members.size %></div>
             </div>
             <div class="text-gray-500 mt-2">submissions</div>
           </div>

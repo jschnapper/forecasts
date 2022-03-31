@@ -12,21 +12,21 @@
     <%= form_with model: field, url: path, method: action, id: "field-form" do |form| %>
       <div class="mb-2">
         <%= form.label :name, "Name", class: "text-gray-700" %>
-        <%= form.text_field :name, required: true, class: "mt-1 block w-full rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
+        <%= form.text_field :name, required: true, class: "mt-1 block w-full rounded px-4 py-2 border border-gray-300 focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
       </div>
       <div class="mb-2">
         <%= form.label :code, "Code", class: "text-gray-700" %>
-        <%= form.text_field :code, class: "mt-1 block w-full rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
+        <%= form.text_field :code, class: "mt-1 block w-full rounded px-4 py-2 border border-gray-300 focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
       </div>
       <div class="mb-2">
         <%= form.label :description, "Description", class: "text-gray-700" %>
-        <%= form.text_area :description , class: "mt-1 block w-full rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
+        <%= form.text_area :description , class: "mt-1 block w-full rounded px-4 py-2 border border-gray-300 focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
       </div>
       <%# only show default if admin %>
       <% if current_member.is_admin? %>
         <div class="mb-2">
           <%= form.label :default, "Is default field for all teams", class: "text-gray-700" %>
-          <%= form.check_box :default, class: "rounded border-gray-300 text-indigo-600 focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50" %>
+          <%= form.check_box :default, class: "rounded border border-gray-300 text-indigo-600 focus:outline-none focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50" %>
         </div>
       <% end %>
       <% if (defined? team) && team.present? %>

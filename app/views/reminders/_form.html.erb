@@ -8,7 +8,7 @@
       <%= hidden_field_tag :monthly_forecast_id, @monthly_forecast.id %>
   <% end %>
   <%= form.label :message, "(Optional) Add Message", class: "text-gray-700 text-sm" %>
-  <%= form.text_area :message, class:"block w-full mt-1 rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
+  <%= form.text_area :message, class:"block w-full mt-1 px-4 py-2 rounded border border-gray-300 focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
   <div class="bg-gray-50 py-3 sm:flex sm:flex-row-reverse">
   <button id="modal-submit" type="submit" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm">
     Send

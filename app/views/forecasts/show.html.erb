@@ -28,7 +28,7 @@
           </svg>
         </button>
       </div>
-      <div id="export-options-wrapper" class="origin-top-right absolute z-50 right-0 mt-2 w-72 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none transform transition opacity-0 duration-75 ease-in scale-95 hidden" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+      <div id="export-options-wrapper" class="origin-top-right absolute z-50 right-0 mt-2 w-72 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none transition opacity-0 duration-75 ease-in scale-95 hidden" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
         <div class="py-1" role="none">
           <%= link_to "Export - One row per member", export_forecast_path(team_monthly_forecast_id: @team_monthly_forecast.id, export_type: 1), target: '_self', method: :post, class: "text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer", role: "menuitem", tabindex: "-1" %>
           <%= link_to "Export - Separate row for each field", export_forecast_path(team_monthly_forecast_id: @team_monthly_forecast.id, export_type: 2), target: '_self', method: :post, class: "text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer", role: "menuitem", tabindex: "-1" %>

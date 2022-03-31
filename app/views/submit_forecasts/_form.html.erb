@@ -4,9 +4,19 @@
   <% if team_monthly_forecast.present? %>
     <%= hidden_field_tag :team_monthly_forecast_id, team_monthly_forecast.id, id: "team-monthly-forecast-id", name: "member_forecast[team_monthly_forecast_id]", required: true %>
   <% else %>
-    <%= form.select :team_id, options_for_select(@teams&.map { |tm| [tm.name.titleize, tm.id] }, team&.id), { prompt: "select team" }, { name: "member_forecast[team_id]", id: "team-id", required: true , class: "block w-full mt-4 rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" } %>
+  <div class="relative inline-block w-full mt-4">
+    <%= form.select :team_id, options_for_select(@teams&.map { |tm| [tm.name.titleize, tm.id] }, team&.id), { prompt: "select team" }, { name: "member_forecast[team_id]", id: "team-id", required: true , class: "appearance-none block w-full px-4 py-2 rounded border appearance-none border-gray-300 focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50" } %>
+    <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+      <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
+    </div>
+  </div>
   <% end %>
-  <%= form.select :member_id, options_from_collection_for_select(@members&.sort_by { |member| member&.email&.downcase } || [], :id, :email, @member&.id), { prompt: "select email" }, { id: "member-emails", required: true, class: "block w-full mt-4 rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" } %>
+  <div class="relative inline-block w-full mt-4">
+    <%= form.select :member_id, options_from_collection_for_select(@members&.sort_by { |member| member&.email&.downcase } || [], :id, :email, @member&.id), { prompt: "select email" }, { id: "member-emails", required: true, class: "appearance-none block w-full rounded appearance-none px-4 py-2 border border-gray-300 focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50" } %>
+    <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+      <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
+    </div>
+  </div>
   <% if team %>
     <% if @member_forecast&.errors&.present? %>
       <div class="bg-red-100 border border-red-400 text-red-700 my-4 px-4 py-3 rounded relative">
@@ -41,7 +51,7 @@
               <td class="align-middle">
                 <%= form.number_field :hours, step: 1, min: 0, name: "member_forecast[hours[#{team_field.field.id}]]", 
                   value: @member_forecast&.hours&.fetch(team_field.field.id.to_s, nil) || @team_monthly_forecast.monthly_forecast.holiday_hours, 
-                  class: "hour-input block w-full rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50", 
+                  class: "hour-input block w-full px-4 py-2 rounded border border-gray-300 focus:border-indigo-300  focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50", 
                   data: { holiday: @team_monthly_forecast.monthly_forecast.holiday_hours },
                   required: true %>
               </td>
@@ -59,7 +69,7 @@
                 <% end %>
               </td>
               <td class="align-middle">
-                <%= form.number_field :hours, step: 1, min: 0, name: "member_forecast[hours[#{team_field.field.id}]]", value: @member_forecast&.hours&.fetch(team_field.field.id.to_s, nil), class: "hour-input block w-full rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
+                <%= form.number_field :hours, step: 1, min: 0, name: "member_forecast[hours[#{team_field.field.id}]]", value: @member_forecast&.hours&.fetch(team_field.field.id.to_s, nil), class: "hour-input block w-full rounded px-4 py-2 border border-gray-300 focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
               </td>
             </tr>
             <tr>
@@ -71,7 +81,7 @@
         </tbody>
       </table>
       <%= form.label "notes", class: "text-gray-700 mt-4", value: @member_forecast&.notes %>
-      <%= form.text_area :notes, name: "member_forecast[notes]", id: "notes-input", class: "block w-full mt-1 rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
+      <%= form.text_area :notes, name: "member_forecast[notes]", id: "notes-input", class: "block w-full mt-1 px-4 py-2 rounded border border-gray-300 focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50" %>
       <div class="text-gray-500 text-sm pb-4">If you include hours in the 'other' field, please indicate what the hours are for in the notes</div>
       <table class="table-auto my-8">
         <tbody>
@@ -86,7 +96,7 @@
         </tbody>
       </table>
     <% if team_monthly_forecast.open? %>
-        <%= button_tag id: "forecast-submit", name: nil, class: "w-full cursor-pointer bg-green-600 text-white text-base py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-green-200" do %>
+        <%= button_tag id: "forecast-submit", name: nil, class: "w-full cursor-pointer bg-emerald-600 text-white text-base py-2 px-4 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500" do %>
           Submit Forecast
         <% end %>
       <% end %>
