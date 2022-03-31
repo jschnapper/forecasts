@@ -24,9 +24,6 @@ Rails.application.configure do
   # Apache or NGINX already handles this.
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
 
-  # Compress CSS using a preprocessor.
-  config.assets.css_compressor = :purger
-
   # Do not fallback to assets pipeline if a precompiled asset is missed.
   config.assets.compile = false
 
@@ -63,6 +60,8 @@ Rails.application.configure do
   # config.active_job.queue_name_prefix = "forecasts_production"
 
   config.action_mailer.perform_caching = false
+
+  config.action_mailer.perform_deliveries = ENV["MAIL_PERFORM_DELIVERIES"]
 
   config.action_mailer.default_url_options = { 
     host: ENV["PRODUCTION_HOST"],

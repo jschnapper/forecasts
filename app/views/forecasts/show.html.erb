@@ -1,6 +1,9 @@
 <div id="team-forecast-container" class="mt-8 mb-4 px-4 sm:px-0">
   <% status_color = @team_monthly_forecast.open? ? "green" : "red" %>
   <% opposite_status_color = @team_monthly_forecast.open? ? "red" : "green" %>
+  <%# use these spans so that the dynamic classes are not purged by tailwind if not used %>
+  <span class="hidden text-green-50 bg-green-500">
+  <span class="hidden text-red-50 bg-red-500">
   <h2 class="text-lg"><span class="font-bold"><%= @team.name.titleize %></span> <span class="text-gray-500"><%= @team_monthly_forecast.friendly_name%></span>
   <span class="font-bold leading-none text-xs mx-2 align-middle py-1 px-2 text-<%= status_color %>-50 bg-<%= status_color %>-500 rounded">Forecast is <%= @team_monthly_forecast.open? ? "Open" : "Closed" %></span>
   <%= link_to @team_monthly_forecast.open? ? "Close" : "Open", forecast_status_path(team_monthly_forecast_id: @team_monthly_forecast.id, status: @team_monthly_forecast.open? ? 0 : 1), method: :put, class: "text-sm cursor-pointer no-underline hover:underline mr-4 text-indigo-500" %>
@@ -53,6 +56,8 @@
 <tbody>
   <% @member_forecasts.each_with_index do |member_forecast, index| %>
     <% odd_even_style = index % 2 == 0 ? " bg-gray-100" : "" %>
+    <%# use these spans so that the dynamic classes are not purged by tailwind if not used %>
+    <span class="hidden bg-gray-100">
     <tr class="text-left hover:bg-gray-200<%= odd_even_style %>">
       <td class="px-4 py-2 sm:py-4"><%= member_forecast.first_name %></td>
       <td class="px-4 py-2 sm:py-4"><%= member_forecast.last_name %></td>

@@ -43,7 +43,7 @@ COPY --chown=forecasts:forecasts . .
 
 # precompile production app
 # use dummy secret ket base value
-RUN RAILS_ENV=production SECRET_KEY_BASE=`rails secret` rails assets:precompile --trace \
+RUN RAILS_ENV=production SECRET_KEY_BASE=`rails secret` rails assets:precompile \
   && yarn cache clean \
   && rm -rf tmp/cache vendor/assets test spec node_modules
 

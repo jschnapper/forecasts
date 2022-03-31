@@ -12,7 +12,10 @@
             month: forecast.month_name
           ), class: "no-underline hover:underline text-indigo-500"
         %>
-        <span class="font-bold leading-none text-xs mx-2 align-middle py-1 px-2 text-<%= status_color %>-50 bg-<%= status_color %>-500 rounded"><%= forecast.open? ? "Open" : "Closed" %></span>
+        <%# use these spans so that the dynamic classes are not purged by tailwind if not used %>
+        <span class="hidden text-green-50 bg-green-500">
+        <span class="hidden text-red-50 bg-red-500">
+        <span class="font-bold leading-none text-xs mx-2 align-middle py-1 px-2 <%= status_color %>-50 bg-<%= status_color %>-500 rounded"><%= forecast.open? ? "Open" : "Closed" %></span>
       </li>
     <% end %>
   </ul>
